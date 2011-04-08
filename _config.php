@@ -18,5 +18,5 @@
 //GSTTaxModifier::set_no_tax_description("tax-exempt");
 //GSTTaxModifier::set_refund_title("Tax Exemption");
 //GSTTaxModifier::set_order_item_function_for_tax_exclusive_portion("PortionWithoutTax");
-//ProductsAndGroupsModelAdmin::add_managed_model("GSTTaxModifierOptions");
+//StoreAdmin::add_managed_model("GSTTaxModifierOptions");
 //===================---------------- END ecommerce_tax MODULE ----------------===================
