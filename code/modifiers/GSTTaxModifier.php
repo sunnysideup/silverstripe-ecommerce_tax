@@ -32,7 +32,10 @@ class GSTTaxModifier extends OrderModifier {
 // ######################################## *** cms variables + functions (e.g. getCMSFields, $searchableFields)
 
 	public static $singular_name = "Tax Charge";
+		function i18n_single_name() { return _t("GSTTaxModifier.TAXCHARGE", "Tax Charge");}
+
 	public static $plural_name = "Tax Charges";
+		function i18n_plural_name() { return _t("GSTTaxModifier.TAXCHARGES", "Tax Charges");}
 
 
 // ######################################## *** other (non) static variables (e.g. protected static $special_name_for_something, protected $order)
@@ -98,7 +101,7 @@ class GSTTaxModifier extends OrderModifier {
 // ######################################## *** template functions (e.g. ShowInTable, TableTitle, etc...) ... USES DB VALUES
 
 
-	function CanRemove() {
+	function CanBeRemoved() {
 		return false;
 	}
 
@@ -242,7 +245,7 @@ class GSTTaxModifier extends OrderModifier {
 
 	// note that this talks about AddedCharge, which can actually be zero while the table shows a value (inclusive case).
 
-	function LiveAmount() {
+	function LiveCalculationValue() {
 		if($this->LiveIsRefundSituation()) {
 			return $this->LiveRawTableValue();
 		}
