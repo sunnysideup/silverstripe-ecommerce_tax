@@ -212,7 +212,7 @@ class GSTTaxModifier extends OrderModifier {
 	}
 
 	protected function LiveCountry() {
-		return ShoppingCart::get_country();
+		return EcommerceCountry::get_country();
 	}
 
 	protected function LiveRate() {
@@ -334,21 +334,21 @@ class GSTTaxModifier extends OrderModifier {
 
 // ######################################## *** Type Functions (IsChargeable, IsDeductable, IsNoChange, IsRemoved)
 
-	protected function IsDeductable() {
+	public function IsDeductable() {
 		if($this->LiveIsRefundSituation()) {
 			return true;
 		}
 		return false;
 	}
 
-	protected function IsNoChange() {
+	public function IsNoChange() {
 		if(!$this->IsExclusive()) {
 			return false;
 		}
 		return true;
 	}
 
-	protected function IsChargeable() {
+	public function IsChargeable() {
 		if($this->IsDeductable() || $this->IsNoChange()) {
 			return false;
 		}
