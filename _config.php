@@ -10,6 +10,7 @@
 //copy the lines between the START AND END line to your /mysite/_config.php file and choose the right settings
 //===================---------------- START ecommerce_tax MODULE ----------------===================
 // *** GST TAX MODIFIER
+//Order::add_modifier("GSTTaxModifier");
 //GSTTaxModifier::set_default_country_code("NZ");
 //GSTTaxModifier::set_fixed_country_code("NZ");
 //GSTTaxModifier::set_exclusive_explanation(" (to be added to prices above)");
