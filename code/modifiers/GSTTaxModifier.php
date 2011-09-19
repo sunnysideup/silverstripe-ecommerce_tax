@@ -113,10 +113,6 @@ class GSTTaxModifier extends OrderModifier {
 		return $this->RawTableValue;
 	}
 
-	function TableTitle() {
-		return $this->Name;
-	}
-
 
 // ######################################## ***  inner calculations.... USES CALCULATED VALUES
 
