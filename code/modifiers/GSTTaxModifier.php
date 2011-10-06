@@ -37,6 +37,20 @@ class GSTTaxModifier extends OrderModifier {
 	public static $plural_name = "Tax Charges";
 		function i18n_plural_name() { return _t("GSTTaxModifier.TAXCHARGES", "Tax Charges");}
 
+	function getCMSFields(){
+		$fields = parent::getCMSFields();
+		$fields->replaceField("Country", new DropDownField("Country", "Country", Geoip::getCountryDropDown()));
+		$fields->removeByName("Rate");
+		$fields->addFieldToTab("Root.Debug", new ReadonlyField("RateShown", "Rate", $this->Rate));
+		$fields->replaceField("Root.Main", new DropdownField("TaxType", "Tax Type", singleton($this->ClassName)->dbObject('TaxType')->enumValues()));
+		$fields->removeByName("RawTableValueShown");
+		$fields->addFieldToTab("Root.Debug", new ReadonlyField("RawTableValueShown", "Raw table value", $this->RawTableValue));
+		$fields->removeByName("TaxableAmountShown");
+		$fields->addFieldToTab("Root.Debug", new ReadonlyField("TaxableAmountShown", "Taxable Amount", $this->TaxableAmount));
+		$fields->removeByName("DebugStringShown");
+		$fields->addFieldToTab("Root.Debug", new ReadonlyField("DebugStringShown", "Debug String", $this->DebugString));
+		return $fields;
+	}
 
 // ######################################## *** other (non) static variables (e.g. protected static $special_name_for_something, protected $order)
 
