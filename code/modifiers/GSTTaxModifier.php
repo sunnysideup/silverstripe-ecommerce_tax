@@ -187,11 +187,21 @@ class GSTTaxModifier extends OrderModifier {
 	* returns boolean value true / false
 	*/
 	public function IsExclusive() {
-		$countryCode = $this->LiveCountry();
-		if($obj = $this->TaxObjects()) {
-			return $obj->TaxType == "Exclusive";
+		$array = array();
+		if($objects = $this->TaxObjects()) {
+			foreach($objects as $obj) {
+				$array[$obj->InclusiveOrExclusive] = $obj->InclusiveOrExclusive;
+			}
 		}
-		return false;
+		if(count($array) > 1) {
+			user_error("you can not have a collection of tax objects that is inclusive and exclusive", E_USER_NOTICE);
+		}
+		if(count($array) < 1) {
+			return true;
+		}
+		foreach($array as $item) {
+			return $item == "Exclusive";
+		}
 	}
 
 
