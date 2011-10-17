@@ -189,11 +189,9 @@ class GSTTaxModifier extends OrderModifier {
 	public function IsExclusive() {
 		$countryCode = $this->LiveCountry();
 		if($obj = $this->TaxObjects()) {
-			return $obj->InclusiveOrExclusive;
+			return $obj->TaxType == "Exclusive";
 		}
-		else {
-			return false;
-		}
+		return false;
 	}
 
 
