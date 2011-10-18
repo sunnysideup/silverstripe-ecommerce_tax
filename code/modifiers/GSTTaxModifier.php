@@ -62,11 +62,11 @@ class GSTTaxModifier extends OrderModifier {
 		static function set_fixed_country_code($v) {self::$fixed_country_code = $v;}
 		static function get_fixed_country_code() {return self::$fixed_country_code;}
 
-	protected static $exclusive_explanation = " (added to the above price) ";
+	protected static $exclusive_explanation = " (added to the sub-total) ";
 		static function set_exclusive_explanation($v) {self::$exclusive_explanation = $v;}
 		static function get_exclusive_explanation() {return self::$exclusive_explanation;}
 
-	protected static $inclusive_explanation = " (included in the above price) ";
+	protected static $inclusive_explanation = " (included in the sub-total) ";
 		static function set_inclusive_explanation($v) {self::$inclusive_explanation = $v;}
 		static function get_inclusive_explanation() {return self::$inclusive_explanation;}
 
