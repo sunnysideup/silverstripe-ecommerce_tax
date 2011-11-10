@@ -98,8 +98,12 @@ class GSTTaxModifier extends OrderModifier {
 
 // ######################################## *** CRUD functions (e.g. canEdit)
 // ######################################## *** init and update functions
-
-	public function runUpdate() {
+	/**
+	 * updates database fields
+	 * @param Bool $force - run it, even if it has run already
+	 * @return void
+	 */
+	public function runUpdate($force = true) {
 		$this->checkField("Country");
 		$this->checkField("IsRefundSituation");
 		$this->checkField("Rate");
@@ -107,7 +111,7 @@ class GSTTaxModifier extends OrderModifier {
 		$this->checkField("DebugString");
 		$this->checkField("TaxableAmount");
 		$this->checkField("RawTableValue");
-		parent::runUpdate();
+		parent::runUpdate($force);
 	}
 
 
@@ -263,7 +267,7 @@ class GSTTaxModifier extends OrderModifier {
 
 	// note that this talks about AddedCharge, which can actually be zero while the table shows a value (inclusive case).
 
-	function LiveCalculationValue() {
+	function LiveCalculatedTotal() {
 		if($this->LiveIsRefundSituation()) {
 			return $this->LiveRawTableValue();
 		}
