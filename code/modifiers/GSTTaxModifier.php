@@ -43,7 +43,7 @@ class GSTTaxModifier extends OrderModifier {
 		$fields->removeByName("Rate");
 		$fields->addFieldToTab("Root.Debug", new ReadonlyField("RateShown", "Rate", $this->Rate));
 		$fields->replaceField("Root.Main", new DropdownField("TaxType", "Tax Type", singleton($this->ClassName)->dbObject('TaxType')->enumValues()));
-		$fields->removeByName("RawTableValueShown");
+		$fields->removeByName("TableValueShown");
 		$fields->addFieldToTab("Root.Debug", new ReadonlyField("RawTableValueShown", "Raw table value", $this->RawTableValue));
 		$fields->removeByName("TaxableAmountShown");
 		$fields->addFieldToTab("Root.Debug", new ReadonlyField("TaxableAmountShown", "Taxable Amount", $this->TaxableAmount));
@@ -127,9 +127,6 @@ class GSTTaxModifier extends OrderModifier {
 		return true;
 	}
 
-	function TableValue() {
-		return $this->RawTableValue;
-	}
 
 
 // ######################################## ***  inner calculations.... USES CALCULATED VALUES
@@ -279,6 +276,11 @@ class GSTTaxModifier extends OrderModifier {
 	function LiveRawTableValue() {
 		$rate = ($this->IsExclusive() ? $this->LiveRate() : (1 - (1 / (1 + $this->LiveRate()))));
 		return $this->LiveTaxableAmount() * $rate;
+	}
+
+
+	function LiveTableValue() {
+		return $this->RawTableValue;
 	}
 
 	function LiveDebugString() {
