@@ -376,6 +376,7 @@ class GSTTaxModifier extends OrderModifier {
 					$actualRate = $rate;
 					$buyable = $item->Buyable();
 					if($buyable) {
+						$this->dealWithProductVariationException($buyable);
 						if($buyable->hasExtension("GSTTaxDecorator")) {
 							$excludedTaxes = $buyable->ExcludedFrom();
 							$additionalTaxes = $buyable->AdditionalTax();
@@ -411,7 +412,22 @@ class GSTTaxModifier extends OrderModifier {
 		return $itemsTotal;
 	}
 
-
+	/**
+	 * this method is a bit of a hack.
+	 * if a product variation does not have any specific tax rules
+	 * but the product does, then it uses the rules from the product.
+	 */
+	function dealWithProductVariationException(&$buyable) {
+		if($buyable instanceOf ProductVariation) {
+			if(!$buyable->hasExtension("GSTTaxDecorator")) {
+				if($parent = $buyable->Parent()) {
+					if($parent->hasExtension("GSTTaxDecorator")) {
+						$buyable = $parent;
+					}
+				}
+			}
+		}
+	}
 
 	/**
 	 * works out the tax to pay for the order modifiers,
