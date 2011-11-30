@@ -22,6 +22,6 @@
 //GSTTaxModifier::set_no_tax_description("tax-exempt");
 //GSTTaxModifier::set_refund_title("Tax Exemption");
 //GSTTaxModifier::set_order_item_function_for_tax_exclusive_portion("PortionWithoutTax");
-//EcommerceRole::set_fixed_country_code("NZ");
+//EcommerceCountry::set_fixed_country_code("NZ");
 //GSTTaxModifier::set_default_country_code("NZ"); AND / OR //Geoip::$default_country_code = "NZ";
 //===================---------------- END ecommerce_tax MODULE ----------------===================
