@@ -42,7 +42,7 @@ class GSTTaxDecorator extends DataObjectDecorator {
 		$additionalOptions = DataObject::get("GSTTaxModifierOptions", "\"DoesNotApplyToAllProducts\" = 1");
 		if($additionalOptions) {
 			$additionalOptionsList = $additionalOptions->toDropdownMap();
-			$fields->addFieldsToTab(
+			$fields->addFieldToTab(
 				$tabName,
 				new CheckboxSetField(
 					"AdditionalTax", "Additional taxes ...", $additionalOptionsList
@@ -53,7 +53,7 @@ class GSTTaxDecorator extends DataObjectDecorator {
 		$additionalWhereForDefault = "";
 		if($excludedOptions) {
 			$excludedOptionsList = $excludedOptions->toDropdownMap();
-			$fields->addFieldsToTab(
+			$fields->addFieldToTab(
 				$tabName,
 				new CheckboxSetField(
 					"ExcludedFrom", "Taxes that do not apply ...", $excludedOptionsList
