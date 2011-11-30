@@ -235,7 +235,7 @@ class GSTTaxModifier extends OrderModifier {
 				self::$default_tax_objects = DataObject::get(
 					"GSTTaxModifierOptions",
 					"\"CountryCode\" = '".$defaultCountryCode."'
-					AND \"AppliesToAllCountries\" = 0
+					AND \"AppliesToAllCountries\" = 1
 					AND \"DoesNotApplyToAllProducts\" = 0"
 				);
 				if(self::$default_tax_objects) {
