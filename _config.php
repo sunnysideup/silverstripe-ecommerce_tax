@@ -11,7 +11,7 @@
 //===================---------------- START ecommerce_tax MODULE ----------------===================
 // *** GST TAX MODIFIER
 //MUST SET
-//Order::add_modifier("GSTTaxModifier");
+//Order::add_modifier("GSTTaxModifier"); // OR //Order::set_modifiers(array("GSTTaxModifier"));
 //StoreAdmin::add_managed_model("GSTTaxModifierOptions");
 //MAY SET
 //Object::add_extension('Product', 'GSTTaxDecorator');
