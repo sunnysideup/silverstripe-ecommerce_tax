@@ -223,7 +223,9 @@ class GSTTaxModifier extends OrderModifier {
 // ######################################## ***  inner calculations.... USES CALCULATED VALUES
 
 	/**
-	 * works out what taxes apply in the default setup.  we need this, because prices may include
+	 * works out what taxes apply in the default setup.
+	 * we need this, because prices may include tax
+	 * based on the default tax rate.
 	 *
 	 *@return Object|Null - DataObjectSet of applicable taxes in the default country.
 	 */
@@ -235,7 +237,6 @@ class GSTTaxModifier extends OrderModifier {
 				self::$default_tax_objects = DataObject::get(
 					"GSTTaxModifierOptions",
 					"\"CountryCode\" = '".$defaultCountryCode."'
-					AND \"AppliesToAllCountries\" = 1
 					AND \"DoesNotApplyToAllProducts\" = 0"
 				);
 				if(self::$default_tax_objects) {
