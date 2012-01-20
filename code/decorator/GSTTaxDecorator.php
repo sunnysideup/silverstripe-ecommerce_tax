@@ -76,7 +76,7 @@ class GSTTaxDecorator extends DataObjectDecorator {
 	 *
 	 */
 	function TaxInclusivePrice(){
-
+		user_error("to be completed");
 	}
 
 	/**
@@ -85,7 +85,7 @@ class GSTTaxDecorator extends DataObjectDecorator {
 	 *
 	 */
 	function TaxExclusivePrice(){
-
+		user_error("to be completed");
 	}
 
 }
