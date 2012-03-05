@@ -468,6 +468,14 @@ class GSTTaxModifier extends OrderModifier {
 		return $modifiersTotal;
 	}
 
+	/**
+	 * Are there Any taxes that do not apply to all products
+	 * @return Boolean
+	 */
+	protected function hasExceptionTaxes(){
+		return DataObject::get_one("GSTTaxModifierOptions", "\"DoesNotApplyToAllProducts\" = 1") ? false : true;
+	}
+
 // ######################################## *** calculate database fields: protected function Live[field name]  ... USES CALCULATED VALUES
 
 
@@ -594,7 +602,9 @@ class GSTTaxModifier extends OrderModifier {
 			}
 		}
 		else {
-			$finalString = self::$no_tax_description;
+			if($this->hasExceptionTaxes()) {
+				$finalString = self::$no_tax_description;
+			}
 		}
 		if($countryCode && $finalString) {
 			$countryName = Geoip::countryCode2name($countryCode);

@@ -51,8 +51,8 @@ class GSTTaxModifierOptions extends DataObject {
 	 * @var Array
 	 */
 	public static $searchable_fields = array(
-		"Code",
-		"Name" => "PartialMatchFilter",
+		"Code" => "PartialMatchFilter",
+		"Name" => "PartialMatchFilter"
 	);
 
 	/**
@@ -65,7 +65,8 @@ class GSTTaxModifierOptions extends DataObject {
 		"Name" => "Name for tax",
 		"InclusiveOrExclusive" => "Inclusive/Exclusive",
 		"Rate" => "Rate (e.g. 0.125 = 12.5%)",
-		"PriceSuffix" => "Price Suffix"
+		"PriceSuffix" => "Price Suffix",
+		"DoesNotApplyToAllProducts" => "Added to individual products only"
 	);
 
 	/**
