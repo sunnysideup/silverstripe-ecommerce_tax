@@ -29,15 +29,12 @@ class GSTTaxModifier extends OrderModifier {
 		'RawTableValue' => 'Currency'
 	);
 
-// ######################################## *** cms variables + functions (e.g. getCMSFields, $searchableFields)
-
-
 	/**
 	 * standard SS variable
 	 * @var String
 	 */
 	public static $singular_name = "Tax Charge";
-		function i18n_single_name() { return _t("GSTTaxModifier.TAXCHARGE", "Tax Charge");}
+		function i18n_singular_name() { return _t("GSTTaxModifier.TAXCHARGE", "Tax Charge");}
 
 
 	/**
@@ -46,6 +43,11 @@ class GSTTaxModifier extends OrderModifier {
 	 */
 	public static $plural_name = "Tax Charges";
 		function i18n_plural_name() { return _t("GSTTaxModifier.TAXCHARGES", "Tax Charges");}
+
+
+// ######################################## *** cms variables + functions (e.g. getCMSFields, $searchableFields)
+
+
 
 	/**
 	 * standard SS method
