@@ -103,16 +103,11 @@ class GSTTaxModifierOptions extends DataObject {
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
 		$fields->replaceField("CountryCode", new DropDownField("CountryCode", self::$field_labels["CountryCode"], Geoip::getCountryDropDown()));
-		$sc = SiteConfig::current_site_config();
-		if($sc && isset($sc->ShopPricesAreTaxExclusive)) {
-			if($sc->ShopPricesAreTaxExclusive) {
-				$InclusiveOrExclusive = "Exclusive";
-			}
-			else {
-				$InclusiveOrExclusive = "Inclusive";
-			}
-			$fields->replaceField("InclusiveOrExclusive", new ReadonlyField("InclusiveOrExclusive", "This tax is: $InclusiveOrExclusive, you can change this setting in the site configuration."));
+		$InclusiveOrExclusive = "Inclusive";
+		if($this->EcomConfig()->ShopPricesAreTaxExclusive) {
+			$InclusiveOrExclusive = "Exclusive";
 		}
+		$fields->replaceField("InclusiveOrExclusive", new ReadonlyField("InclusiveOrExclusive", "This tax is: $InclusiveOrExclusive, you can change this setting in the e-commerce configuration."));
 		return $fields;
 	}
 

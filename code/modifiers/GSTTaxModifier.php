@@ -319,12 +319,9 @@ class GSTTaxModifier extends OrderModifier {
 	 * @return Bool
 	 */
 	protected function isInclusive() {
-		$sc = SiteConfig::current_site_config();
-		if($sc && isset($sc->ShopPricesAreTaxExclusive)) {
-			return $sc->ShopPricesAreTaxExclusive ? false : true;
-		}
+		return $this->EcomConfig()->ShopPricesAreTaxExclusive ? false : true;
 		//this code is here to support e-commerce versions that
-		//do not have the DB field SiteConfig.ShopPricesAreTaxExclusive
+		//do not have the DB field EcomConfig()->ShopPricesAreTaxExclusive
 		$array = array();
 		//here we have to take the default tax objects
 		//because we want to know for the default country
