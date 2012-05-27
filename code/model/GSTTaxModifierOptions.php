@@ -135,7 +135,14 @@ class GSTTaxModifierOptions extends DataObject {
 		);
 	}
 
-
+	/**
+	 * returns the instance of EcommerceDBConfig
+	 *
+	 * @return EcommerceDBConfig
+	 **/
+	public function EcomConfig(){
+		return EcommerceDBConfig::current_ecommerce_db_config();
+	}
 
 }
 
