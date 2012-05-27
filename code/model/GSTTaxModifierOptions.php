@@ -126,6 +126,32 @@ class GSTTaxModifierOptions extends DataObject {
 	/**
 	 * standard SS method
 	 */
+	function populateDefaults(){
+		parent::populateDefaults();
+		if($this->EcomConfig()->ShopPricesAreTaxExclusive) {
+			$this->InclusiveOrExclusive = "Exclusive";
+		}
+		else {
+			$this->InclusiveOrExclusive = "Inclusive";
+		}
+	}
+
+	/**
+	 * standard SS method
+	 */
+	function onBeforeWrite(){
+		parent::onBeforeWrite();
+		if($this->EcomConfig()->ShopPricesAreTaxExclusive) {
+			$this->InclusiveOrExclusive = "Exclusive";
+		}
+		else {
+			$this->InclusiveOrExclusive = "Inclusive";
+		}
+	}
+
+	/**
+	 * standard SS method
+	 */
 	function requireDefaultRecords() {
 		parent::requireDefaultRecords();
 		DB::query("
