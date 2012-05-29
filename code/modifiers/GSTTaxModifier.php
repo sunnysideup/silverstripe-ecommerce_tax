@@ -97,7 +97,7 @@ class GSTTaxModifier extends OrderModifier {
 	 * wording in cart for prices that are tax exclusive (tax added on top of prices)
 	 * @var String
 	 */
-	protected static $exclusive_explanation = " (added to the prices) ";
+	protected static $exclusive_explanation = "";
 		static function set_exclusive_explanation($s) {self::$exclusive_explanation = $s;}
 		static function get_exclusive_explanation() {return self::$exclusive_explanation;}
 
@@ -105,7 +105,7 @@ class GSTTaxModifier extends OrderModifier {
 	 * wording in cart for prices that are tax inclusive (tax is part of the prices)
 	 * @var String
 	 */
-	protected static $inclusive_explanation = " (included in the prices) ";
+	protected static $inclusive_explanation = "";
 		static function set_inclusive_explanation($s) {self::$inclusive_explanation = $s;}
 		static function get_inclusive_explanation() {return self::$inclusive_explanation;}
 
@@ -571,11 +571,11 @@ class GSTTaxModifier extends OrderModifier {
 	 * @return String
 	 */
 	protected function LiveName() {
-		$finalString = "tax could not be determined";
+		$finalString = _t("OrderModifier.TAXCOULDNOTBEDETERMINED", "tax could not be determined");
 		$countryCode = $this->LiveCountry();
-		$start = '';
+		$startString = '';
 		$name = '';
-		$end = '';
+		$endString = '';
 		$taxObjects = $this->currentTaxObjects();
 		if($taxObjects) {
 			$objectArray = array();
@@ -585,16 +585,13 @@ class GSTTaxModifier extends OrderModifier {
 			if(count($objectArray)) {
 				$name = implode(", ", $objectArray);
 			}
-			if($rate = $this->LiveCurrentRate()) {
-				$startString = number_format($this->LiveCurrentRate() * 100, 2) . '% ';
-			}
-			if( $this->isExclusive()) {
+			if(self::$exclusive_explanation && $this->isExclusive()) {
 				$endString = self::$exclusive_explanation;
 			}
-			else {
+			elseif(self::$inclusive_explanation) {
 				$endString = self::$inclusive_explanation;
 			}
-			if($name && $rate) {
+			if($name) {
 				$finalString = $startString.$name.$endString;
 			}
 		}
