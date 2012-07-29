@@ -11,8 +11,20 @@
 
 //===================---------------- START ecommerce_tax MODULE ----------------===================
 //MUST SET
-//Order::add_modifier("GSTTaxModifier"); // OR //Order::set_modifiers(array("GSTTaxModifier"));
-//StoreAdmin::add_managed_model("GSTTaxModifierOptions");
+/**
+ * ADD TO ECOMMERCE.YAML:
+Order:
+	modifiers: [
+		...
+		GSTTaxModifier
+	]
+StoreAdmin:
+	managed_models: [
+		...
+		GSTTaxModifierOptions
+	]
+
+*/
 //Object::add_extension('Product', 'GSTTaxDecorator');
 //Object::add_extension('ProductVariation', 'GSTTaxDecorator');
 
