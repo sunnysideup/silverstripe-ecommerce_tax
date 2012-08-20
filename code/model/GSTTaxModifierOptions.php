@@ -66,7 +66,7 @@ class GSTTaxModifierOptions extends DataObject {
 		"InclusiveOrExclusive" => "Inclusive/Exclusive",
 		"Rate" => "Rate (e.g. 0.125 = 12.5%)",
 		"PriceSuffix" => "Price Suffix",
-		"DoesNotApplyToAllProducts" => "Added to individual products only"
+		"DoesNotApplyToAllProducts" => "Added to individual products only, if you un-tick this box, you can still 'exclude' any product from this tax, but the tax will be included by default."
 	);
 
 	/**
@@ -114,7 +114,7 @@ class GSTTaxModifierOptions extends DataObject {
 	function Title() {return $this->getTitle();}
 	function getTitle() {
 		if($this->AppliesToAllCountries) {
-			$country = "world-wide";
+			$country = _t("GSTTExModifierOption.WORLDWIDE", "world-wide");
 		}
 		else {
 			$country = $this->CountryCode;
