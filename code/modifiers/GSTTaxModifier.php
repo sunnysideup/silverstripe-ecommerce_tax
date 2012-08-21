@@ -411,6 +411,7 @@ class GSTTaxModifier extends OrderModifier {
 				}
 			}
 		}
+		$this->debugMessage .= "<hr />Total order items tax: $itemsTotal";
 		return $itemsTotal;
 	}
 
@@ -464,6 +465,7 @@ class GSTTaxModifier extends OrderModifier {
 				}
 			}
 		}
+		$this->debugMessage .= "<hr />Total order modifiers tax: $modifiersTotal";
 		return $modifiersTotal;
 	}
 
