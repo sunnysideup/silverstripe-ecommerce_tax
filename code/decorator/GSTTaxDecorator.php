@@ -39,6 +39,7 @@ class GSTTaxDecorator extends DataObjectDecorator {
 		else {
 			$tabName = "Root.Tax";
 		}
+		//additional taxes
 		$additionalOptions = DataObject::get("GSTTaxModifierOptions", "\"DoesNotApplyToAllProducts\" = 1");
 		if($additionalOptions) {
 			$additionalOptionsList = $additionalOptions->toDropdownMap();
@@ -49,6 +50,7 @@ class GSTTaxDecorator extends DataObjectDecorator {
 				)
 			);
 		}
+		//excluded options
 		$excludedOptions = DataObject::get("GSTTaxModifierOptions", "\"DoesNotApplyToAllProducts\" = 0");
 		$additionalWhereForDefault = "";
 		if($excludedOptions) {
@@ -61,6 +63,7 @@ class GSTTaxDecorator extends DataObjectDecorator {
 			);
 			$additionalWhereForDefault = "  AND \"GSTTaxModifierOptions\".\"ID\" NOT IN (".implode(", ", $excludedOptions->map("ID", "ID")).")";
 		}
+		//default options
 		$defaultOptions = DataObject::get("GSTTaxModifierOptions", "\"DoesNotApplyToAllProducts\" = 0 $additionalWhereForDefault");
 		if($defaultOptions) {
 			$fields->addFieldToTab(
