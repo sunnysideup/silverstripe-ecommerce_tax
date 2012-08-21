@@ -33,6 +33,8 @@ class GSTTaxDecorator extends DataObjectDecorator {
 	 * @return Object - FieldSet
 	 */
 	function updateCMSFields(&$fields) {
+		$fields->removeByName("ExcludedFrom");
+		$fields->removeByName("AdditionalTax");
 		if($this->owner instanceOf SiteTree) {
 			$tabName = "Root.Content.Tax";
 		}
