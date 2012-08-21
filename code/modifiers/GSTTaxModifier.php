@@ -382,15 +382,19 @@ class GSTTaxModifier extends OrderModifier {
 							$additionalTaxes = $buyable->AdditionalTax();
 							if($excludedTaxes) {
 								foreach($excludedTaxes as $tax) {
-									$this->debugMessage .= "<hr />found tax to exclude for ".$buyable->Title.": ".$tax->Title();
-									$actualRate -= $tax->Rate;
+									if(!$tax->DoesNotApplyToAllProducts) {
+										$this->debugMessage .= "<hr />found tax to exclude for ".$buyable->Title.": ".$tax->Title();
+										$actualRate -= $tax->Rate;
+									}
 								}
 							}
 							if($additionalTaxes) {
 								foreach($additionalTaxes as $tax) {
-									if($tax->AppliesToAllCountries || $tax->CountryCode == $country) {
-										$this->debugMessage .= "<hr />found tax to add for ".$buyable->Title.": ".$tax->Title();
-										$actualRate += $tax->Rate;
+									if($tax->DoesNotApplyToAllProducts) {
+										if($tax->AppliesToAllCountries || $tax->CountryCode == $country) {
+											$this->debugMessage .= "<hr />found tax to add for ".$buyable->Title.": ".$tax->Title();
+											$actualRate += $tax->Rate;
+										}
 									}
 								}
 							}
@@ -450,6 +454,32 @@ class GSTTaxModifier extends OrderModifier {
 							//do nothing
 						}
 						else {
+							$actualRate = $rate;
+							$modifierDescriptor = DataObject::get("OrderModifier_Descriptor", "\"ModifierClassName\" = '".$modifier->ClassName."'");
+							if($modifierDescriptor) {
+								if($modifier->hasExtension("GSTTaxDecorator")) {
+									$excludedTaxes = $modifier->ExcludedFrom();
+									$additionalTaxes = $modifier->AdditionalTax();
+									if($excludedTaxes) {
+										foreach($excludedTaxes as $tax) {
+											if(!$tax->DoesNotApplyToAllProducts) {
+												$this->debugMessage .= "<hr />found tax to exclude for ".$modifier->Title.": ".$tax->Title();
+												$actualRate -= $tax->Rate;
+											}
+										}
+									}
+									if($additionalTaxes) {
+										foreach($additionalTaxes as $tax) {
+											if($tax->DoesNotApplyToAllProducts) {
+												if($tax->AppliesToAllCountries || $tax->CountryCode == $country) {
+													$this->debugMessage .= "<hr />found tax to add for ".$modifier->Title.": ".$tax->Title();
+													$actualRate += $tax->Rate;
+												}
+											}
+										}
+									}
+								}
+							}
 							$totalForModifier = $modifier->CalculationTotal();
 							if($functionName){
 								if(method_exists($modifier, $functionName)) {
@@ -459,9 +489,9 @@ class GSTTaxModifier extends OrderModifier {
 							}
 							//turnRateIntoCalculationRate is really important -
 							//a 10% rate is different for inclusive than for an exclusive tax
-							$calculationRate = $this->turnRateIntoCalculationRate($rate);
-							$this->debugMessage .= "<hr />--'$rate' turned into --'".$calculationRate."' for '--$totalForModifier' on ".$modifier->ClassName.".".$modifier->ID;
-							$modifiersTotal += floatval($totalForModifier) * $calculationRate;
+							$actualRateCalculationRate = $this->turnRateIntoCalculationRate($actualRate);
+							$this->debugMessage .= "<hr />--'$actualRate' turned into --'".$actualRateCalculationRate."' for '--$totalForModifier' on ".$modifier->ClassName.".".$modifier->ID;
+							$modifiersTotal += floatval($totalForModifier) * $actualRateCalculationRate;
 						}
 					}
 				}

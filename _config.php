@@ -27,6 +27,7 @@ StoreAdmin:
 */
 //Object::add_extension('Product', 'GSTTaxDecorator');
 //Object::add_extension('ProductVariation', 'GSTTaxDecorator');
+//Object::add_extension('OrderModifier_Descriptor', 'GSTTaxDecorator');
 
 //MAY SET
 //GSTTaxModifier::set_exclusive_explanation(" (to be added to prices above)");
