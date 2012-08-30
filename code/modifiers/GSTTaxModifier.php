@@ -370,7 +370,6 @@ class GSTTaxModifier extends OrderModifier {
 		if($order) {
 			$items = $this->Order()->Items();
 			if($items) {
-				$functionName = self::$order_item_function_for_tax_exclusive_portion;
 				foreach($items as $itemIndex => $item) {
 					//resetting actual rate...
 					$actualRate = $rate;
@@ -401,6 +400,7 @@ class GSTTaxModifier extends OrderModifier {
 						}
 					}
 					$totalForItem = $item->Total();
+					$functionName = self::$order_item_function_for_tax_exclusive_portion;
 					if($functionName){
 						if(method_exists($item, $functionName)) {
 							$this->debugMessage .= "<hr />running $functionName on ".$item->ClassName.".".$item->ID;
@@ -447,7 +447,6 @@ class GSTTaxModifier extends OrderModifier {
 		$order = $this->Order();
 		if($order) {
 			if($modifiers = $order->Modifiers()) {
-				$functionName = self::$order_item_function_for_tax_exclusive_portion;
 				foreach($modifiers as $modifier) {
 					if(!$modifier->IsRemoved()) { //we just double-check this...
 						if($modifier instanceOf GSTTaxModifier) {
@@ -457,7 +456,7 @@ class GSTTaxModifier extends OrderModifier {
 							$actualRate = $rate;
 							$modifierDescriptor = DataObject::get("OrderModifier_Descriptor", "\"ModifierClassName\" = '".$modifier->ClassName."'");
 							if($modifierDescriptor) {
-								if($modifier->hasExtension("GSTTaxDecorator")) {
+								if($modifierDescriptor->hasExtension("GSTTaxDecorator")) {
 									$excludedTaxes = $modifier->ExcludedFrom();
 									$additionalTaxes = $modifier->AdditionalTax();
 									if($excludedTaxes) {
@@ -481,6 +480,7 @@ class GSTTaxModifier extends OrderModifier {
 								}
 							}
 							$totalForModifier = $modifier->CalculationTotal();
+							$functionName = self::$order_item_function_for_tax_exclusive_portion;
 							if($functionName){
 								if(method_exists($modifier, $functionName)) {
 									$totalForModifier -= $item->$functionName();

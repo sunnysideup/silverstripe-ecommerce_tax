@@ -25,6 +25,8 @@ StoreAdmin:
 	]
 
 */
+
+//MAY SET TO CREATE EXCEPTIONS (E.G. NO TAX ON DONATIONS)
 //Object::add_extension('Product', 'GSTTaxDecorator');
 //Object::add_extension('ProductVariation', 'GSTTaxDecorator');
 //Object::add_extension('OrderModifier_Descriptor', 'GSTTaxDecorator');
@@ -39,6 +41,5 @@ StoreAdmin:
 //GSTTaxModifier::set_default_country_code("NZ");
 
 //ALSO CONSIDER SETTING ... (as these will influence this module)
-//EcommerceCountry::set_fixed_country_code("NZ");
 //Geoip::$default_country_code = "NZ";
 //===================---------------- END ecommerce_tax MODULE ----------------===================
