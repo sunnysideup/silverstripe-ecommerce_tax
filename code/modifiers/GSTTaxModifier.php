@@ -200,7 +200,7 @@ class GSTTaxModifier extends OrderModifier {
 	}
 
 
-// ######################################## *** form functions (e. g. showform and getform)
+// ######################################## *** form functions (e. g. Showform and getform)
 // ######################################## *** template functions (e.g. ShowInTable, TableTitle, etc...) ... USES DB VALUES
 
 	/**
