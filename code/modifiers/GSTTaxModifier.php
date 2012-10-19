@@ -677,6 +677,21 @@ class GSTTaxModifier extends OrderModifier {
 		}
 	}
 
+	static $table_sub_title;
+
+	function getTableSubTitle() {
+		$title = $this->stat('table_sub_title');
+		if($title) {
+			if($title === true) {
+				return _t('GSTTaxModifier.TABLESUBTITLE', 'G.S.T.');
+			}
+			$taxObjects = $this->currentTaxObjects();
+			if($taxObjects) {
+				$taxObject = $taxObjects->First();
+				return $taxObject->hasMethod($title) ? $taxObject->$title() : $taxObject->$title;
+			}
+		}
+	}
 
 // ######################################## *** Type Functions (IsChargeable, IsDeductable, IsNoChange, IsRemoved)
 
