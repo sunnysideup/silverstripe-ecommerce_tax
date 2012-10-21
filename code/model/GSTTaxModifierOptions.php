@@ -174,7 +174,7 @@ class GSTTaxModifierOptions extends DataObject {
 
 	public function CountryName(){ return $this->getCountryName();}
 	public function getCountryName(){
-		Geoip::countryCode2name($this->CountryCode);
+		return Geoip::countryCode2name($this->CountryCode);
 	}
 }
 
