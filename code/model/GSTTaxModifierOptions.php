@@ -70,13 +70,6 @@ class GSTTaxModifierOptions extends DataObject {
 		"DoesNotApplyToAllProducts" => "Added to individual products only, if you un-tick this box, you can still 'exclude' any product from this tax, but the tax will be included by default."
 	);
 
-	/**
-	 * standard SS variable
-	 * @var Array
-	 */
-	public static $casting = array(
-		"CountryName"
-	);
 
 	/**
 	 * standard SS variable
