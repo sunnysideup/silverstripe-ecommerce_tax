@@ -35,7 +35,7 @@ class GSTTaxModifierOptions extends DataObject {
 	 * @var Array
 	 */
 	public static $casting = array(
-		"Title" => "Varchar"
+		"CountryName" => "Varchar"
 	);
 
 	/**
@@ -60,6 +60,7 @@ class GSTTaxModifierOptions extends DataObject {
 	 * @var Array
 	 */
 	public static $field_labels = array(
+		"CountryName" => "Country Name",
 		"CountryCode" => "Country Code",
 		"Code" => "Code for tax",
 		"Name" => "Name for tax",
@@ -73,8 +74,16 @@ class GSTTaxModifierOptions extends DataObject {
 	 * standard SS variable
 	 * @var Array
 	 */
+	public static $casting = array(
+		"CountryName"
+	);
+
+	/**
+	 * standard SS variable
+	 * @var Array
+	 */
 	public static $summary_fields = array(
-		"CountryCode",
+		"CountryName",
 		"Code",
 		"Name",
 		"InclusiveOrExclusive",
@@ -170,5 +179,9 @@ class GSTTaxModifierOptions extends DataObject {
 		return EcommerceDBConfig::current_ecommerce_db_config();
 	}
 
+	public function CountryName(){ return $this->getCountryName();}
+	public function getCountryName(){
+		Geoip::countryCode2name($this->CountryCode);
+	}
 }
 
