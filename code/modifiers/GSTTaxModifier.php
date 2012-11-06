@@ -677,14 +677,12 @@ class GSTTaxModifier extends OrderModifier {
 		}
 	}
 
-	static $table_sub_title;
+
+	protected static $field_or_method_to_use_for_title = "Code";
 
 	function getTableSubTitle() {
-		$title = $this->stat('table_sub_title');
+		$title = $this->stat('field_or_method_to_use_for_title');
 		if($title) {
-			if($title === true) {
-				return _t('GSTTaxModifier.TABLESUBTITLE', 'G.S.T.');
-			}
 			$taxObjects = $this->currentTaxObjects();
 			if($taxObjects) {
 				$taxObject = $taxObjects->First();
