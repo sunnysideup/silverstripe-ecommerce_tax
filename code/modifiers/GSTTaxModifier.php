@@ -188,6 +188,7 @@ class GSTTaxModifier extends OrderModifier {
 	 * @return void
 	 */
 	public function runUpdate($force = true) {
+		if (isset($_GET['debug_profile'])) Profiler::mark('GSTTaxModifier::runUpdate');
 		//order is important!
 		$this->checkField("DefaultCountry");
 		$this->checkField("Country");
@@ -196,6 +197,7 @@ class GSTTaxModifier extends OrderModifier {
 		$this->checkField("TaxType");
 		$this->checkField("RawTableValue");
 		$this->checkField("DebugString");
+		if (isset($_GET['debug_profile'])) Profiler::unmark('GSTTaxModifier::runUpdate');
 		parent::runUpdate($force);
 	}
 
