@@ -567,7 +567,12 @@ class GSTTaxModifier extends OrderModifier {
 		return "Inclusive";
 	}
 
+	/**
+	 * temporary store of data for additional speed.
+	 * @var Array
+	 */
 
+	protected static $temp_raw_table_value = array();
 
 	/**
 	 * Used to save RawTableValue to database
@@ -577,14 +582,15 @@ class GSTTaxModifier extends OrderModifier {
 	 * @return float
 	 */
 	protected function LiveRawTableValue() {
-		$currentRate = $this->LiveCurrentRate();
-		$currentCountry = $this->LiveCountry();
-		$itemsTax = $this->workoutOrderItemsTax($currentRate, $currentCountry);
-		$modifiersTax = $this->workoutModifiersTax($currentRate);
-		return $itemsTax + $modifiersTax;
+		if(!isset(self::$temp_raw_table_value[$this->OrderID])) {
+			$currentRate = $this->LiveCurrentRate();
+			$currentCountry = $this->LiveCountry();
+			$itemsTax = $this->workoutOrderItemsTax($currentRate, $currentCountry);
+			$modifiersTax = $this->workoutModifiersTax($currentRate);
+			self::$temp_raw_table_value[$this->OrderID] = $itemsTax + $modifiersTax;
+		}
+		return self::$temp_raw_table_value[$this->OrderID];
 	}
-
-
 
 	/**
 	 * Used to save DebugString to database
@@ -593,7 +599,6 @@ class GSTTaxModifier extends OrderModifier {
 	protected function LiveDebugString() {
 		return $this->debugMessage;
 	}
-
 
 	/**
 	 * Used to save TableValue to database
@@ -646,7 +651,6 @@ class GSTTaxModifier extends OrderModifier {
 		}
 		return $finalString;
 	}
-
 
 	/**
 	 * Used to save CalculatedTotal to database
