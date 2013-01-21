@@ -706,10 +706,6 @@ class GSTTaxModifier extends OrderModifier {
 // ######################################## *** debug functions
 
 
-	function DebugMessage () {
-		if(Director::isDev()) {return $this->debugMessage;}
-	}
-
 
 	/**
 	 * DEPRECIATED
