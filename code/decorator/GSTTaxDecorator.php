@@ -26,6 +26,24 @@ class GSTTaxDecorator extends DataObjectDecorator {
 		);
 	}
 
+	function BuyableCalculatedExcludedFrom(){
+		if($this->owner InstanceOf ProductVariation) {
+			if($product = $this->owner->Product()) {
+				return $product->ExcludedFrom();
+			}
+		}
+		return $this->owner->ExcludedFrom();
+	}
+
+	function BuyableCalculatedAdditionalTax(){
+		if($this->owner InstanceOf ProductVariation) {
+			if($product = $this->owner->Product()) {
+				return $product->AdditionalTax();
+			}
+		}
+		return $this->owner->AdditionalTax();
+	}
+
 
 	/**
 	 * standard SS method
@@ -92,5 +110,6 @@ class GSTTaxDecorator extends DataObjectDecorator {
 	function TaxExclusivePrice(){
 		user_error("to be completed");
 	}
+
 
 }

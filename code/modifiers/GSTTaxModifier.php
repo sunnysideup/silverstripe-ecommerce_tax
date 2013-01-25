@@ -379,8 +379,8 @@ class GSTTaxModifier extends OrderModifier {
 					if($buyable) {
 						$this->dealWithProductVariationException($buyable);
 						if($buyable->hasExtension("GSTTaxDecorator")) {
-							$excludedTaxes = $buyable->ExcludedFrom();
-							$additionalTaxes = $buyable->AdditionalTax();
+							$excludedTaxes = $buyable->BuyableCalculatedExcludedFrom();
+							$additionalTaxes = $buyable->BuyableCalculatedAdditionalTax();
 							if($excludedTaxes) {
 								foreach($excludedTaxes as $tax) {
 									if(!$tax->DoesNotApplyToAllProducts) {
@@ -412,7 +412,7 @@ class GSTTaxModifier extends OrderModifier {
 					//turnRateIntoCalculationRate is really important -
 					//a 10% rate is different for inclusive than for an exclusive tax
 					$actualCalculationRate = $this->turnRateIntoCalculationRate($actualRate);
-					$this->debugMessage .= "<hr />'--$actualRate' turned into '--".$actualCalculationRate."' for '--$totalForItem' on ".$item->ClassName.".".$item->ID;
+					$this->debugMessage .= "<hr /><b>$actualRate</b> turned into ".round($actualCalculationRate, 2)." for a total of <b>$totalForItem</b> on ".$item->ClassName.".".$item->ID;
 					$itemsTotal += floatval($totalForItem) * $actualCalculationRate;
 				}
 			}
