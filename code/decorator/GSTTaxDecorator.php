@@ -59,29 +59,45 @@ class GSTTaxDecorator extends DataObjectDecorator {
 		else {
 			$tabName = "Root.Tax";
 		}
-		//additional taxes
-		$additionalOptions = DataObject::get("GSTTaxModifierOptions", "\"DoesNotApplyToAllProducts\" = 1");
-		if($additionalOptions) {
-			$additionalOptionsList = $additionalOptions->toDropdownMap();
+		if($this->owner instanceOf ProductVariation) {
 			$fields->addFieldToTab(
 				$tabName,
-				new CheckboxSetField(
-					"AdditionalTax", "Additional taxes ...", $additionalOptionsList
-				)
+				new LiteralField("SeeProductForAdditionalTax", "See parent Product for Additional Tax")
 			);
 		}
-		//excluded options
-		$excludedOptions = DataObject::get("GSTTaxModifierOptions", "\"DoesNotApplyToAllProducts\" = 0");
-		$additionalWhereForDefault = "";
-		if($excludedOptions) {
-			$excludedOptionsList = $excludedOptions->toDropdownMap();
+		else {
+			//additional taxes
+			$additionalOptions = DataObject::get("GSTTaxModifierOptions", "\"DoesNotApplyToAllProducts\" = 1");
+			if($additionalOptions) {
+				$additionalOptionsList = $additionalOptions->toDropdownMap();
+				$fields->addFieldToTab(
+					$tabName,
+					new CheckboxSetField(
+						"AdditionalTax", "Additional taxes ...", $additionalOptionsList
+					)
+				);
+			}
+		}
+		if($this->owner instanceOf ProductVariation) {
 			$fields->addFieldToTab(
 				$tabName,
-				new CheckboxSetField(
-					"ExcludedFrom", "Taxes that do not apply ...", $excludedOptionsList
-				)
+				new LiteralField("SeeProductForExcludedFrom", "See parent Product for Excluded taxes")
 			);
-			$additionalWhereForDefault = "  AND \"GSTTaxModifierOptions\".\"ID\" NOT IN (".implode(", ", $excludedOptions->map("ID", "ID")).")";
+		}
+		else {
+			//excluded options
+			$excludedOptions = DataObject::get("GSTTaxModifierOptions", "\"DoesNotApplyToAllProducts\" = 0");
+			$additionalWhereForDefault = "";
+			if($excludedOptions) {
+				$excludedOptionsList = $excludedOptions->toDropdownMap();
+				$fields->addFieldToTab(
+					$tabName,
+					new CheckboxSetField(
+						"ExcludedFrom", "Taxes that do not apply ...", $excludedOptionsList
+					)
+				);
+				$additionalWhereForDefault = "  AND \"GSTTaxModifierOptions\".\"ID\" NOT IN (".implode(", ", $excludedOptions->map("ID", "ID")).")";
+			}
 		}
 		//default options
 		$defaultOptions = DataObject::get("GSTTaxModifierOptions", "\"DoesNotApplyToAllProducts\" = 0 $additionalWhereForDefault");
