@@ -495,7 +495,7 @@ class GSTTaxModifier extends OrderModifier {
 							//turnRateIntoCalculationRate is really important -
 							//a 10% rate is different for inclusive than for an exclusive tax
 							$actualRateCalculationRate = $this->turnRateIntoCalculationRate($actualRate);
-							$this->debugMessage .= "<hr />--'$actualRate' turned into --'".$actualRateCalculationRate."' for '--$totalForModifier' on ".$modifier->ClassName.".".$modifier->ID;
+							$this->debugMessage .= "<hr />rate of $actualRate' turned into calculation rate of ".round($actualRateCalculationRate, 2)." for the total of $totalForModifier' on ".$modifier->ClassName.".".$modifier->ID;
 							$modifiersTotal += floatval($totalForModifier) * $actualRateCalculationRate;
 						}
 					}
