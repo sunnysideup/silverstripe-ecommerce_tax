@@ -483,6 +483,9 @@ class GSTTaxModifier extends OrderModifier {
 										}
 									}
 								}
+								else {
+									$this->debugMessage .= "<hr />".$modifier->ClassName." does not have the GSTTaxDecorator extension";
+								}
 							}
 							$totalForModifier = $modifier->CalculationTotal();
 							$functionName = self::$order_item_function_for_tax_exclusive_portion;
