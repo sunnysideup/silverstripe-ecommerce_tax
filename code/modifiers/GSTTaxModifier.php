@@ -459,11 +459,11 @@ class GSTTaxModifier extends OrderModifier {
 						}
 						else {
 							$actualRate = $rate;
-							$modifierDescriptor = DataObject::get("OrderModifier_Descriptor", "\"ModifierClassName\" = '".$modifier->ClassName."'");
+							$modifierDescriptor = DataObject::get_one("OrderModifier_Descriptor", "\"ModifierClassName\" = '".$modifier->ClassName."'");
 							if($modifierDescriptor) {
 								if($modifierDescriptor->hasExtension("GSTTaxDecorator")) {
-									$excludedTaxes = $modifier->ExcludedFrom();
-									$additionalTaxes = $modifier->AdditionalTax();
+									$excludedTaxes = $modifierDescriptor->ExcludedFrom();
+									$additionalTaxes = $modifierDescriptor->AdditionalTax();
 									if($excludedTaxes) {
 										foreach($excludedTaxes as $tax) {
 											if(!$tax->DoesNotApplyToAllProducts) {
@@ -484,7 +484,7 @@ class GSTTaxModifier extends OrderModifier {
 									}
 								}
 								else {
-									$this->debugMessage .= "<hr />".$modifier->ClassName." does not have the GSTTaxDecorator extension";
+									$this->debugMessage .= "<hr />".$modifierDescriptor->ClassName." does not have the GSTTaxDecorator extension";
 								}
 							}
 							$totalForModifier = $modifier->CalculationTotal();
