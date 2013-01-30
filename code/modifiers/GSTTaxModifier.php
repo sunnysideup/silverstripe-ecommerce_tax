@@ -314,7 +314,6 @@ class GSTTaxModifier extends OrderModifier {
 		return $this->isInclusive() ? false : true;
 	}
 
-
 	/**
 	 * tells us if the tax for the current order is inclusive
 	 * default: true
@@ -450,7 +449,11 @@ class GSTTaxModifier extends OrderModifier {
 		if($order) {
 			if($modifiers = $order->Modifiers()) {
 				foreach($modifiers as $modifier) {
-					if(!$modifier->IsRemoved()) { //we just double-check this...
+					if($modifier->IsRemoved()) {
+						//do nothing
+						//we just double-check this...
+					}
+					else {
 						if($modifier instanceOf GSTTaxModifier) {
 							//do nothing
 						}
@@ -473,7 +476,7 @@ class GSTTaxModifier extends OrderModifier {
 										foreach($additionalTaxes as $tax) {
 											if($tax->DoesNotApplyToAllProducts) {
 												if($tax->AppliesToAllCountries || $tax->CountryCode == $country) {
-													$this->debugMessage .= "<hr />found tax to add for ".$modifier->Title.": ".$tax->Title();
+													$this->debugMessage .= "<hr />found adtax to add for ".$modifier->Title.": ".$tax->Title();
 													$actualRate += $tax->Rate;
 												}
 											}
