@@ -51,6 +51,7 @@ class GSTTaxDecorator extends DataObjectDecorator {
 	 * @return Object - FieldSet
 	 */
 	function updateCMSFields(&$fields) {
+		$additionalWhereForDefault = "";
 		$fields->removeByName("ExcludedFrom");
 		$fields->removeByName("AdditionalTax");
 		if($this->owner instanceOf SiteTree) {
@@ -87,7 +88,6 @@ class GSTTaxDecorator extends DataObjectDecorator {
 		else {
 			//excluded options
 			$excludedOptions = DataObject::get("GSTTaxModifierOptions", "\"DoesNotApplyToAllProducts\" = 0");
-			$additionalWhereForDefault = "";
 			if($excludedOptions) {
 				$excludedOptionsList = $excludedOptions->toDropdownMap();
 				$fields->addFieldToTab(
