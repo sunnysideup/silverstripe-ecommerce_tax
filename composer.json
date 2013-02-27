@@ -1,5 +1,5 @@
 {
-	"name": "silverstripe/ecommerce_tax",
+	"name": "sunnysideup/ecommerce_tax",
 	"type": "silverstripe-module",
 	"description": "adds 'tax' to the Silverstripe e-commerce application",
 	"homepage": "http://www.silverstripe-ecommerce.com",
