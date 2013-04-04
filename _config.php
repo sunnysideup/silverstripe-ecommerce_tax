@@ -39,6 +39,7 @@ StoreAdmin:
 //GSTTaxModifier::set_refund_title("Tax Exemption");
 //GSTTaxModifier::set_order_item_function_for_tax_exclusive_portion("PortionWithoutTax");
 //GSTTaxModifier::set_default_country_code("NZ");
+//GSTTaxModifier::set_alternative_country_prices_already_include_their_own_tax(true);
 
 //ALSO CONSIDER SETTING ... (as these will influence this module)
 //Geoip::$default_country_code = "NZ";

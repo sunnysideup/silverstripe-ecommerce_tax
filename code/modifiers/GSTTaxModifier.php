@@ -148,6 +148,25 @@ class GSTTaxModifier extends OrderModifier {
 		static function get_order_item_function_for_tax_exclusive_portion() {return self::$order_item_function_for_tax_exclusive_portion;}
 
 	/**
+	 * Use this variable IF:
+	 *
+	 * a. you have localised prices for countries
+	 * other than the default country
+	 *
+	 * b. prices on the website are TAX INCLUSIVE
+	 *
+	 * If not, the tax for an international for a
+	 * site with tax inclusive prices will firstly
+	 * deduct the default tax and then add the tax
+	 * of the country at hand.
+	 *
+	 * @var Boolean
+	 */
+	protected static $alternative_country_prices_already_include_their_own_tax = false;//PortionWithoutTax
+		static function set_alternative_country_prices_already_include_their_own_tax($b) {self::$alternative_country_prices_already_include_their_own_tax = $b;}
+		static function get_alternative_country_prices_already_include_their_own_tax() {return self::$alternative_country_prices_already_include_their_own_tax;}
+
+	/**
 	 * contains all the applicable DEFAULT tax objects
 	 * @var Object
 	 */
@@ -254,7 +273,9 @@ class GSTTaxModifier extends OrderModifier {
 				$this->debugMessage .= "<hr />There is no current live DEFAULT country";
 			}
 		}
-		self::$default_tax_objects_rate = $this->workOutSumRate(self::$default_tax_objects);
+		if(!self::$default_tax_objects_rate) {
+			self::$default_tax_objects_rate = $this->workOutSumRate(self::$default_tax_objects);
+		}
 		return self::$default_tax_objects;
 	}
 
@@ -282,7 +303,9 @@ class GSTTaxModifier extends OrderModifier {
 				$this->debugMessage .= "<hr />there is no current live country code";
 			}
 		}
-		self::$current_tax_objects_rate = $this->workOutSumRate(self::$current_tax_objects);
+		if(!self::$current_tax_objects_rate) {
+			self::$current_tax_objects_rate = $this->workOutSumRate(self::$current_tax_objects);
+		}
 		return self::$current_tax_objects;
 	}
 
@@ -302,6 +325,7 @@ class GSTTaxModifier extends OrderModifier {
 		else {
 			$this->debugMessage .= "<hr />could not find a rate";
 		}
+		$this->debugMessage .= "<hr />sum rate for tax objects: ".$sumRate;
 		return $sumRate;
 	}
 
@@ -416,7 +440,7 @@ class GSTTaxModifier extends OrderModifier {
 				}
 			}
 		}
-		$this->debugMessage .= "<hr />Total order items tax: $itemsTotal";
+		$this->debugMessage .= "<hr />Total order items tax: \$ ".round($itemsTotal, 4);
 		return $itemsTotal;
 	}
 
@@ -443,7 +467,7 @@ class GSTTaxModifier extends OrderModifier {
 	 * @param float $rate
 	 * @return float - amount of tax to pay
 	 */
-	protected function workoutModifiersTax($rate) {
+	protected function workoutModifiersTax($rate, $country) {
 		$modifiersTotal = 0;
 		$order = $this->Order();
 		if($order) {
@@ -505,7 +529,7 @@ class GSTTaxModifier extends OrderModifier {
 				}
 			}
 		}
-		$this->debugMessage .= "<hr />Total order modifiers tax: $modifiersTotal";
+		$this->debugMessage .= "<hr />Total order modifiers tax: \$ ".round($modifiersTotal, 4);
 		return $modifiersTotal;
 	}
 
@@ -674,21 +698,36 @@ class GSTTaxModifier extends OrderModifier {
 			return $this->LiveRawTableValue();
 		}
 		else {
-			$defaultRate = $this->LiveDefaultRate();
-			$defaultCountry = $this->LiveDefaultCountry();
-			$defaultItemsTax = $this->workoutOrderItemsTax($defaultRate, $defaultCountry);
-			$defaultModifiersTax = $this->workoutModifiersTax($defaultRate);
-			$shownToPay = $defaultItemsTax + $defaultModifiersTax;
-			$currentRate = $this->LiveCurrentRate();
-			$currentCountry = $this->LiveCountry();
-			$currentItemsTax = $this->workoutOrderItemsTax($currentRate, $currentCountry);
-			$currentModifiersTax = $this->workoutModifiersTax($currentRate);
-			$actualNeedToPay = $currentItemsTax + $currentModifiersTax;
-			//show what actually needs to be paid, minus what is already showing.
-			return $actualNeedToPay - $shownToPay;
+			if(self::get_alternative_country_prices_already_include_their_own_tax()) {
+				return 0;
+			}
+			else {
+				$currentCountry = $this->LiveCountry();
+				$defaultCountry = $this->LiveDefaultCountry();
+				if($currentCountry != $defaultCountry) {
+
+					//already calculated into prices:
+					$defaultRate = $this->LiveDefaultRate();
+					$defaultItemsTax = $this->workoutOrderItemsTax($defaultRate, $defaultCountry);
+					$defaultModifiersTax = $this->workoutModifiersTax($defaultRate, $defaultCountry);
+					$shownToPay = $defaultItemsTax + $defaultModifiersTax;
+
+					//what should have actually been show in prices:
+					$actualNeedToPay = $this->LiveRawTableValue();
+
+					//use what actually needs to be paid in tax minus what is already showing in prices
+					//for example, if the shop is tax inclusive
+					//and it is based in NZ (tax = 0.15) and a sale is made to AU (tax = 0.1)
+					//and the shop also charges tax in AU then the Calculated TOTAL
+					//is: AUTAX - NZTAX
+					return $actualNeedToPay - $shownToPay;
+				}
+				else {
+					return 0;
+				}
+			}
 		}
 	}
-
 
 	protected static $field_or_method_to_use_for_title = "Code";
 
