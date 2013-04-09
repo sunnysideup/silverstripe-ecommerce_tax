@@ -616,7 +616,7 @@ class GSTTaxModifier extends OrderModifier {
 			$currentRate = $this->LiveCurrentRate();
 			$currentCountry = $this->LiveCountry();
 			$itemsTax = $this->workoutOrderItemsTax($currentRate, $currentCountry);
-			$modifiersTax = $this->workoutModifiersTax($currentRate);
+			$modifiersTax = $this->workoutModifiersTax($currentRate, $currentCountry);
 			self::$temp_raw_table_value[$this->OrderID] = $itemsTax + $modifiersTax;
 		}
 		return self::$temp_raw_table_value[$this->OrderID];
