@@ -55,7 +55,7 @@ class GSTTaxModifier extends OrderModifier {
 	 */
 	function getCMSFields(){
 		$fields = parent::getCMSFields();
-		$fields->replaceField("Country", new DropDownField("Country", "based on a sale to ", Geoip::getCountryDropDown()));
+		$fields->replaceField("Country", new DropDownField("Country", "based on a sale to ", EcommerceCountry::get_country_dropdown()));
 		$fields->replaceField("Root.Main", new DropdownField("TaxType", "Tax Type", singleton($this->ClassName)->dbObject('TaxType')->enumValues()));
 
 		$fields->removeByName("DefaultCountry");
@@ -88,7 +88,7 @@ class GSTTaxModifier extends OrderModifier {
 		static function get_default_country_code() {
 			$country = self::$default_country_code;
 			if(!$country) {
-				$country = Geoip::$default_country_code;
+				$country = EcommerceConfig::get('EcommerceCountry', 'default_country_code');
 			}
 			return $country;
 		}
@@ -674,7 +674,7 @@ class GSTTaxModifier extends OrderModifier {
 			}
 		}
 		if($countryCode && $finalString) {
-			$countryName = Geoip::countryCode2name($countryCode);
+			$countryName = EcommerceCountry::find_title($countryCode);
 			if(self::$based_on_country_note && $countryName  && $countryCode != self::get_default_country_code()) {
 				$finalString .= self::$based_on_country_note.$countryName;
 			}
