@@ -743,7 +743,9 @@ class GSTTaxModifier extends OrderModifier {
 			$taxObjects = $this->currentTaxObjects();
 			if($taxObjects) {
 				$taxObject = $taxObjects->First();
-				return $taxObject->hasMethod($title) ? $taxObject->$title() : $taxObject->$title;
+				if($taxObject) {
+					return $taxObject->hasMethod($title) ? $taxObject->$title() : $taxObject->$title;
+				}
 			}
 		}
 	}
