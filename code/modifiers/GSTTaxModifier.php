@@ -257,12 +257,14 @@ class GSTTaxModifier extends OrderModifier {
 			$defaultCountryCode = GSTTaxModifier::get_default_country_code();
 			if($defaultCountryCode) {
 				$this->debugMessage .= "<hr />There is a current live DEFAULT country code: ".$defaultCountryCode;
-				self::$default_tax_objects = DataObject::get(
-					"GSTTaxModifierOptions",
-					"\"CountryCode\" = '".$defaultCountryCode."'
-					AND \"DoesNotApplyToAllProducts\" = 0"
-				);
-				if(self::$default_tax_objects) {
+				self::$default_tax_objects = GSTTaxModifierOptions::get()
+					->filter(
+						array(
+							"CountryCode" => $defaultCountryCode,
+							"DoesNotApplyToAllProducts" => 0
+						)
+					);
+				if(self::$default_tax_objects->count()) {
 					$this->debugMessage .= "<hr />there are DEFAULT tax objects available for ".$defaultCountryCode;
 				}
 				else {
@@ -292,7 +294,11 @@ class GSTTaxModifier extends OrderModifier {
 					"GSTTaxModifierOptions",
 					"(\"CountryCode\" = '".$countryCode."' OR \"AppliesToAllCountries\" = 1) AND \"DoesNotApplyToAllProducts\" = 0"
 				);
-				if(self::$current_tax_objects) {
+				GSTTaxModifierOptions::get()
+					->where(
+						"(\"CountryCode\" = '".$countryCode."' OR \"AppliesToAllCountries\" = 1) AND \"DoesNotApplyToAllProducts\" = 0"
+					);				
+				if(self::$current_tax_objects->count()) {
 					$this->debugMessage .= "<hr />There are tax objects available for ".$countryCode;
 				}
 				else {
@@ -483,7 +489,7 @@ class GSTTaxModifier extends OrderModifier {
 						}
 						else {
 							$actualRate = $rate;
-							$modifierDescriptor = DataObject::get_one("OrderModifier_Descriptor", "\"ModifierClassName\" = '".$modifier->ClassName."'");
+							$modifierDescriptor = OrderModifier_Descriptor::get()->filter(array("ModifierClassName" => $modifier->ClassName))->First();
 							if($modifierDescriptor) {
 								if($modifierDescriptor->hasExtension("GSTTaxDecorator")) {
 									$excludedTaxes = $modifierDescriptor->ExcludedFrom();

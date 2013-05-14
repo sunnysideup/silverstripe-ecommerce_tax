@@ -68,8 +68,8 @@ class GSTTaxDecorator extends DataObjectDecorator {
 		}
 		else {
 			//additional taxes
-			$additionalOptions = DataObject::get("GSTTaxModifierOptions", "\"DoesNotApplyToAllProducts\" = 1");
-			if($additionalOptions) {
+			$additionalOptions = GSTTaxModifierOptions::get()->filter(array("DoesNotApplyToAllProducts" => 1));
+			if($additionalOptions->count()) {
 				$additionalOptionsList = $additionalOptions->toDropdownMap();
 				$fields->addFieldToTab(
 					$tabName,
@@ -87,8 +87,8 @@ class GSTTaxDecorator extends DataObjectDecorator {
 		}
 		else {
 			//excluded options
-			$excludedOptions = DataObject::get("GSTTaxModifierOptions", "\"DoesNotApplyToAllProducts\" = 0");
-			if($excludedOptions) {
+			$excludedOptions = GSTTaxModifierOptions::get()->filter(array("DoesNotApplyToAllProducts" => 0));
+			if($excludedOptions->count()) {
 				$excludedOptionsList = $excludedOptions->toDropdownMap();
 				$fields->addFieldToTab(
 					$tabName,
@@ -100,8 +100,8 @@ class GSTTaxDecorator extends DataObjectDecorator {
 			}
 		}
 		//default options
-		$defaultOptions = DataObject::get("GSTTaxModifierOptions", "\"DoesNotApplyToAllProducts\" = 0 $additionalWhereForDefault");
-		if($defaultOptions) {
+		$defaultOptions = GSTTaxModifierOptions::get()->filter(array("DoesNotApplyToAllProducts" => 0))->where($additionalWhereForDefault);
+		if($defaultOptions->count()) {
 			$fields->addFieldToTab(
 				$tabName,
 				new ReadonlyField("AlwaysApplies", "+ ".implode(", ", $defaultOptions->toDropdownMap()).".")
