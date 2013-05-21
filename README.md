@@ -30,8 +30,8 @@ Nicolaas [at] sunnysideup.co.nz
 
 ## Requirements
 -----------------------------------------------
-Ecommerce 1.0+ / SSU Branch
-SilverStripe 2.4 or greater
+Ecommerce 3.0
+SilverStripe 3.0 or greater
 
 ## Project Home
 -----------------------------------------------

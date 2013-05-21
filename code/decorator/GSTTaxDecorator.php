@@ -47,8 +47,8 @@ class GSTTaxDecorator extends DataObjectDecorator {
 
 	/**
 	 * standard SS method
-	 * @param Object - $fields (FieldSet)
-	 * @return Object - FieldSet
+	 * @param Object - $fields (FieldList)
+	 * @return Object - FieldList
 	 */
 	function updateCMSFields(&$fields) {
 		$additionalWhereForDefault = "";
