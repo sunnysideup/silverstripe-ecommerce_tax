@@ -51,7 +51,7 @@ class GSTTaxModifier extends OrderModifier {
 
 	/**
 	 * standard SS method
-	 * @return Object FieldSet for CMS
+	 * @return FieldList for CMS
 	 */
 	function getCMSFields(){
 		$fields = parent::getCMSFields();
@@ -297,7 +297,7 @@ class GSTTaxModifier extends OrderModifier {
 				GSTTaxModifierOptions::get()
 					->where(
 						"(\"CountryCode\" = '".$countryCode."' OR \"AppliesToAllCountries\" = 1) AND \"DoesNotApplyToAllProducts\" = 0"
-					);				
+					);
 				if(self::$current_tax_objects->count()) {
 					$this->debugMessage .= "<hr />There are tax objects available for ".$countryCode;
 				}

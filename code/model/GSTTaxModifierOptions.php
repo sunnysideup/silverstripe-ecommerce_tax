@@ -100,7 +100,7 @@ class GSTTaxModifierOptions extends DataObject {
 
 	/**
 	 * standard SS method
-	 * @return FieldSet
+	 * @return FieldList
 	 */
 	function getCMSFields() {
 		$fields = parent::getCMSFields();
