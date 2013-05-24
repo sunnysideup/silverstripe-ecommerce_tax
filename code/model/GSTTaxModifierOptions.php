@@ -17,7 +17,6 @@ class GSTTaxModifierOptions extends DataObject {
 		"Name" => "Varchar(175)",
 		"InclusiveOrExclusive" => "Enum('Inclusive,Exclusive', 'Inclusive')",
 		"Rate" => "Double",
-		"PriceSuffix" => "Varchar(25)",
 		"DoesNotApplyToAllProducts" => "Boolean",
 		"AppliesToAllCountries" => "Boolean"
 	);
@@ -35,7 +34,8 @@ class GSTTaxModifierOptions extends DataObject {
 	 * @var Array
 	 */
 	public static $casting = array(
-		"CountryName" => "Varchar"
+		"CountryName" => "Varchar",
+		"PercentageNice" => "Varchar"
 	);
 
 	/**
@@ -66,8 +66,8 @@ class GSTTaxModifierOptions extends DataObject {
 		"Name" => "Name for tax",
 		"InclusiveOrExclusive" => "Inclusive/Exclusive",
 		"Rate" => "Rate (e.g. 0.125 = 12.5%)",
-		"PriceSuffix" => "Price Suffix",
-		"DoesNotApplyToAllProducts" => "Added to individual products only, if you un-tick this box, you can still 'exclude' any product from this tax, but the tax will be included by default."
+		"PercentageNice" => "Percentage",
+		"DoesNotApplyToAllProducts" => "Added to individual products only"
 	);
 
 
@@ -80,7 +80,7 @@ class GSTTaxModifierOptions extends DataObject {
 		"Code",
 		"Name",
 		"InclusiveOrExclusive",
-		"Rate"
+		"PercentageNice"
 	);
 
 	/**
@@ -109,7 +109,7 @@ class GSTTaxModifierOptions extends DataObject {
 		if($this->EcomConfig()->ShopPricesAreTaxExclusive) {
 			$InclusiveOrExclusive = "Exclusive";
 		}
-		$fields->replaceField("InclusiveOrExclusive", new ReadonlyField("InclusiveOrExclusive", "This tax is: $InclusiveOrExclusive, you can change this setting in the e-commerce configuration."));
+		$fields->replaceField("InclusiveOrExclusive", new ReadonlyField("InclusiveOrExclusive", "This tax is: ..., you can change this setting in the e-commerce configuration."));
 		return $fields;
 	}
 
@@ -178,6 +178,11 @@ class GSTTaxModifierOptions extends DataObject {
 	public function CountryName(){ return $this->getCountryName();}
 	public function getCountryName(){
 		return EcommerceCountry::find_title($this->CountryCode);
+	}
+
+	public function PercentageNice(){ return $this->getPercentageNice();}
+	public function getPercentageNice(){
+		return DBField::create_field("Text", ($this->Rate * 100)."%");
 	}
 }
 
