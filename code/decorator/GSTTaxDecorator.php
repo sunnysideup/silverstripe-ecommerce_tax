@@ -11,20 +11,16 @@
  */
 
 
-class GSTTaxDecorator extends DataObjectDecorator {
+class GSTTaxDecorator extends DataExtension {
 
 	/**
 	 * standard SS method
 	 * @return Array
 	 */
-	function extraStatics() {
-		return array(
-			"many_many" => array(
-				"ExcludedFrom" => "GSTTaxModifierOptions",
-				"AdditionalTax" => "GSTTaxModifierOptions"
-			)
-		);
-	}
+	static $many_many = array(
+		"ExcludedFrom" => "GSTTaxModifierOptions",
+		"AdditionalTax" => "GSTTaxModifierOptions"
+	);
 
 	/**
 	 * for variations, use product for data
@@ -58,16 +54,11 @@ class GSTTaxDecorator extends DataObjectDecorator {
 	 * @param Object - $fields (FieldList)
 	 * @return Object - FieldList
 	 */
-	function updateCMSFields($fields) {
+	function updateCMSFields(FieldList $fields) {
 		$additionalWhereForDefault = "";
 		$fields->removeByName("ExcludedFrom");
 		$fields->removeByName("AdditionalTax");
-		if($this->owner instanceOf SiteTree) {
-			$tabName = "Root.Content.Tax";
-		}
-		else {
-			$tabName = "Root.Tax";
-		}
+		$tabName = "Root.Tax";
 		if($this->owner instanceOf ProductVariation) {
 			$fields->addFieldToTab(
 				$tabName,
@@ -114,7 +105,7 @@ class GSTTaxDecorator extends DataObjectDecorator {
 						$excludedOptionsList
 					)
 				);
-				$additionalWhereForDefault = "  AND \"GSTTaxModifierOptions\".\"ID\" NOT IN (".implode(", ", $excludedOptions->map("ID", "ID")).")";
+				$additionalWhereForDefault = "  AND \"GSTTaxModifierOptions\".\"ID\" NOT IN (".implode(", ", $excludedOptions->map("ID", "ID")->toArray()).")";
 			}
 		}
 		//default options
@@ -124,7 +115,7 @@ class GSTTaxDecorator extends DataObjectDecorator {
 		if($defaultOptions->count()) {
 			$fields->addFieldToTab(
 				$tabName,
-				new ReadonlyField("AlwaysApplies", "+ ".implode(", ", $defaultOptions->map()).".")
+				new ReadonlyField("AlwaysApplies", "+ ".implode(", ", $defaultOptions->map()->toArray()).".")
 			);
 		}
 	}
