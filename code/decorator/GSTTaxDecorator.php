@@ -72,7 +72,7 @@ class GSTTaxDecorator extends DataExtension {
 			//additional taxes
 			$additionalOptions = GSTTaxModifierOptions::get()->filter(array("DoesNotApplyToAllProducts" => 1));
 			if($additionalOptions->count()) {
-				$additionalOptionsList = $additionalOptions->map();
+				$additionalOptionsList = $additionalOptions->map()->toArray();
 				$fields->addFieldToTab(
 					$tabName,
 					new CheckboxSetField(
@@ -96,7 +96,7 @@ class GSTTaxDecorator extends DataExtension {
 			//excluded options
 			$excludedOptions = GSTTaxModifierOptions::get()->filter(array("DoesNotApplyToAllProducts" => 0));
 			if($excludedOptions->count()) {
-				$excludedOptionsList = $excludedOptions->map();
+				$excludedOptionsList = $excludedOptions->map()->toArray();
 				$fields->addFieldToTab(
 					$tabName,
 					new CheckboxSetField(

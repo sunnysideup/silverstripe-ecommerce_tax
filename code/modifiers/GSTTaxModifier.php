@@ -291,10 +291,7 @@ class GSTTaxModifier extends OrderModifier {
 		if(self::$current_tax_objects === null) {
 			if($countryCode = $this->LiveCountry()) {
 				$this->debugMessage .= "<hr />There is a current live country: ".$countryCode;
-				self::$current_tax_objects = DataObject::get(
-					"GSTTaxModifierOptions",
-					"(\"CountryCode\" = '".$countryCode."' OR \"AppliesToAllCountries\" = 1) AND \"DoesNotApplyToAllProducts\" = 0"
-				);
+				self::$current_tax_objects = GSTTaxModifierOptions::get()->where("(\"CountryCode\" = '".$countryCode."' OR \"AppliesToAllCountries\" = 1) AND \"DoesNotApplyToAllProducts\" = 0");
 				GSTTaxModifierOptions::get()
 					->where(
 						"(\"CountryCode\" = '".$countryCode."' OR \"AppliesToAllCountries\" = 1) AND \"DoesNotApplyToAllProducts\" = 0"
@@ -549,7 +546,7 @@ class GSTTaxModifier extends OrderModifier {
 	 * @return Boolean
 	 */
 	protected function hasExceptionTaxes(){
-		return DataObject::get_one("GSTTaxModifierOptions", "\"DoesNotApplyToAllProducts\" = 1") ? false : true;
+		return GSTTaxModifierOptions::get()->filter(array("DoesNotApplyToAllProducts" => 1))->First() ? false : true;
 	}
 
 // ######################################## *** calculate database fields: protected function Live[field name]  ... USES CALCULATED VALUES
