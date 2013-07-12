@@ -1,0 +1,7 @@
+Order:
+  modifiers: 
+    - GSTTaxModifier
+
+#StoreAdmin:
+#  managed_models:
+#    - GSTTaxModifierOptions

@@ -17,7 +17,7 @@ class GSTTaxDecorator extends DataExtension {
 	 * standard SS method
 	 * @return Array
 	 */
-	static $many_many = array(
+	private static $many_many = array(
 		"ExcludedFrom" => "GSTTaxModifierOptions",
 		"AdditionalTax" => "GSTTaxModifierOptions"
 	);

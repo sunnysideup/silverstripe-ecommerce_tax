@@ -11,7 +11,7 @@ class GSTTaxModifierOptions extends DataObject {
 	 * standard SS variable
 	 * @var Array
 	 */
-	static $db = array(
+	private static $db = array(
 		"CountryCode" => "Varchar(3)",
 		"Code" => "Varchar(12)",
 		"Name" => "Varchar(175)",
@@ -25,7 +25,7 @@ class GSTTaxModifierOptions extends DataObject {
 	 * standard SS variable
 	 * @var Array
 	 */
-	public static $defaults = array(
+	private static $defaults = array(
 		"InclusiveOrExclusive" => "Inclusive"
 	);
 
@@ -33,7 +33,7 @@ class GSTTaxModifierOptions extends DataObject {
 	 * standard SS variable
 	 * @var Array
 	 */
-	public static $casting = array(
+	private static $casting = array(
 		"CountryName" => "Varchar",
 		"PercentageNice" => "Varchar"
 	);
@@ -42,7 +42,7 @@ class GSTTaxModifierOptions extends DataObject {
 	 * standard SS variable
 	 * @var Array
 	 */
-	public static $indexes = array(
+	private static $indexes = array(
 		"Code" => true
 	);
 
@@ -50,7 +50,7 @@ class GSTTaxModifierOptions extends DataObject {
 	 * standard SS variable
 	 * @var Array
 	 */
-	public static $searchable_fields = array(
+	private static $searchable_fields = array(
 		"Code" => "PartialMatchFilter",
 		"Name" => "PartialMatchFilter"
 	);
@@ -59,7 +59,7 @@ class GSTTaxModifierOptions extends DataObject {
 	 * standard SS variable
 	 * @var Array
 	 */
-	public static $field_labels = array(
+	private static $field_labels = array(
 		"CountryName" => "Country Name",
 		"CountryCode" => "Country Code",
 		"Code" => "Code for tax",
@@ -75,7 +75,7 @@ class GSTTaxModifierOptions extends DataObject {
 	 * standard SS variable
 	 * @var Array
 	 */
-	public static $summary_fields = array(
+	private static $summary_fields = array(
 		"CountryName",
 		"Code",
 		"Name",
@@ -87,7 +87,7 @@ class GSTTaxModifierOptions extends DataObject {
 	 * standard SS variable
 	 * @var String
 	 */
-	public static $singular_name = "Tax Option";
+	private static $singular_name = "Tax Option";
 		function i18n_singular_name() { return _t("GSTTaxModifierOptions.TAXOPTION", "Tax Option");}
 
 
@@ -95,7 +95,7 @@ class GSTTaxModifierOptions extends DataObject {
 	 * standard SS variable
 	 * @var String
 	 */
-	public static $plural_name = "Tax Options";
+	private static $plural_name = "Tax Options";
 		function i18n_plural_name() { return _t("GSTTaxModifierOptions.TAXOPTIONS", "Tax Options");}
 
 	/**

@@ -19,7 +19,7 @@ class GSTTaxModifier extends OrderModifier {
 	 *
 	 * @var Array
 	 */
-	static $db = array(
+	private static $db = array(
 		'DefaultCountry' => 'Varchar(3)',
 		'Country' => 'Varchar(3)',
 		'DefaultRate' => 'Double',
@@ -33,7 +33,7 @@ class GSTTaxModifier extends OrderModifier {
 	 * standard SS variable
 	 * @var String
 	 */
-	public static $singular_name = "Tax Charge";
+	private static $singular_name = "Tax Charge";
 		function i18n_singular_name() { return _t("GSTTaxModifier.TAXCHARGE", "Tax Charge");}
 
 
@@ -41,7 +41,7 @@ class GSTTaxModifier extends OrderModifier {
 	 * standard SS variable
 	 * @var String
 	 */
-	public static $plural_name = "Tax Charges";
+	private static $plural_name = "Tax Charges";
 		function i18n_plural_name() { return _t("GSTTaxModifier.TAXCHARGES", "Tax Charges");}
 
 
@@ -75,7 +75,7 @@ class GSTTaxModifier extends OrderModifier {
 		return $fields;
 	}
 
-// ######################################## *** other (non) static variables (e.g. protected static $special_name_for_something, protected $order)
+// ######################################## *** other (non) static variables (e.g. private static $special_name_for_something, protected $order)
 	/**
 	 * default country for tax calculations
 	 * IMPORTANT: we need this variable - because in case of INCLUSIVE prices,
@@ -83,10 +83,9 @@ class GSTTaxModifier extends OrderModifier {
 	 * to remove the tax for other countries.
 	 * @var String
 	 */
-	protected static $default_country_code = "";
-		static function set_default_country_code($s) {self::$default_country_code = $s;}
-		static function get_default_country_code() {
-			$country = self::$default_country_code;
+	private static $default_country_code = "";
+		static function get_default_country_code_combined() {
+			$country = Config::inst()->get("GSTTaxModifier", "default_country_code");
 			if(!$country) {
 				$country = EcommerceConfig::get('EcommerceCountry', 'default_country_code');
 			}
@@ -97,25 +96,19 @@ class GSTTaxModifier extends OrderModifier {
 	 * wording in cart for prices that are tax exclusive (tax added on top of prices)
 	 * @var String
 	 */
-	protected static $exclusive_explanation = "";
-		static function set_exclusive_explanation($s) {self::$exclusive_explanation = $s;}
-		static function get_exclusive_explanation() {return self::$exclusive_explanation;}
+	private static $exclusive_explanation = "";
 
 	/**
 	 * wording in cart for prices that are tax inclusive (tax is part of the prices)
 	 * @var String
 	 */
-	protected static $inclusive_explanation = "";
-		static function set_inclusive_explanation($s) {self::$inclusive_explanation = $s;}
-		static function get_inclusive_explanation() {return self::$inclusive_explanation;}
+	private static $inclusive_explanation = "";
 
 	/**
 	 * wording in cart for tax being based on
 	 * @var String
 	 */
-	protected static $based_on_country_note = " - based on a sale to: ";
-		static function set_based_on_country_note($s) {self::$based_on_country_note = $s;}
-		static function get_based_on_country_note() {return self::$based_on_country_note;}
+	private static $based_on_country_note = " - based on a sale to: ";
 
 	/**
 	 * wording in cart for prices that are include a tax refund.
@@ -124,17 +117,13 @@ class GSTTaxModifier extends OrderModifier {
 	 * E.g. for a UK shop no VAT is charged to buyers outside the EU.
 	 * @var String
 	 */
-	protected static $refund_title = "Tax Exemption";
-		static function set_refund_title($s) {self::$refund_title = $s;}
-		static function get_refund_title() {return self::$refund_title;}
+	private static $refund_title = "Tax Exemption";
 
 	/**
 	 * wording in cart for prices that are tax exempt (no tax applies)
 	 * @var String
 	 */
-	protected static $no_tax_description = "tax-exempt";
-		static function set_no_tax_description($s) {self::$no_tax_description = $s;}
-		static function get_no_tax_description() {return self::$no_tax_description;}
+	private static $no_tax_description = "tax-exempt";
 
 	/**
 	 * name of the method in the buyable OrderItem that works out the
@@ -143,9 +132,7 @@ class GSTTaxModifier extends OrderModifier {
 	 * flexible way to work out the tax on products with complex tax rules.
 	 * @var String
 	 */
-	protected static $order_item_function_for_tax_exclusive_portion = "portionWithoutTax";//PortionWithoutTax
-		static function set_order_item_function_for_tax_exclusive_portion($s) {self::$order_item_function_for_tax_exclusive_portion = $s;}
-		static function get_order_item_function_for_tax_exclusive_portion() {return self::$order_item_function_for_tax_exclusive_portion;}
+	private static $order_item_function_for_tax_exclusive_portion = "portionWithoutTax";//PortionWithoutTax
 
 	/**
 	 * Use this variable IF:
@@ -162,35 +149,33 @@ class GSTTaxModifier extends OrderModifier {
 	 *
 	 * @var Boolean
 	 */
-	protected static $alternative_country_prices_already_include_their_own_tax = false;//PortionWithoutTax
-		static function set_alternative_country_prices_already_include_their_own_tax($b) {self::$alternative_country_prices_already_include_their_own_tax = $b;}
-		static function get_alternative_country_prices_already_include_their_own_tax() {return self::$alternative_country_prices_already_include_their_own_tax;}
+	private static $alternative_country_prices_already_include_their_own_tax = false;//PortionWithoutTax
 
 	/**
 	 * contains all the applicable DEFAULT tax objects
 	 * @var Object
 	 */
-	protected static $default_tax_objects = null;
+	private static $default_tax_objects = null;
 
 
 	/**
 	 * tells us the default tax objects tax rate
 	 * @var Float | Null
 	 */
-	protected static $default_tax_objects_rate = null;
+	private static $default_tax_objects_rate = null;
 
 
 	/**
 	 * contains all the applicable tax objects for the current order
 	 * @var Object
 	 */
-	protected static $current_tax_objects = null;
+	private static $current_tax_objects = null;
 
 	/**
 	 * tells us the current tax objects tax rate
 	 * @var NULL | Float
 	 */
-	protected static $current_tax_objects_rate = null;
+	private static $current_tax_objects_rate = null;
 
 	/**
 	 * any calculation messages are added to the Debug Message
@@ -207,7 +192,6 @@ class GSTTaxModifier extends OrderModifier {
 	 * @return void
 	 */
 	public function runUpdate($force = true) {
-		if (isset($_GET['debug_profile'])) Profiler::mark('GSTTaxModifier::runUpdate');
 		//order is important!
 		$this->checkField("DefaultCountry");
 		$this->checkField("Country");
@@ -216,7 +200,6 @@ class GSTTaxModifier extends OrderModifier {
 		$this->checkField("TaxType");
 		$this->checkField("RawTableValue");
 		$this->checkField("DebugString");
-		if (isset($_GET['debug_profile'])) Profiler::unmark('GSTTaxModifier::runUpdate');
 		parent::runUpdate($force);
 	}
 
@@ -254,7 +237,7 @@ class GSTTaxModifier extends OrderModifier {
 	 */
 	protected function defaultTaxObjects() {
 		if(self::$default_tax_objects === null) {
-			$defaultCountryCode = GSTTaxModifier::get_default_country_code();
+			$defaultCountryCode = self::get_default_country_code_combined();
 			if($defaultCountryCode) {
 				$this->debugMessage .= "<hr />There is a current live DEFAULT country code: ".$defaultCountryCode;
 				self::$default_tax_objects = GSTTaxModifierOptions::get()
@@ -559,7 +542,7 @@ class GSTTaxModifier extends OrderModifier {
 	 * @return String
 	 */
 	protected function LiveDefaultCountry() {
-		return self::get_default_country_code();
+		return self::get_default_country_code_combined();
 	}
 
 	/**
@@ -610,7 +593,7 @@ class GSTTaxModifier extends OrderModifier {
 	 * @var Array
 	 */
 
-	protected static $temp_raw_table_value = array();
+	private static $temp_raw_table_value = array();
 
 	/**
 	 * Used to save RawTableValue to database
@@ -683,7 +666,7 @@ class GSTTaxModifier extends OrderModifier {
 		}
 		if($countryCode && $finalString) {
 			$countryName = EcommerceCountry::find_title($countryCode);
-			if(self::$based_on_country_note && $countryName  && $countryCode != self::get_default_country_code()) {
+			if(self::$based_on_country_note && $countryName  && $countryCode != self::get_default_country_code_combined()) {
 				$finalString .= self::$based_on_country_note.$countryName;
 			}
 		}
@@ -706,7 +689,7 @@ class GSTTaxModifier extends OrderModifier {
 			return $this->LiveRawTableValue();
 		}
 		else {
-			if(self::get_alternative_country_prices_already_include_their_own_tax()) {
+			if(Config::inst()->get('GSTTaxModifier', "alternative_country_prices_already_include_their_own_tax")) {
 				return 0;
 			}
 			else {
@@ -737,7 +720,7 @@ class GSTTaxModifier extends OrderModifier {
 		}
 	}
 
-	protected static $field_or_method_to_use_for_title = "Code";
+	private static $field_or_method_to_use_for_title = "Code";
 
 	function getTableSubTitle() {
 		$title = $this->stat('field_or_method_to_use_for_title');
@@ -765,7 +748,7 @@ class GSTTaxModifier extends OrderModifier {
 	/**
 	 * DEPRECIATED
 	 */
-	protected static $fixed_country_code = "";
+	private static $fixed_country_code = "";
 		static function set_fixed_country_code($s) {
 			user_error("GSTTaxModifier::fixed_country_code is no longer in use, please use EcommerceCountry::set_fixed_country_code", E_USER_NOTICE);
 			EcommerceCountry::set_fixed_country_code($s);

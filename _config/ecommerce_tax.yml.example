@@ -1,0 +1,36 @@
+#########################################
+# START ECOMMERCE TAX
+#########################################
+
+#Example values
+
+Product:
+  extensions:
+    - GSTTaxDecorator
+
+ProductVariation:
+  extensions:
+    - GSTTaxDecorator
+
+OrderModifier_Descriptor:
+  extensions:
+    - GSTTaxDecorator
+
+GSTTaxModifier:
+  exclusive_explanation: " (to be added to prices above)"
+  inclusive_explanation: " (included in prices above)"
+  based_on_country_note: " - based on a sale to: "
+  no_tax_description: "tax-exempt"
+  refund_title: "Tex Exemption"
+  order_item_function_for_tax_exclusive_portion: "PortionWithoutTax"
+  default_country_code: "NZ"
+  alternative_country_prices_already_include_their_own_tax: true
+
+#Recommended
+
+Geoip:
+  default_country_code: "NZ"
+
+#########################################
+# END ECOMMERCE TAX
+#########################################
