@@ -1,7 +1,25 @@
 Order:
-  modifiers: 
+  modifiers:
     - GSTTaxModifier
 
-#StoreAdmin:
-#  managed_models:
-#    - GSTTaxModifierOptions
+OrderModifier_Descriptor:
+  extensions:
+    - GSTTaxDecorator
+
+Product:
+  extensions:
+    - GSTTaxDecorator
+
+---
+Only:
+  moduleexists: 'ProductVariation'
+---
+ProductVariation:
+  extensions:
+    - GSTTaxDecorator
+---
+
+
+StoreAdmin:
+  managed_models:
+    - GSTTaxModifierOptions

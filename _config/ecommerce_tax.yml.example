@@ -2,20 +2,6 @@
 # START ECOMMERCE TAX
 #########################################
 
-#Example values
-
-Product:
-  extensions:
-    - GSTTaxDecorator
-
-ProductVariation:
-  extensions:
-    - GSTTaxDecorator
-
-OrderModifier_Descriptor:
-  extensions:
-    - GSTTaxDecorator
-
 GSTTaxModifier:
   exclusive_explanation: " (to be added to prices above)"
   inclusive_explanation: " (included in prices above)"
@@ -27,7 +13,6 @@ GSTTaxModifier:
   alternative_country_prices_already_include_their_own_tax: true
 
 #Recommended
-
 Geoip:
   default_country_code: "NZ"
 
