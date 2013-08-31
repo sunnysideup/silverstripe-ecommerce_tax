@@ -1,3 +1,10 @@
+#MAKE SURE TO INCLUDE in mysite/_config/ecommerce.yml
+Order:
+  modifiers:
+    - OtherModifierA
+    - OtherModifierB
+    - GSTTaxModifier
+
 #########################################
 # START ECOMMERCE TAX
 #########################################

@@ -1,7 +1,3 @@
-Order:
-  modifiers:
-    - GSTTaxModifier
-
 OrderModifier_Descriptor:
   extensions:
     - GSTTaxDecorator
