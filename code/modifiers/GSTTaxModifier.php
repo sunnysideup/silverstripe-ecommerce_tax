@@ -661,7 +661,7 @@ class GSTTaxModifier extends OrderModifier {
 		if($countryCode && $finalString) {
 			$countryName = EcommerceCountry::find_title($countryCode);
 			if($countryName  && $countryCode != self::get_default_country_code_combined()) {
-				$finalString .= _t("GSTTaxModifier.BASED_ON_A_SALE_TO", " - based on a sale to: ");
+				$finalString .= _t("GSTTaxModifier.BASED_ON_A_SALE_TO", " - based on a sale to: ").$countryName;
 			}
 		}
 		return $finalString;
