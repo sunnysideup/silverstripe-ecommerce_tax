@@ -105,12 +105,6 @@ class GSTTaxModifier extends OrderModifier {
 	private static $inclusive_explanation = "";
 
 	/**
-	 * wording in cart for tax being based on
-	 * @var String
-	 */
-	private static $based_on_country_note = " - based on a sale to: ";
-
-	/**
 	 * wording in cart for prices that are include a tax refund.
 	 * A refund situation applies when the prices are tax inclusive
 	 * but NO tax applies to the country to which the goods are sold.
@@ -666,8 +660,8 @@ class GSTTaxModifier extends OrderModifier {
 		}
 		if($countryCode && $finalString) {
 			$countryName = EcommerceCountry::find_title($countryCode);
-			if(self::$based_on_country_note && $countryName  && $countryCode != self::get_default_country_code_combined()) {
-				$finalString .= self::$based_on_country_note.$countryName;
+			if($countryName  && $countryCode != self::get_default_country_code_combined()) {
+				$finalString .= _t("GSTTaxModifier.BASED_ON_A_SALE_TO", " - based on a sale to: ");
 			}
 		}
 		return $finalString;
