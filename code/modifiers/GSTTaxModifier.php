@@ -84,8 +84,8 @@ class GSTTaxModifier extends OrderModifier {
 	 * @var String
 	 */
 	private static $default_country_code = "";
-		static function get_default_country_code_combined() {
-			$country = Config::inst()->get("GSTTaxModifier", "default_country_code");
+		protected static function get_default_country_code_combined() {
+			$country = $this->Config()->get("GSTTaxModifier", "default_country_code");
 			if(!$country) {
 				$country = EcommerceConfig::get('EcommerceCountry', 'default_country_code');
 			}
@@ -644,10 +644,10 @@ class GSTTaxModifier extends OrderModifier {
 				$name = implode(", ", $objectArray);
 			}
 			if(self::$exclusive_explanation && $this->isExclusive()) {
-				$endString = self::$exclusive_explanation;
+				$endString = $this->Config()->get("exclusive_explanation");
 			}
-			elseif(self::$inclusive_explanation) {
-				$endString = self::$inclusive_explanation;
+			elseif($this->Config()->get("inclusive_explanation")) {
+				$endString = $this->Config()->get("inclusive_explanation");
 			}
 			if($name) {
 				$finalString = $startString.$name.$endString;
@@ -655,13 +655,13 @@ class GSTTaxModifier extends OrderModifier {
 		}
 		else {
 			if($this->hasExceptionTaxes()) {
-				$finalString = self::$no_tax_description;
+				$finalString = $this->Config()->get("no_tax_description");
 			}
 		}
 		if($countryCode && $finalString) {
 			$countryName = EcommerceCountry::find_title($countryCode);
-			if($countryName  && $countryCode != self::get_default_country_code_combined()) {
-				$finalString .= _t("GSTTaxModifier.BASED_ON_A_SALE_TO", " - based on a sale to: ").$countryName;
+			if($this->Config()->get("based_on_country_note") && $countryName  && $countryCode != self::get_default_country_code_combined()) {
+				$finalString .= $this->Config()->get("based_on_country_note").' '.$countryName;
 			}
 		}
 		return $finalString;
@@ -738,24 +738,6 @@ class GSTTaxModifier extends OrderModifier {
 // ######################################## *** debug functions
 
 
-
-	/**
-	 * DEPRECIATED
-	 */
-	private static $fixed_country_code = "";
-		static function set_fixed_country_code($s) {
-			user_error("GSTTaxModifier::fixed_country_code is no longer in use, please use EcommerceCountry::set_fixed_country_code", E_USER_NOTICE);
-			EcommerceCountry::set_fixed_country_code($s);
-		}
-		static function get_fixed_country_code() {return EcommerceCountry::get_fixed_country_code();}
-
-	/**
-	 * DEPRECIATED
-	 */
-	static function override_country($s) {
-		user_error("GSTTaxModifier::override_country is no longer in use, please use EcommerceCountry::set_fixed_country_code", E_USER_NOTICE);
-		EcommerceCountry::set_fixed_country_code($s);
-	}
 
 }
 
