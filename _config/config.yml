@@ -8,7 +8,7 @@ Product:
 
 ---
 Only:
-  moduleexists: 'ProductVariation'
+  classexists: 'ProductVariation'
 ---
 ProductVariation:
   extensions:
