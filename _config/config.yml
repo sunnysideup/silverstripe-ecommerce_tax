@@ -1,3 +1,9 @@
+---
+Name: ecommerce_product_variation
+Before: 'mysite/*'
+After: 'framework/*','cms/*','ecommerce/*'
+---
+
 OrderModifier_Descriptor:
   extensions:
     - GSTTaxDecorator
@@ -6,6 +12,10 @@ Product:
   extensions:
     - GSTTaxDecorator
 
+StoreAdmin:
+  managed_models:
+    - GSTTaxModifierOptions
+
 ---
 Only:
   classexists: 'ProductVariation'
@@ -13,9 +23,6 @@ Only:
 ProductVariation:
   extensions:
     - GSTTaxDecorator
----
 
 
-StoreAdmin:
-  managed_models:
-    - GSTTaxModifierOptions
+

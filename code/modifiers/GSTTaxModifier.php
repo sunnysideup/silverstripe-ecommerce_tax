@@ -85,7 +85,7 @@ class GSTTaxModifier extends OrderModifier {
 	 */
 	private static $default_country_code = "";
 		protected static function get_default_country_code_combined() {
-			$country = $this->Config()->get("GSTTaxModifier", "default_country_code");
+			$country = Config::inst()->get("GSTTaxModifier", "default_country_code");
 			if(!$country) {
 				$country = EcommerceConfig::get('EcommerceCountry', 'default_country_code');
 			}
@@ -646,7 +646,7 @@ class GSTTaxModifier extends OrderModifier {
 			if(self::$exclusive_explanation && $this->isExclusive()) {
 				$endString = $this->Config()->get("exclusive_explanation");
 			}
-			elseif($this->Config()->get("inclusive_explanation")) {
+			elseif($this->Config()->get("inclusive_explanation") && $this->isInclusive()) {
 				$endString = $this->Config()->get("inclusive_explanation");
 			}
 			if($name) {
