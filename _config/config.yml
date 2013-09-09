@@ -17,12 +17,9 @@ StoreAdmin:
     - GSTTaxModifierOptions
 
 ---
-
 Only:
   classexists: 'ProductVariation'
-
 ---
-
 ProductVariation:
   extensions:
     - GSTTaxDecorator
