@@ -1,9 +1,9 @@
 {
 	"name": "sunnysideup/ecommerce_tax",
 	"type": "silverstripe-module",
-	"description": "adds 'tax' to the Silverstripe e-commerce application",
+	"description": "adds tax options to the Silverstripe e-commerce application",
 	"homepage": "http://www.silverstripe-ecommerce.com",
-	"keywords": ["ecommerce", "e-commerce", "shop", "tax", "silverstripe"],
+	"keywords": ["ecommerce", "e-commerce", "shop", "tax", "silverstripe", "gst", "vat", "goods and services tax"],
 	"license": "Sunny Side Up (BSD-3-Clause and CUSTOM)",
 	"authors":[
 		{
@@ -14,8 +14,6 @@
 		}
 	],
 	"require":{
-		"silverstripe/framework": "~3.1",
-		"silverstripe/cms": "~3.1",
 		"sunnysideup/ecommerce": "dev-master"
 	},
 	"extra": {
