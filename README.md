@@ -5,11 +5,11 @@ ecommerce tax
 GST Tax
 ================
 
-## What is it for?
+What is it for?
 
 Allows adding  GST / VAT / any aother tax to an order
 
-## The concepts you need to know are:
+The concepts you need to know are:
 
 *   when the prices are inclusive, the site needs to have a default country, so that you know for which country the tax is added.
 *   in general, prices apply to all products, but using the GSTTaxDecorator you can make buyable (product) specific exceptions.
@@ -23,26 +23,41 @@ Allows adding  GST / VAT / any aother tax to an order
 
 
 
-## Developer
+Developer
 -----------------------------------------------
 Nicolaas [at] sunnysideup.co.nz
 
-## Requirements
------------------------------------------------
-Ecommerce 3.0
-SilverStripe 3.0 or greater
 
-## Project Home
+Documentation
+-----------------------------------------------
+Please contact author for more details.
+
+Any bug reports and/or feature requests will be
+looked at
+
+We are also very happy to provide personalised support
+for this module in exchange for a small donation.
+
+
+Requirements
+-----------------------------------------------
+see composer.json
+
+
+Project Home
 -----------------------------------------------
 See http://code.google.com/p/silverstripe-ecommerce
 
-## Demo
+Demo
 -----------------------------------------------
 See http://www.silverstripe-ecommerce.com
 
-## Installation Instructions
+
+Installation Instructions
 -----------------------------------------------
+
 1. Find out how to add modules to SS and add module as per usual.
+
 2. Review configs and add entries to mysite/_config/config.yml
 (or similar) as necessary.
 In the _config/ folder of this module
