@@ -407,7 +407,7 @@ class GSTTaxModifier extends OrderModifier {
 						}
 					}
 					$totalForItem = $item->Total();
-					$functionName = self::$order_item_function_for_tax_exclusive_portion;
+					$functionName = $this->config()->get("order_item_function_for_tax_exclusive_portion");
 					if($functionName){
 						if(method_exists($item, $functionName)) {
 							$this->debugMessage .= "<hr />running $functionName on ".$item->ClassName.".".$item->ID;
@@ -497,7 +497,7 @@ class GSTTaxModifier extends OrderModifier {
 								}
 							}
 							$totalForModifier = $modifier->CalculationTotal();
-							$functionName = self::$order_item_function_for_tax_exclusive_portion;
+							$functionName = $this->config()->get("order_item_function_for_tax_exclusive_portion");
 							if($functionName){
 								if(method_exists($modifier, $functionName)) {
 									$totalForModifier -= $item->$functionName();
@@ -643,8 +643,8 @@ class GSTTaxModifier extends OrderModifier {
 			if(count($objectArray)) {
 				$name = implode(", ", $objectArray);
 			}
-			if(self::$exclusive_explanation && $this->isExclusive()) {
-				$endString = $this->Config()->get("exclusive_explanation");
+			if($this->config()->get("exclusive_explanation") && $this->isExclusive()) {
+				$endString = $this->config()->get("exclusive_explanation");
 			}
 			elseif($this->Config()->get("inclusive_explanation") && $this->isInclusive()) {
 				$endString = $this->Config()->get("inclusive_explanation");
