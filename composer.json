@@ -3,7 +3,7 @@
 	"type": "silverstripe-module",
 	"description": "adds tax options to the Silverstripe e-commerce application",
 	"homepage": "http://www.silverstripe-ecommerce.com",
-	"keywords": ["ecommerce", "e-commerce", "shop", "tax", "silverstripe", "gst", "vat", "goods and services tax"],
+	"keywords": ["ecommerce", "e-commerce", "shop", "cart", "tax", "silverstripe", "gst", "vat", "goods and services tax", "order modifier"],
 	"license": "Sunny Side Up (BSD-3-Clause and CUSTOM)",
 	"authors":[
 		{
