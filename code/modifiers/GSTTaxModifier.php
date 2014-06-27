@@ -12,6 +12,7 @@
 
 class GSTTaxModifier extends OrderModifier {
 
+	private static $based_on_country_note = "";
 // ######################################## *** model defining static variables (e.g. $db, $has_one)
 
 	/**
