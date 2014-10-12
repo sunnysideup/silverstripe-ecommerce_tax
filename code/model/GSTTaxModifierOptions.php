@@ -173,11 +173,17 @@ class GSTTaxModifierOptions extends DataObject {
 		parent::populateDefaults();
 		//can only run after first dev/build
 		if(Security::database_is_ready()) {
-			if($this->EcomConfig()->ShopPricesAreTaxExclusive) {
-				$this->InclusiveOrExclusive = "Exclusive";
+			$controller = Controller::curr();
+			if($controller instanceof DatabaseAdmin) {
+				//cant do this now.
 			}
 			else {
-				$this->InclusiveOrExclusive = "Inclusive";
+				if($this->EcomConfig()->ShopPricesAreTaxExclusive) {
+					$this->InclusiveOrExclusive = "Exclusive";
+				}
+				else {
+					$this->InclusiveOrExclusive = "Inclusive";
+				}
 			}
 		}
 	}
