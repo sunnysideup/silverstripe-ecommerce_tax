@@ -1,5 +1,5 @@
 ---
-Name: ecommerce_product_variation
+Name: ecommerce_tax
 Before: 'mysite/*'
 After: 'framework/*','cms/*','ecommerce/*'
 ---
