@@ -410,7 +410,7 @@ class GSTTaxModifier extends OrderModifier {
 					$totalForItem = $item->Total();
 					$functionName = $this->config()->get("order_item_function_for_tax_exclusive_portion");
 					if($functionName){
-						if(method_exists($item, $functionName)) {
+						if($item->hasMethod($functionName)) {
 							$this->debugMessage .= "<hr />running $functionName on ".$item->ClassName.".".$item->ID;
 							$totalForItem -= $item->$functionName();
 						}
@@ -500,7 +500,7 @@ class GSTTaxModifier extends OrderModifier {
 							$totalForModifier = $modifier->CalculationTotal();
 							$functionName = $this->config()->get("order_item_function_for_tax_exclusive_portion");
 							if($functionName){
-								if(method_exists($modifier, $functionName)) {
+								if($modifier->hasMethod($functionName)) {
 									$totalForModifier -= $item->$functionName();
 									$this->debugMessage .= "<hr />running $functionName on ".$modifier->ClassName.".".$modifier->ID;
 								}
