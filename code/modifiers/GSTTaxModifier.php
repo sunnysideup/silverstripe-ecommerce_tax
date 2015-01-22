@@ -12,6 +12,17 @@
 
 class GSTTaxModifier extends OrderModifier {
 
+	/**
+	 *
+	 * @var Boolean
+	 */
+	private static $show_in_cart_table = true;
+
+	/**
+	 * message explaining how GST is based on a sale
+	 * to a particular country ...
+	 * @var string
+	 */
 	private static $based_on_country_note = "";
 // ######################################## *** model defining static variables (e.g. $db, $has_one)
 
@@ -217,7 +228,7 @@ class GSTTaxModifier extends OrderModifier {
 	 * @return Bool
 	 */
 	public function ShowInTable() {
-		return true;
+		return $this->Config()->get("show_in_cart_table");
 	}
 
 
