@@ -41,6 +41,10 @@ class GSTTaxModifier extends OrderModifier {
 		'RawTableValue' => 'Currency'
 	);
 
+	private static $many_many = array(
+		"GSTTaxModifierOptions" => "GSTTaxModifierOptions"
+	);
+
 	/**
 	 * standard SS variable
 	 * @var String
@@ -278,6 +282,7 @@ class GSTTaxModifier extends OrderModifier {
 	 */
 	protected function currentTaxObjects() {
 		if(self::$current_tax_objects === null) {
+			$this->GSTTaxModifierOptions()->removeAll();
 			if($countryCode = $this->LiveCountry()) {
 				$this->debugMessage .= "<hr />There is a current live country: ".$countryCode;
 				self::$current_tax_objects = GSTTaxModifierOptions::get()->where("(\"CountryCode\" = '".$countryCode."' OR \"AppliesToAllCountries\" = 1) AND \"DoesNotApplyToAllProducts\" = 0");
@@ -286,6 +291,7 @@ class GSTTaxModifier extends OrderModifier {
 						"(\"CountryCode\" = '".$countryCode."' OR \"AppliesToAllCountries\" = 1) AND \"DoesNotApplyToAllProducts\" = 0"
 					);
 				if(self::$current_tax_objects->count()) {
+					$this->GSTTaxModifierOptions()->addMany(self::$current_tax_objects->map("ID", "ID")->toArray());
 					$this->debugMessage .= "<hr />There are tax objects available for ".$countryCode;
 				}
 				else {
@@ -296,6 +302,7 @@ class GSTTaxModifier extends OrderModifier {
 			else {
 				$this->debugMessage .= "<hr />there is no current live country code";
 			}
+
 		}
 		if(self::$current_tax_objects_rate === null) {
 			self::$current_tax_objects_rate = $this->workOutSumRate(self::$current_tax_objects);

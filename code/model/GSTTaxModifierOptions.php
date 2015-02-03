@@ -15,6 +15,7 @@ class GSTTaxModifierOptions extends DataObject {
 		"CountryCode" => "Varchar(3)",
 		"Code" => "Varchar(12)",
 		"Name" => "Varchar(175)",
+		"LegalNotice" => "Varchar(255)",
 		"InclusiveOrExclusive" => "Enum('Inclusive,Exclusive', 'Inclusive')",
 		"Rate" => "Double",
 		"DoesNotApplyToAllProducts" => "Boolean",
@@ -65,6 +66,7 @@ class GSTTaxModifierOptions extends DataObject {
 		"Code" => "Code for tax",
 		"Name" => "Name for tax",
 		"InclusiveOrExclusive" => "Inclusive/Exclusive",
+		"LegalNotice" => "Here you can put your GST number or VAT registration number",
 		"Rate" => "Rate (e.g. 0.125 = 12.5%)",
 		"PercentageNice" => "Percentage",
 		"DoesNotApplyToAllProducts" => "Added to individual products only"
