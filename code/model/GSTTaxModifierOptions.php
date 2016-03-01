@@ -106,6 +106,10 @@ class GSTTaxModifierOptions extends DataObject {
 	 * @return Boolean
 	 */
 	public function canCreate($member = null){
+		$extended = $this->extendedCan(__FUNCTION__, $member);
+		if($extended !== null) {
+			return $extended;
+		}
 		if(Permission::checkMember($member, Config::inst()->get("EcommerceRole", "admin_permission_code"))) {return true;}
 		return parent::canCreate($member);
 	}
@@ -116,6 +120,10 @@ class GSTTaxModifierOptions extends DataObject {
 	 * @return Boolean
 	 */
 	public function canView($member = null){
+		$extended = $this->extendedCan(__FUNCTION__, $member);
+		if($extended !== null) {
+			return $extended;
+		}
 		if(Permission::checkMember($member, Config::inst()->get("EcommerceRole", "admin_permission_code"))) {return true;}
 		return parent::canCreate($member);
 	}
@@ -126,6 +134,10 @@ class GSTTaxModifierOptions extends DataObject {
 	 * @return Boolean
 	 */
 	public function canEdit($member = null){
+		$extended = $this->extendedCan(__FUNCTION__, $member);
+		if($extended !== null) {
+			return $extended;
+		}
 		if(Permission::checkMember($member, Config::inst()->get("EcommerceRole", "admin_permission_code"))) {return true;}
 		return parent::canEdit($member);
 	}
@@ -136,6 +148,10 @@ class GSTTaxModifierOptions extends DataObject {
 	 * @return Boolean
 	 */
 	public function canDelete($member = null){
+		$extended = $this->extendedCan(__FUNCTION__, $member);
+		if($extended !== null) {
+			return $extended;
+		}
 		if(Permission::checkMember($member, Config::inst()->get("EcommerceRole", "admin_permission_code"))) {return true;}
 		return parent::canDelete($member);
 	}
