@@ -18,6 +18,7 @@ GSTTaxModifier:
   order_item_function_for_tax_exclusive_portion: "PortionWithoutTax"
   default_country_code: "NZ"
   alternative_country_prices_already_include_their_own_tax: true
+  field_or_method_to_use_for_sub_title: 'Code'
 
 #Recommended
 Geoip:

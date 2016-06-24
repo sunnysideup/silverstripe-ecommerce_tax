@@ -745,10 +745,10 @@ class GSTTaxModifier extends OrderModifier {
         }
     }
 
-    private static $field_or_method_to_use_for_title = "Code";
+    private static $field_or_method_to_use_for_sub_title = "";
 
     function getTableSubTitle() {
-        $title = $this->stat('field_or_method_to_use_for_title');
+        $title = $this->stat('field_or_method_to_use_for_sub_title');
         if($title) {
             $taxObjects = $this->currentTaxObjects();
             if($taxObjects) {
