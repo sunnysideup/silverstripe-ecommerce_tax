@@ -133,7 +133,7 @@ class GSTTaxModifier extends OrderModifier {
      * wording in cart for prices that are tax exempt (no tax applies)
      * @var String
      */
-    private static $no_tax_description = "tax-exempt";
+    private static $no_tax_description = "Tax-exempt";
 
     /**
      * name of the method in the buyable OrderItem that works out the
