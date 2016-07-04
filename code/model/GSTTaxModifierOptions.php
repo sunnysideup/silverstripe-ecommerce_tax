@@ -52,6 +52,7 @@ class GSTTaxModifierOptions extends DataObject {
      * @var Array
      */
     private static $searchable_fields = array(
+        "CountryCode" => "PartialMatchFilter",
         "Code" => "PartialMatchFilter",
         "Name" => "PartialMatchFilter"
     );
