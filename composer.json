@@ -1,22 +1,31 @@
 {
-	"name": "sunnysideup/ecommerce_tax",
-	"type": "silverstripe-module",
-	"description": "adds tax options to the Silverstripe e-commerce application",
-	"homepage": "http://www.silverstripe-ecommerce.com",
-	"keywords": ["ecommerce", "e-commerce", "shop", "cart", "tax", "silverstripe", "gst", "vat", "goods and services tax", "order modifier"],
-	"license": "Sunny Side Up (BSD-3-Clause and CUSTOM)",
-	"authors":[
-		{
-			"name": "Nicolaas Francken",
-			"homepage": "https://github.com/sunnysideup",
-			"email" : "modules@sunnysideup.co.nz",
-			"role" : "lead developer"
-		}
-	],
-	"require":{
-		"sunnysideup/ecommerce": "dev-master"
-	},
-	"extra": {
-		"installer-name": "ecommerce_tax"
-	}
+    "name": "sunnysideup/ecommerce_tax",
+    "type": "silverstripe-module",
+    "description": "adds tax options to the Silverstripe e-commerce application",
+    "keywords": [
+        "ecommerce",
+        "e-commerce",
+        "shop",
+        "cart",
+        "tax",
+        "silverstripe",
+        "gst",
+        "vat",
+        "goods and services tax",
+        "order modifier"
+    ],
+    "license": "Sunny Side Up (BSD-3-Clause and CUSTOM)",
+    "authors": [
+        {
+            "name": "Nicolaas Francken",
+            "email": "modules@sunnysideup.co.nz",
+            "role": "lead developer"
+        }
+    ],
+    "require": {
+        "sunnysideup/ecommerce": "dev-master"
+    },
+    "extra": {
+        "installer-name": "ecommerce_tax"
+    }
 }
