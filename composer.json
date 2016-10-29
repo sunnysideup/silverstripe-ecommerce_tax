@@ -3,12 +3,14 @@
     "type": "silverstripe-module",
     "description": "adds tax options to the Silverstripe e-commerce application",
     "keywords": [
+        "Silverstripe-CMS",
+        "CMS",
+        "Silverstripe",
         "ecommerce",
         "e-commerce",
         "shop",
         "cart",
         "tax",
-        "silverstripe",
         "gst",
         "vat",
         "goods and services tax",
@@ -23,7 +25,9 @@
         }
     ],
     "require": {
-        "sunnysideup/ecommerce": "dev-master"
+        "sunnysideup/ecommerce": "*",
+        "silverstripe/framework": "~3.1",
+        "silverstripe/cms": "~3.1"
     },
     "extra": {
         "installer-name": "ecommerce_tax"

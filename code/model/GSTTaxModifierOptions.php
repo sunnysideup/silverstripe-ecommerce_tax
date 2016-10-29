@@ -5,7 +5,8 @@
  *
  **/
 
-class GSTTaxModifierOptions extends DataObject {
+class GSTTaxModifierOptions extends DataObject
+{
 
     /**
      * standard SS variable
@@ -91,7 +92,10 @@ class GSTTaxModifierOptions extends DataObject {
      * @var String
      */
     private static $singular_name = "Tax Option";
-        function i18n_singular_name() { return _t("GSTTaxModifierOptions.TAXOPTION", "Tax Option");}
+    public function i18n_singular_name()
+    {
+        return _t("GSTTaxModifierOptions.TAXOPTION", "Tax Option");
+    }
 
 
     /**
@@ -99,19 +103,25 @@ class GSTTaxModifierOptions extends DataObject {
      * @var String
      */
     private static $plural_name = "Tax Options";
-        function i18n_plural_name() { return _t("GSTTaxModifierOptions.TAXOPTIONS", "Tax Options");}
+    public function i18n_plural_name()
+    {
+        return _t("GSTTaxModifierOptions.TAXOPTIONS", "Tax Options");
+    }
 
     /**
      * standard SS method
      * @param Member | NULL
      * @return Boolean
      */
-    public function canCreate($member = null){
+    public function canCreate($member = null)
+    {
         $extended = $this->extendedCan(__FUNCTION__, $member);
-        if($extended !== null) {
+        if ($extended !== null) {
             return $extended;
         }
-        if(Permission::checkMember($member, Config::inst()->get("EcommerceRole", "admin_permission_code"))) {return true;}
+        if (Permission::checkMember($member, Config::inst()->get("EcommerceRole", "admin_permission_code"))) {
+            return true;
+        }
         return parent::canCreate($member);
     }
 
@@ -120,12 +130,15 @@ class GSTTaxModifierOptions extends DataObject {
      * @param Member | NULL
      * @return Boolean
      */
-    public function canView($member = null){
+    public function canView($member = null)
+    {
         $extended = $this->extendedCan(__FUNCTION__, $member);
-        if($extended !== null) {
+        if ($extended !== null) {
             return $extended;
         }
-        if(Permission::checkMember($member, Config::inst()->get("EcommerceRole", "admin_permission_code"))) {return true;}
+        if (Permission::checkMember($member, Config::inst()->get("EcommerceRole", "admin_permission_code"))) {
+            return true;
+        }
         return parent::canCreate($member);
     }
 
@@ -134,12 +147,15 @@ class GSTTaxModifierOptions extends DataObject {
      * @param Member | NULL
      * @return Boolean
      */
-    public function canEdit($member = null){
+    public function canEdit($member = null)
+    {
         $extended = $this->extendedCan(__FUNCTION__, $member);
-        if($extended !== null) {
+        if ($extended !== null) {
             return $extended;
         }
-        if(Permission::checkMember($member, Config::inst()->get("EcommerceRole", "admin_permission_code"))) {return true;}
+        if (Permission::checkMember($member, Config::inst()->get("EcommerceRole", "admin_permission_code"))) {
+            return true;
+        }
         return parent::canEdit($member);
     }
 
@@ -148,12 +164,15 @@ class GSTTaxModifierOptions extends DataObject {
      * @param Member | NULL
      * @return Boolean
      */
-    public function canDelete($member = null){
+    public function canDelete($member = null)
+    {
         $extended = $this->extendedCan(__FUNCTION__, $member);
-        if($extended !== null) {
+        if ($extended !== null) {
             return $extended;
         }
-        if(Permission::checkMember($member, Config::inst()->get("EcommerceRole", "admin_permission_code"))) {return true;}
+        if (Permission::checkMember($member, Config::inst()->get("EcommerceRole", "admin_permission_code"))) {
+            return true;
+        }
         return parent::canDelete($member);
     }
 
@@ -161,46 +180,48 @@ class GSTTaxModifierOptions extends DataObject {
      * standard SS method
      * @return FieldList
      */
-    function getCMSFields() {
+    public function getCMSFields()
+    {
         $fields = parent::getCMSFields();
         $fieldLabels = $this->Config()->get("field_labels");
         $fields->replaceField("CountryCode", new DropDownField("CountryCode", $fieldLabels["CountryCode"], EcommerceCountry::get_country_dropdown()));
         $InclusiveOrExclusive = "Inclusive";
-        if($this->EcomConfig()->ShopPricesAreTaxExclusive) {
+        if ($this->EcomConfig()->ShopPricesAreTaxExclusive) {
             $InclusiveOrExclusive = "Exclusive";
         }
         $fields->replaceField("InclusiveOrExclusive", new ReadonlyField("InclusiveOrExclusive", "This tax is: ..., you can change this setting in the e-commerce configuration."));
         return $fields;
     }
 
-    function Title() {return $this->getTitle();}
-    function getTitle() {
-        if($this->AppliesToAllCountries) {
+    public function Title()
+    {
+        return $this->getTitle();
+    }
+    public function getTitle()
+    {
+        if ($this->AppliesToAllCountries) {
             $country = _t("GSTTExModifierOption.WORLDWIDE", "world-wide");
-        }
-        else {
+        } else {
             $country = $this->CountryCode;
         }
         return $this->Name." ($country, ".number_format($this->Rate * 100, 2) . '%)';
-
     }
 
     /**
      * standard SS method
      */
-    function populateDefaults(){
+    public function populateDefaults()
+    {
         parent::populateDefaults();
         //can only run after first dev/build
-        if(Security::database_is_ready()) {
+        if (Security::database_is_ready()) {
             $controller = Controller::curr();
-            if($controller instanceof DatabaseAdmin) {
+            if ($controller instanceof DatabaseAdmin) {
                 //cant do this now.
-            }
-            else {
-                if($this->EcomConfig()->ShopPricesAreTaxExclusive) {
+            } else {
+                if ($this->EcomConfig()->ShopPricesAreTaxExclusive) {
                     $this->InclusiveOrExclusive = "Exclusive";
-                }
-                else {
+                } else {
                     $this->InclusiveOrExclusive = "Inclusive";
                 }
             }
@@ -210,12 +231,12 @@ class GSTTaxModifierOptions extends DataObject {
     /**
      * standard SS method
      */
-    function onBeforeWrite(){
+    public function onBeforeWrite()
+    {
         parent::onBeforeWrite();
-        if($this->EcomConfig()->ShopPricesAreTaxExclusive) {
+        if ($this->EcomConfig()->ShopPricesAreTaxExclusive) {
             $this->InclusiveOrExclusive = "Exclusive";
-        }
-        else {
+        } else {
             $this->InclusiveOrExclusive = "Inclusive";
         }
     }
@@ -223,7 +244,8 @@ class GSTTaxModifierOptions extends DataObject {
     /**
      * standard SS method
      */
-    function requireDefaultRecords() {
+    public function requireDefaultRecords()
+    {
         parent::requireDefaultRecords();
         DB::query("
             UPDATE \"GSTTaxModifierOptions\"
@@ -237,17 +259,26 @@ class GSTTaxModifierOptions extends DataObject {
      *
      * @return EcommerceDBConfig
      **/
-    public function EcomConfig(){
+    public function EcomConfig()
+    {
         return EcommerceDBConfig::current_ecommerce_db_config();
     }
 
-    public function CountryName(){ return $this->getCountryName();}
-    public function getCountryName(){
+    public function CountryName()
+    {
+        return $this->getCountryName();
+    }
+    public function getCountryName()
+    {
         return EcommerceCountry::find_title($this->CountryCode);
     }
 
-    public function PercentageNice(){ return $this->getPercentageNice();}
-    public function getPercentageNice(){
+    public function PercentageNice()
+    {
+        return $this->getPercentageNice();
+    }
+    public function getPercentageNice()
+    {
         return DBField::create_field("Text", ($this->Rate * 100)."%");
     }
 }
