@@ -496,9 +496,10 @@ class GSTTaxModifier extends OrderModifier
                             //do nothing
                         } else {
                             $actualRate = $rate;
-                            $modifierDescriptor = OrderModifier_Descriptor::get()
-                                ->filter(array("ModifierClassName" => $modifier->ClassName))
-                                ->First();
+                            $modifierDescriptor = DataObject::get_one(
+                                'OrderModifier_Descriptor',
+                                array("ModifierClassName" => $modifier->ClassName)
+                            );
                             if ($modifierDescriptor) {
                                 if ($modifierDescriptor->hasExtension("GSTTaxDecorator")) {
                                     $excludedTaxes = $modifierDescriptor->ExcludedFrom();
@@ -553,7 +554,7 @@ class GSTTaxModifier extends OrderModifier
      */
     protected function hasExceptionTaxes()
     {
-        return GSTTaxModifierOptions::get()->filter(array("DoesNotApplyToAllProducts" => 1))->First() ? false : true;
+        return DataObject::get_one('GSTTaxModifierOptions', array("DoesNotApplyToAllProducts" => 1)) ? false : true;
     }
 
 // ######################################## *** calculate database fields: protected function Live[field name]  ... USES CALCULATED VALUES
