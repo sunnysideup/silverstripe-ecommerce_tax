@@ -554,7 +554,10 @@ class GSTTaxModifier extends OrderModifier
      */
     protected function hasExceptionTaxes()
     {
-        return DataObject::get_one('GSTTaxModifierOptions', array("DoesNotApplyToAllProducts" => 1)) ? false : true;
+        return DataObject::get_one(
+            'GSTTaxModifierOptions',
+            array("DoesNotApplyToAllProducts" => 1)
+        ) ? false : true;
     }
 
 // ######################################## *** calculate database fields: protected function Live[field name]  ... USES CALCULATED VALUES
