@@ -241,18 +241,18 @@ class GSTTaxModifierOptions extends DataObject
         }
     }
 
-    /**
-     * standard SS method
-     */
-    public function requireDefaultRecords()
-    {
-        parent::requireDefaultRecords();
-        DB::query("
-            UPDATE \"GSTTaxModifierOptions\"
-            SET \"InclusiveOrExclusive\" = 'Inclusive'
-            WHERE \"InclusiveOrExclusive\" <> 'Exclusive'"
-        );
-    }
+    // /**
+    //  * standard SS method
+    //  */
+    // public function requireDefaultRecords()
+    // {
+    //     parent::requireDefaultRecords();
+    //     DB::query("
+    //         UPDATE \"GSTTaxModifierOptions\"
+    //         SET \"InclusiveOrExclusive\" = 'Inclusive'
+    //         WHERE \"InclusiveOrExclusive\" <> 'Exclusive'"
+    //     );
+    // }
 
     /**
      * returns the instance of EcommerceDBConfig
