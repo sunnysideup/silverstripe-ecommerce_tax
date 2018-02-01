@@ -25,7 +25,7 @@ class GSTTaxModifier extends OrderModifier
      * @var string
      */
     private static $based_on_country_note = "";
-// ######################################## *** model defining static variables (e.g. $db, $has_one)
+    // ######################################## *** model defining static variables (e.g. $db, $has_one)
 
     /**
      * standard SS variable
@@ -68,7 +68,7 @@ class GSTTaxModifier extends OrderModifier
     }
 
 
-// ######################################## *** cms variables + functions (e.g. getCMSFields, $searchableFields)
+    // ######################################## *** cms variables + functions (e.g. getCMSFields, $searchableFields)
 
 
 
@@ -99,7 +99,7 @@ class GSTTaxModifier extends OrderModifier
         return $fields;
     }
 
-// ######################################## *** other (non) static variables (e.g. private static $special_name_for_something, protected $order)
+    // ######################################## *** other (non) static variables (e.g. private static $special_name_for_something, protected $order)
     /**
      * default country for tax calculations
      * IMPORTANT: we need this variable - because in case of INCLUSIVE prices,
@@ -203,8 +203,8 @@ class GSTTaxModifier extends OrderModifier
     protected $debugMessage = '';
 
 
-// ######################################## *** CRUD functions (e.g. canEdit)
-// ######################################## *** init and update functions
+    // ######################################## *** CRUD functions (e.g. canEdit)
+    // ######################################## *** init and update functions
     /**
      * updates database fields
      * @param Bool $force - run it, even if it has run already
@@ -224,8 +224,8 @@ class GSTTaxModifier extends OrderModifier
     }
 
 
-// ######################################## *** form functions (e. g. Showform and getform)
-// ######################################## *** template functions (e.g. ShowInTable, TableTitle, etc...) ... USES DB VALUES
+    // ######################################## *** form functions (e. g. Showform and getform)
+    // ######################################## *** template functions (e.g. ShowInTable, TableTitle, etc...) ... USES DB VALUES
 
     /**
      * Can the user remove this modifier?
@@ -248,7 +248,7 @@ class GSTTaxModifier extends OrderModifier
     }
 
 
-// ######################################## ***  inner calculations.... USES CALCULATED VALUES
+    // ######################################## ***  inner calculations.... USES CALCULATED VALUES
 
     /**
      * works out what taxes apply in the default setup.
@@ -560,7 +560,7 @@ class GSTTaxModifier extends OrderModifier
         ) ? false : true;
     }
 
-// ######################################## *** calculate database fields: protected function Live[field name]  ... USES CALCULATED VALUES
+    // ######################################## *** calculate database fields: protected function Live[field name]  ... USES CALCULATED VALUES
 
 
     /**
@@ -781,7 +781,7 @@ class GSTTaxModifier extends OrderModifier
         }
     }
 
-// ######################################## *** Type Functions (IsChargeable, IsDeductable, IsNoChange, IsRemoved)
+    // ######################################## *** Type Functions (IsChargeable, IsDeductable, IsNoChange, IsRemoved)
 
 // ######################################## *** standard database related functions (e.g. onBeforeWrite, onAfterWrite, etc...)
 
