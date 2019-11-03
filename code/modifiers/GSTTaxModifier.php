@@ -42,6 +42,11 @@ class GSTTaxModifier extends OrderModifier
         'RawTableValue' => 'Currency'
     );
 
+    private static $defaults = [
+        'Type' => 'Tax',
+    ];
+
+
     private static $many_many = array(
         "GSTTaxModifierOptions" => "GSTTaxModifierOptions"
     );
@@ -779,6 +784,11 @@ class GSTTaxModifier extends OrderModifier
                 }
             }
         }
+    }
+
+    protected function LiveType()
+    {
+        return 'Tax';
     }
 
     // ######################################## *** Type Functions (IsChargeable, IsDeductable, IsNoChange, IsRemoved)
