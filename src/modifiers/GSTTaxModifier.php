@@ -46,6 +46,15 @@ class GSTTaxModifier extends OrderModifier
     
     private static $table_name = 'GSTTaxModifier';
 
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: private static $db = (case sensitive)
+  * NEW: private static $db = (COMPLEX)
+  * EXP: Make sure to add a private static $table_name!
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
     private static $db = array(
         'DefaultCountry' => 'Varchar(3)',
         'Country' => 'Varchar(3)',
@@ -99,6 +108,15 @@ class GSTTaxModifier extends OrderModifier
     {
         $fields = parent::getCMSFields();
         $fields->replaceField("Country", new DropdownField("Country", "based on a sale to ", EcommerceCountry::get_country_dropdown()));
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: $this->ClassName (case sensitive)
+  * NEW: $this->ClassName (COMPLEX)
+  * EXP: Check if the class name can still be used as such
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
         $fields->replaceField("Root.Main", new DropdownField("TaxType", "Tax Type", singleton($this->ClassName)->dbObject('TaxType')->enumValues()));
 
         $fields->removeByName("DefaultCountry");
@@ -378,7 +396,7 @@ class GSTTaxModifier extends OrderModifier
         return $this->EcomConfig()->ShopPricesAreTaxExclusive ? false : true;
         //this code is here to support e-commerce versions that
         //do not have the DB field EcomConfig()->ShopPricesAreTaxExclusive
-        $array = array();
+        $array = [];
         //here we have to take the default tax objects
         //because we want to know for the default country
         //that is the actual country may not have any prices
@@ -645,7 +663,7 @@ class GSTTaxModifier extends OrderModifier
      * @var Array
      */
 
-    private static $temp_raw_table_value = array();
+    private static $temp_raw_table_value = [];
 
     /**
      * Used to save RawTableValue to database
@@ -698,7 +716,7 @@ class GSTTaxModifier extends OrderModifier
         $endString = '';
         $taxObjects = $this->currentTaxObjects();
         if ($taxObjects) {
-            $objectArray = array();
+            $objectArray = [];
             foreach ($taxObjects as $object) {
                 $objectArray[] = $object->Name;
             }

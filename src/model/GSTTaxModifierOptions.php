@@ -26,6 +26,15 @@ class GSTTaxModifierOptions extends DataObject
     
     private static $table_name = 'GSTTaxModifierOptions';
 
+
+/**
+  * ### @@@@ START REPLACEMENT @@@@ ###
+  * WHY: automated upgrade
+  * OLD: private static $db = (case sensitive)
+  * NEW: private static $db = (COMPLEX)
+  * EXP: Make sure to add a private static $table_name!
+  * ### @@@@ STOP REPLACEMENT @@@@ ###
+  */
     private static $db = array(
         "CountryCode" => "Varchar(3)",
         "Code" => "Varchar(12)",
@@ -127,7 +136,7 @@ class GSTTaxModifierOptions extends DataObject
      * @param Member | NULL
      * @return Boolean
      */
-    public function canCreate($member = null)
+    public function canCreate($member = null, $context = [])
     {
         $extended = $this->extendedCan(__FUNCTION__, $member);
         if ($extended !== null) {
@@ -144,7 +153,7 @@ class GSTTaxModifierOptions extends DataObject
      * @param Member | NULL
      * @return Boolean
      */
-    public function canView($member = null)
+    public function canView($member = null, $context = [])
     {
         $extended = $this->extendedCan(__FUNCTION__, $member);
         if ($extended !== null) {
@@ -161,7 +170,7 @@ class GSTTaxModifierOptions extends DataObject
      * @param Member | NULL
      * @return Boolean
      */
-    public function canEdit($member = null)
+    public function canEdit($member = null, $context = [])
     {
         $extended = $this->extendedCan(__FUNCTION__, $member);
         if ($extended !== null) {
@@ -178,7 +187,7 @@ class GSTTaxModifierOptions extends DataObject
      * @param Member | NULL
      * @return Boolean
      */
-    public function canDelete($member = null)
+    public function canDelete($member = null, $context = [])
     {
         $extended = $this->extendedCan(__FUNCTION__, $member);
         if ($extended !== null) {

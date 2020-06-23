@@ -1,6 +1,6 @@
 ---
 Name: ecommerce_tax
-Before: 'mysite/*'
+Before: 'app/*'
 After: 'framework/*','cms/*','ecommerce/*'
 ---
 
