@@ -2,13 +2,20 @@
 
 namespace Sunnysideup\EcommerceTax\Decorator;
 
-use DataExtension;
+
 use ProductVariation;
-use FieldList;
-use LiteralField;
-use GSTTaxModifierOptions;
-use CheckboxSetField;
-use ReadonlyField;
+
+
+
+
+
+use Sunnysideup\EcommerceTax\Model\GSTTaxModifierOptions;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\LiteralField;
+use SilverStripe\Forms\CheckboxSetField;
+use SilverStripe\Forms\ReadonlyField;
+use SilverStripe\ORM\DataExtension;
+
 
 
 
@@ -53,8 +60,8 @@ class GSTTaxDecorator extends DataExtension
     private static $table_name = 'GSTTaxDecorator';
 
     private static $many_many = array(
-        "ExcludedFrom" => "GSTTaxModifierOptions",
-        "AdditionalTax" => "GSTTaxModifierOptions"
+        "ExcludedFrom" => GSTTaxModifierOptions::class,
+        "AdditionalTax" => GSTTaxModifierOptions::class
     );
 
     /**

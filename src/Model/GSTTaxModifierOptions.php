@@ -2,17 +2,30 @@
 
 namespace Sunnysideup\EcommerceTax\Model;
 
-use DataObject;
-use Permission;
-use Config;
-use DropdownField;
-use EcommerceCountry;
-use ReadonlyField;
-use Security;
-use Controller;
-use DatabaseAdmin;
-use EcommerceDBConfig;
-use DBField;
+
+
+
+
+
+
+
+
+
+
+
+use SilverStripe\Core\Config\Config;
+use Sunnysideup\Ecommerce\Model\Extensions\EcommerceRole;
+use SilverStripe\Security\Permission;
+use Sunnysideup\Ecommerce\Model\Address\EcommerceCountry;
+use SilverStripe\Forms\DropdownField;
+use SilverStripe\Forms\ReadonlyField;
+use SilverStripe\Security\Security;
+use SilverStripe\Control\Controller;
+use SilverStripe\ORM\DatabaseAdmin;
+use Sunnysideup\Ecommerce\Model\Config\EcommerceDBConfig;
+use SilverStripe\ORM\FieldType\DBField;
+use SilverStripe\ORM\DataObject;
+
 
 
 /**
@@ -157,7 +170,7 @@ class GSTTaxModifierOptions extends DataObject
         if ($extended !== null) {
             return $extended;
         }
-        if (Permission::checkMember($member, Config::inst()->get("EcommerceRole", "admin_permission_code"))) {
+        if (Permission::checkMember($member, Config::inst()->get(EcommerceRole::class, "admin_permission_code"))) {
             return true;
         }
         return parent::canCreate($member);
@@ -174,7 +187,7 @@ class GSTTaxModifierOptions extends DataObject
         if ($extended !== null) {
             return $extended;
         }
-        if (Permission::checkMember($member, Config::inst()->get("EcommerceRole", "admin_permission_code"))) {
+        if (Permission::checkMember($member, Config::inst()->get(EcommerceRole::class, "admin_permission_code"))) {
             return true;
         }
         return parent::canCreate($member);
@@ -191,7 +204,7 @@ class GSTTaxModifierOptions extends DataObject
         if ($extended !== null) {
             return $extended;
         }
-        if (Permission::checkMember($member, Config::inst()->get("EcommerceRole", "admin_permission_code"))) {
+        if (Permission::checkMember($member, Config::inst()->get(EcommerceRole::class, "admin_permission_code"))) {
             return true;
         }
         return parent::canEdit($member);
@@ -208,7 +221,7 @@ class GSTTaxModifierOptions extends DataObject
         if ($extended !== null) {
             return $extended;
         }
-        if (Permission::checkMember($member, Config::inst()->get("EcommerceRole", "admin_permission_code"))) {
+        if (Permission::checkMember($member, Config::inst()->get(EcommerceRole::class, "admin_permission_code"))) {
             return true;
         }
         return parent::canDelete($member);

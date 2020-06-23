@@ -3,23 +3,19 @@ Name: ecommerce_tax
 Before: 'app/*'
 After: 'framework/*','cms/*','ecommerce/*'
 ---
-
 OrderModifier_Descriptor:
   extensions:
-    - GSTTaxDecorator
-
-Product:
+    - Sunnysideup\EcommerceTax\Decorator\GSTTaxDecorator
+Sunnysideup\Ecommerce\Pages\Product:
   extensions:
-    - GSTTaxDecorator
-
-StoreAdmin:
+    - Sunnysideup\EcommerceTax\Decorator\GSTTaxDecorator
+Sunnysideup\Ecommerce\Cms\StoreAdmin:
   managed_models:
-    - GSTTaxModifierOptions
-
+    - Sunnysideup\EcommerceTax\Model\GSTTaxModifierOptions
 ---
 Only:
   classexists: 'ProductVariation'
 ---
 ProductVariation:
   extensions:
-    - GSTTaxDecorator
+    - Sunnysideup\EcommerceTax\Decorator\GSTTaxDecorator

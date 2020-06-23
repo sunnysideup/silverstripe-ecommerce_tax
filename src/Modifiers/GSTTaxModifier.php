@@ -2,15 +2,26 @@
 
 namespace Sunnysideup\EcommerceTax\Modifiers;
 
-use OrderModifier;
-use DropdownField;
-use EcommerceCountry;
-use ReadonlyField;
-use Config;
-use EcommerceConfig;
-use GSTTaxModifierOptions;
+
+
+
+
+
+
+
 use ProductVariation;
-use DataObject;
+
+use Sunnysideup\EcommerceTax\Model\GSTTaxModifierOptions;
+use Sunnysideup\Ecommerce\Model\Address\EcommerceCountry;
+use SilverStripe\Forms\DropdownField;
+use SilverStripe\Forms\ReadonlyField;
+use SilverStripe\Core\Config\Config;
+use Sunnysideup\EcommerceTax\Modifiers\GSTTaxModifier;
+use Sunnysideup\Ecommerce\Config\EcommerceConfig;
+use Sunnysideup\EcommerceTax\Decorator\GSTTaxDecorator;
+use SilverStripe\ORM\DataObject;
+use Sunnysideup\Ecommerce\Model\OrderModifier;
+
 
 
 /**
@@ -84,7 +95,7 @@ class GSTTaxModifier extends OrderModifier
 
 
     private static $many_many = array(
-        "GSTTaxModifierOptions" => "GSTTaxModifierOptions"
+        "GSTTaxModifierOptions" => GSTTaxModifierOptions::class
     );
 
     /**
@@ -160,9 +171,9 @@ class GSTTaxModifier extends OrderModifier
     private static $default_country_code = "";
     protected static function get_default_country_code_combined()
     {
-        $country = Config::inst()->get("GSTTaxModifier", "default_country_code");
+        $country = Config::inst()->get(GSTTaxModifier::class, "default_country_code");
         if (!$country) {
-            $country = EcommerceConfig::get('EcommerceCountry', 'default_country_code');
+            $country = EcommerceConfig::get(EcommerceCountry::class, 'default_country_code');
         }
         return $country;
     }
@@ -463,7 +474,7 @@ class GSTTaxModifier extends OrderModifier
                     $buyable = $item->Buyable();
                     if ($buyable) {
                         $this->dealWithProductVariationException($buyable);
-                        if ($buyable->hasExtension("GSTTaxDecorator")) {
+                        if ($buyable->hasExtension(GSTTaxDecorator::class)) {
                             $excludedTaxes = $buyable->BuyableCalculatedExcludedFrom();
                             $additionalTaxes = $buyable->BuyableCalculatedAdditionalTax();
                             if ($excludedTaxes) {
@@ -515,9 +526,9 @@ class GSTTaxModifier extends OrderModifier
     public function dealWithProductVariationException($buyable)
     {
         if ($buyable instanceof ProductVariation) {
-            if (!$buyable->hasExtension("GSTTaxDecorator")) {
+            if (!$buyable->hasExtension(GSTTaxDecorator::class)) {
                 if ($parent = $buyable->Parent()) {
-                    if ($parent->hasExtension("GSTTaxDecorator")) {
+                    if ($parent->hasExtension(GSTTaxDecorator::class)) {
                         $buyable = $parent;
                     }
                 }
@@ -551,7 +562,7 @@ class GSTTaxModifier extends OrderModifier
                                 array("ModifierClassName" => $modifier->ClassName)
                             );
                             if ($modifierDescriptor) {
-                                if ($modifierDescriptor->hasExtension("GSTTaxDecorator")) {
+                                if ($modifierDescriptor->hasExtension(GSTTaxDecorator::class)) {
                                     $excludedTaxes = $modifierDescriptor->ExcludedFrom();
                                     $additionalTaxes = $modifierDescriptor->AdditionalTax();
                                     if ($excludedTaxes) {
@@ -605,7 +616,7 @@ class GSTTaxModifier extends OrderModifier
     protected function hasExceptionTaxes()
     {
         return DataObject::get_one(
-            'GSTTaxModifierOptions',
+            GSTTaxModifierOptions::class,
             array("DoesNotApplyToAllProducts" => 1)
         ) ? false : true;
     }
@@ -774,7 +785,7 @@ class GSTTaxModifier extends OrderModifier
         if ($this->isExclusive()) {
             return $this->LiveRawTableValue();
         } else {
-            if (Config::inst()->get('GSTTaxModifier', 'alternative_country_prices_already_include_their_own_tax')) {
+            if (Config::inst()->get(GSTTaxModifier::class, 'alternative_country_prices_already_include_their_own_tax')) {
                 return 0;
             } else {
                 $currentCountry = $this->LiveCountry();
