@@ -282,3 +282,4 @@ class GSTTaxModifierOptions extends DataObject
         return DBField::create_field("Text", ($this->Rate * 100)."%");
     }
 }
+
