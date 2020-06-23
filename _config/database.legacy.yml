@@ -1,0 +1,5 @@
+SilverStripe\ORM\DatabaseAdmin:
+  classname_value_remapping:
+    GSTTaxModifier: Sunnysideup\EcommerceTax\Modifiers\GSTTaxModifier
+    GSTTaxDecorator: Sunnysideup\EcommerceTax\Decorator\GSTTaxDecorator
+    GSTTaxModifierOptions: Sunnysideup\EcommerceTax\Model\GSTTaxModifierOptions
