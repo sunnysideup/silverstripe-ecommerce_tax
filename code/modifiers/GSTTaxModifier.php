@@ -84,7 +84,7 @@ class GSTTaxModifier extends OrderModifier
     public function getCMSFields()
     {
         $fields = parent::getCMSFields();
-        $fields->replaceField("Country", new DropDownField("Country", "based on a sale to ", EcommerceCountry::get_country_dropdown()));
+        $fields->replaceField("Country", new DropdownField("Country", "based on a sale to ", EcommerceCountry::get_country_dropdown()));
         $fields->replaceField("Root.Main", new DropdownField("TaxType", "Tax Type", singleton($this->ClassName)->dbObject('TaxType')->enumValues()));
 
         $fields->removeByName("DefaultCountry");
