@@ -1,6 +1,6 @@
 {
     "name": "sunnysideup/ecommerce_tax",
-    "type": "silverstripe-module",
+    "type": "silverstripe-vendormodule",
     "description": "adds tax options to the Silverstripe e-commerce application",
     "keywords": [
         "Silverstripe-CMS",
