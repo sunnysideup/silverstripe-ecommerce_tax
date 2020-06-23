@@ -28,7 +28,5 @@
         "sunnysideup/ecommerce": "*",
         "silverstripe/recipe-cms": "^4.4"
     },
-    "extra": {
-        "installer-name": "ecommerce_tax"
-    }
+    "extra": []
 }
