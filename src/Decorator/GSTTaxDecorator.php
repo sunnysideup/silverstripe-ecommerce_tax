@@ -1,5 +1,16 @@
 <?php
 
+namespace Sunnysideup\EcommerceTax\Decorator;
+
+use DataExtension;
+use ProductVariation;
+use FieldList;
+use LiteralField;
+use GSTTaxModifierOptions;
+use CheckboxSetField;
+use ReadonlyField;
+
+
 
 /**
  * @author Nicolaas [at] sunnysideup.co.nz

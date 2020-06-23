@@ -1,5 +1,18 @@
 <?php
 
+namespace Sunnysideup\EcommerceTax\Modifiers;
+
+use OrderModifier;
+use DropdownField;
+use EcommerceCountry;
+use ReadonlyField;
+use Config;
+use EcommerceConfig;
+use GSTTaxModifierOptions;
+use ProductVariation;
+use DataObject;
+
+
 /**
  * @author Nicolaas [at] sunnysideup.co.nz
  * @package: ecommerce

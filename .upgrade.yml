@@ -1,0 +1,4 @@
+mappings:
+  GSTTaxModifier: Sunnysideup\EcommerceTax\Modifiers\GSTTaxModifier
+  GSTTaxDecorator: Sunnysideup\EcommerceTax\Decorator\GSTTaxDecorator
+  GSTTaxModifierOptions: Sunnysideup\EcommerceTax\Model\GSTTaxModifierOptions

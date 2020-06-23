@@ -1,5 +1,20 @@
 <?php
 
+namespace Sunnysideup\EcommerceTax\Model;
+
+use DataObject;
+use Permission;
+use Config;
+use DropdownField;
+use EcommerceCountry;
+use ReadonlyField;
+use Security;
+use Controller;
+use DatabaseAdmin;
+use EcommerceDBConfig;
+use DBField;
+
+
 /**
  *@author nicolaas [at] sunnysideup.co.nz
  *
