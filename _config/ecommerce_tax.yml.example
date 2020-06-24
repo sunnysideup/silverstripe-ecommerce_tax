@@ -1,4 +1,4 @@
-#MAKE SURE TO INCLUDE in mysite/_config/ecommerce.yml
+#MAKE SURE TO INCLUDE in app/_config/ecommerce.yml
 Order:
   modifiers:
     - OtherModifierA

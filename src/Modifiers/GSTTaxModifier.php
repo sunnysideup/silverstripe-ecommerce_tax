@@ -2,13 +2,6 @@
 
 namespace Sunnysideup\EcommerceTax\Modifiers;
 
-
-
-
-
-
-
-
 use ProductVariation;
 
 use Sunnysideup\EcommerceTax\Model\GSTTaxModifierOptions;
@@ -49,36 +42,14 @@ class GSTTaxModifier extends OrderModifier
      * @var string
      */
     private static $based_on_country_note = "";
-    // ######################################## *** model defining static variables (e.g. $db, $has_one)
 
     /**
      * standard SS variable
      *
      * @var Array
      */
-
-/**
-  * ### @@@@ START REPLACEMENT @@@@ ###
-  * OLD: private static $db (case sensitive)
-  * NEW: 
-    private static $table_name = '[SEARCH_REPLACE_CLASS_NAME_GOES_HERE]';
-
-    private static $db (COMPLEX)
-  * EXP: Check that is class indeed extends DataObject and that it is not a data-extension!
-  * ### @@@@ STOP REPLACEMENT @@@@ ###
-  */
-    
     private static $table_name = 'GSTTaxModifier';
 
-
-/**
-  * ### @@@@ START REPLACEMENT @@@@ ###
-  * WHY: automated upgrade
-  * OLD: private static $db = (case sensitive)
-  * NEW: private static $db = (COMPLEX)
-  * EXP: Make sure to add a private static $table_name!
-  * ### @@@@ STOP REPLACEMENT @@@@ ###
-  */
     private static $db = array(
         'DefaultCountry' => 'Varchar(3)',
         'Country' => 'Varchar(3)',
@@ -132,15 +103,6 @@ class GSTTaxModifier extends OrderModifier
     {
         $fields = parent::getCMSFields();
         $fields->replaceField("Country", new DropdownField("Country", "based on a sale to ", EcommerceCountry::get_country_dropdown()));
-
-/**
-  * ### @@@@ START REPLACEMENT @@@@ ###
-  * WHY: automated upgrade
-  * OLD: $this->ClassName (case sensitive)
-  * NEW: $this->ClassName (COMPLEX)
-  * EXP: Check if the class name can still be used as such
-  * ### @@@@ STOP REPLACEMENT @@@@ ###
-  */
         $fields->replaceField("Root.Main", new DropdownField("TaxType", "Tax Type", singleton($this->ClassName)->dbObject('TaxType')->enumValues()));
 
         $fields->removeByName("DefaultCountry");

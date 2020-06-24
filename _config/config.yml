@@ -1,9 +1,13 @@
 ---
 Name: ecommerce_tax
-Before: 'app/*'
-After: 'framework/*','cms/*','ecommerce/*'
+Before: 
+  - '#app'
+After: 
+  - '#coreconfig'
+  - '#cmsextensions'
+  - '#ecommerce'
 ---
-OrderModifier_Descriptor:
+OrderModifierDescriptor:
   extensions:
     - Sunnysideup\EcommerceTax\Decorator\GSTTaxDecorator
 Sunnysideup\Ecommerce\Pages\Product:

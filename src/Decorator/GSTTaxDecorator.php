@@ -27,17 +27,6 @@ use SilverStripe\ORM\DataExtension;
  *
  *
  */
-
-
-
-/**
-  * ### @@@@ START REPLACEMENT @@@@ ###
-  * WHY: automated upgrade
-  * OLD:  extends DataExtension (ignore case)
-  * NEW:  extends DataExtension (COMPLEX)
-  * EXP: Check for use of $this->anyVar and replace with $this->anyVar[$this->owner->ID] or consider turning the class into a trait
-  * ### @@@@ STOP REPLACEMENT @@@@ ###
-  */
 class GSTTaxDecorator extends DataExtension
 {
 
@@ -45,19 +34,6 @@ class GSTTaxDecorator extends DataExtension
      * standard SS method
      * @return Array
      */
-
-/**
-  * ### @@@@ START REPLACEMENT @@@@ ###
-  * OLD: private static $many_many = (case sensitive)
-  * NEW: 
-    private static $table_name = '[SEARCH_REPLACE_CLASS_NAME_GOES_HERE]';
-
-    private static $many_many = (COMPLEX)
-  * EXP: Check that is class indeed extends DataObject and that it is not a data-extension!
-  * ### @@@@ STOP REPLACEMENT @@@@ ###
-  */
-    
-    private static $table_name = 'GSTTaxDecorator';
 
     private static $many_many = array(
         "ExcludedFrom" => GSTTaxModifierOptions::class,
