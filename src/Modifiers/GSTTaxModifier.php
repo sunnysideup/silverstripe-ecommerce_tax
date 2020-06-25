@@ -11,6 +11,7 @@ use SilverStripe\ORM\DataObject;
 use Sunnysideup\Ecommerce\Config\EcommerceConfig;
 use Sunnysideup\Ecommerce\Model\Address\EcommerceCountry;
 use Sunnysideup\Ecommerce\Model\OrderModifier;
+use Sunnysideup\Ecommerce\Model\OrderModifierDescriptor;
 use Sunnysideup\EcommerceTax\Decorator\GSTTaxDecorator;
 use Sunnysideup\EcommerceTax\Model\GSTTaxModifierOptions;
 
@@ -526,7 +527,7 @@ class GSTTaxModifier extends OrderModifier
                         } else {
                             $actualRate = $rate;
                             $modifierDescriptor = DataObject::get_one(
-                                'OrderModifier_Descriptor',
+                                OrderModifierDescriptor::class,
                                 ['ModifierClassName' => $modifier->ClassName]
                             );
                             if ($modifierDescriptor) {
