@@ -1,5 +1,5 @@
 ---
-Name: ideannotator_sunnysideup/ecommerce_tax_NAME
+Name: ideannotator_sunnysideup/ecommerce_tax
 Only:
   environment: dev
 ---
@@ -10,5 +10,5 @@ SilverLeague\IDEAnnotator\DataObjectAnnotator:
   enabled: true
   use_short_name: true
   enabled_modules:
-    - sunnysideup/ecommerce_tax_NAME
+    - sunnysideup/ecommerce_tax
 
