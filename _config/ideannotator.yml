@@ -1,0 +1,14 @@
+---
+Name: ideannotator_sunnysideup/ecommerce_tax_NAME
+Only:
+  environment: dev
+---
+# This is added automatically. Please do not edit.
+# This is added automatically. Please do not edit.
+# This is added automatically. Please do not edit.
+SilverLeague\IDEAnnotator\DataObjectAnnotator:
+  enabled: true
+  use_short_name: true
+  enabled_modules:
+    - sunnysideup/ecommerce_tax_NAME
+
