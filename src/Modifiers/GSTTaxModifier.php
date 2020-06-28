@@ -759,10 +759,10 @@ class GSTTaxModifier extends OrderModifier
             //then we assume: alternative_country_prices_already_include_their_own_tax
             if ($objects = $this->currentTaxObjects) {
                 $objects = $objects->Filter(
-                            [
-                                'CountryCode' => $currentCountry,
-                            ]
-                        );
+                    [
+                        'CountryCode' => $currentCountry,
+                    ]
+                );
                 if ($objects->count() && $actualNeedToPay === 0) {
                     return 0;
                 }

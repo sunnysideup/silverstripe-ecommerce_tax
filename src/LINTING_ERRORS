@@ -1,0 +1,80 @@
+---------------------------------
+Running Easy Conding Standards
+---------------------------------
+directory of script: /home/ssu/.config/composer/vendor/bin
+directory to analyse: /var/www/upgrades/ecommerce_tax//vendor/sunnysideup/ecommerce_tax/src
+also check (e.g. _config.php file): /var/www/upgrades/ecommerce_tax/app/_config.php
+ecs config file: /home/ssu/.config/composer/vendor/bin/../sunnysideup/easy-coding-standards/ecs.yml
+Available settings (in front of command: dir, also, ecsConfig)
+e.g. dir=foo/bar sslint-ecs
+---------------------------------
+EasyCodingStandard v6.1.0
+Config file: /home/ssu/.config/composer/vendor/sunnysideup/easy-coding-standards/ecs.yml
+ 0/1 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0%
+ 1/1 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%
+
+ [OK] No errors found. Great job - your code is shiny in style!                                                         
+
+EasyCodingStandard v6.1.0
+Config file: /home/ssu/.config/composer/vendor/sunnysideup/easy-coding-standards/ecs.yml
+ 0/3 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0%
+ 3/3 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%
+ -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ vendor/sunnysideup/ecommerce_tax/src/Modifiers/GSTTaxModifier.php:272
+ -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Unused variable $buyable.
+ (SlevomatCodingStandard\Sniffs\Variables\UnusedVariableSniff.UnusedVariable)
+ -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ vendor/sunnysideup/ecommerce_tax/src/Modifiers/GSTTaxModifier.php:459
+ -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Unused variable $itemIndex.
+ (SlevomatCodingStandard\Sniffs\Variables\UnusedVariableSniff.UnusedVariable)
+ -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ [ERROR] Found 2 errors that needs to be fixed manually.                                                                
+
+---------------------------------
+Running PHP STAN
+---------------------------------
+directory of script: /home/ssu/.config/composer/vendor/bin
+directory to analyse: /var/www/upgrades/ecommerce_tax//vendor/sunnysideup/ecommerce_tax/src
+also check (e.g. _config.php file): /var/www/upgrades/ecommerce_tax/app/_config.php
+level: 1 (1/6)
+php stan config file: /home/ssu/.config/composer/vendor/bin/../sunnysideup/easy-coding-standards/phpstan.neon
+Available settings (put in front of command: dir, also, level, stanConfig)
+e.g. dir=foo/bar sslint-stan
+---------------------------------
+# analysing /var/www/upgrades/ecommerce_tax/app/_config.php
+ 0/1 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0%[2K 1/1 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%
+
+ [OK] No errors                                                                                                         
+
+# analysing /var/www/upgrades/ecommerce_tax//vendor/sunnysideup/ecommerce_tax/src
+ 0/3 [░░░░░░░░░░░░░░░░░░░░░░░░░░░░]   0%[2K 3/3 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%
+
+ ------ ----------------------------------- 
+  Line   Decorator/GSTTaxDecorator.php      
+ ------ ----------------------------------- 
+  41     Class ProductVariation not found.  
+  55     Class ProductVariation not found.  
+  74     Class ProductVariation not found.  
+  97     Class ProductVariation not found.  
+ ------ ----------------------------------- 
+
+ ------ ----------------------------------- 
+  Line   Modifiers/GSTTaxModifier.php       
+ ------ ----------------------------------- 
+  268    Class ProductVariation not found.  
+ ------ ----------------------------------- 
+
+ ------------------------------------------------------------------------------------------------- 
+  Error                                                                                            
+ ------------------------------------------------------------------------------------------------- 
+  Ignored error pattern #on an unknown class [a-zA-Z0-9\\_]+# was not matched in reported errors.  
+  Ignored error pattern #with incorrect case:# was not matched in reported errors.                 
+ ------------------------------------------------------------------------------------------------- 
+
+ [ERROR] Found 7 errors                                                                                                 
+
