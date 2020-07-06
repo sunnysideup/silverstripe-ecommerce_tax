@@ -265,7 +265,7 @@ class GSTTaxModifier extends OrderModifier
      */
     public function dealWithProductVariationException($buyable)
     {
-        if ($buyable instanceof ProductVariation) {
+        if (is_a($buyable, 'ProductVariation')) {
             if (! $buyable->hasExtension(GSTTaxDecorator::class)) {
                 if ($parent = $buyable->Parent()) {
                     if ($parent->hasExtension(GSTTaxDecorator::class)) {

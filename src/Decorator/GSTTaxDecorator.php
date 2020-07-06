@@ -38,7 +38,7 @@ class GSTTaxDecorator extends DataExtension
      */
     public function BuyableCalculatedExcludedFrom()
     {
-        if ($this->owner instanceof ProductVariation) {
+        if (is_a($this->owner, 'ProductVariation')) {
             if ($product = $this->owner->Product()) {
                 return $product->ExcludedFrom();
             }
@@ -52,7 +52,7 @@ class GSTTaxDecorator extends DataExtension
      */
     public function BuyableCalculatedAdditionalTax()
     {
-        if ($this->owner instanceof ProductVariation) {
+        if (is_a($this->owner, 'ProductVariation')) {
             if ($product = $this->owner->Product()) {
                 return $product->AdditionalTax();
             }
@@ -71,7 +71,7 @@ class GSTTaxDecorator extends DataExtension
         $fields->removeByName('ExcludedFrom');
         $fields->removeByName('AdditionalTax');
         $tabName = 'Root.Tax';
-        if ($this->owner instanceof ProductVariation) {
+        if (is_a($this->owner, 'ProductVariation')) {
             $fields->addFieldToTab(
                 $tabName,
                 new LiteralField(
@@ -94,7 +94,7 @@ class GSTTaxDecorator extends DataExtension
                 );
             }
         }
-        if ($this->owner instanceof ProductVariation) {
+        if (is_a($this->owner, 'ProductVariation')) {
             $fields->addFieldToTab(
                 $tabName,
                 new LiteralField(
