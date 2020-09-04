@@ -263,7 +263,7 @@ class GSTTaxModifier extends OrderModifier
      */
     public function dealWithProductVariationException($buyable)
     {
-        if (is_a($buyable, 'ProductVariation')) {
+        if (is_a($buyable, ProductVariation::class)) {
             if (! $buyable->hasExtension(GSTTaxDecorator::class)) {
                 if ($parent = $buyable->Parent()) {
                     if ($parent->hasExtension(GSTTaxDecorator::class)) {
@@ -272,6 +272,7 @@ class GSTTaxModifier extends OrderModifier
                 }
             }
         }
+        return $buyable;
     }
 
     public function getTableSubTitle()
@@ -454,12 +455,12 @@ class GSTTaxModifier extends OrderModifier
         if ($order) {
             $items = $this->Order()->Items();
             if ($items) {
-                foreach ($items as $itemIndex => $item) {
+                foreach ($items as $item) {
                     //resetting actual rate...
                     $actualRate = $rate;
                     $buyable = $item->Buyable();
                     if ($buyable) {
-                        $this->dealWithProductVariationException($buyable);
+                        $buyable = $this->dealWithProductVariationException($buyable);
                         if ($buyable->hasExtension(GSTTaxDecorator::class)) {
                             $excludedTaxes = $buyable->BuyableCalculatedExcludedFrom();
                             $additionalTaxes = $buyable->BuyableCalculatedAdditionalTax();
