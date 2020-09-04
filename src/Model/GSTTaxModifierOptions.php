@@ -206,9 +206,9 @@ class GSTTaxModifierOptions extends DataObject
             $InclusiveOrExclusive = 'Exclusive';
         }
         $fields->replaceField(
-            'InclusiveOrExclusive', 
+            'InclusiveOrExclusive',
             ReadonlyField::create(
-                'InclusiveOrExclusive', 
+                'InclusiveOrExclusive',
                 'This tax is: ' . $InclusiveOrExclusive . ', you can change this setting in the e-commerce configuration.'
             )
         );

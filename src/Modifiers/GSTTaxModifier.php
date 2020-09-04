@@ -2,8 +2,6 @@
 
 namespace Sunnysideup\EcommerceTax\Modifiers;
 
-use ProductVariation;
-
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\ReadonlyField;
