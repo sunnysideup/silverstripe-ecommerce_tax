@@ -143,7 +143,7 @@ class GSTTaxModifier extends OrderModifier
 
     /**
      * contains all the applicable DEFAULT tax objects
-     * @var \SilverStripe\ORM\DataList | null
+     * @var \SilverStripe\ORM\DataList|null
      */
     private static $default_tax_objects = null;
 
@@ -155,7 +155,7 @@ class GSTTaxModifier extends OrderModifier
 
     /**
      * contains all the applicable tax objects for the current order
-     * @var \SilverStripe\ORM\DataList | null
+     * @var \SilverStripe\ORM\DataList|null
      */
     private static $current_tax_objects = null;
 
@@ -305,7 +305,7 @@ class GSTTaxModifier extends OrderModifier
      * we need this, because prices may include tax
      * based on the default tax rate.
      *
-     * @return \SilverStripe\ORM\DataList | null of applicable taxes in the default country.
+     * @return \SilverStripe\ORM\DataList|null of applicable taxes in the default country.
      */
     protected function defaultTaxObjects()
     {
@@ -579,7 +579,7 @@ class GSTTaxModifier extends OrderModifier
 
     /**
      * Are there Any taxes that do not apply to all products
-     * @return boolean
+     * @return bool
      */
     protected function hasExceptionTaxes()
     {
