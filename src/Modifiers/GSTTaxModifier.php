@@ -405,7 +405,7 @@ class GSTTaxModifier extends OrderModifier
      */
     protected function isInclusive()
     {
-        return $this->EcomConfig()->ShopPricesAreTaxExclusive ? false : true;
+        return EcommerceConfig::inst()->ShopPricesAreTaxExclusive ? false : true;
         //this code is here to support e-commerce versions that
         //do not have the DB field EcomConfig()->ShopPricesAreTaxExclusive
         $array = [];
