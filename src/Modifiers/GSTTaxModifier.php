@@ -8,6 +8,7 @@ use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\ORM\DataObject;
 use Sunnysideup\Ecommerce\Config\EcommerceConfig;
 use Sunnysideup\Ecommerce\Model\Address\EcommerceCountry;
+use Sunnysideup\Ecommerce\Model\Config\EcommerceDBConfig;
 use Sunnysideup\Ecommerce\Model\OrderModifier;
 use Sunnysideup\Ecommerce\Model\OrderModifierDescriptor;
 use Sunnysideup\EcommerceTax\Decorator\GSTTaxDecorator;
@@ -405,7 +406,7 @@ class GSTTaxModifier extends OrderModifier
      */
     protected function isInclusive()
     {
-        return EcommerceConfig::inst()->ShopPricesAreTaxExclusive ? false : true;
+        return EcommerceDBConfig::current_ecommerce_db_config()->ShopPricesAreTaxExclusive ? false : true;
         //this code is here to support e-commerce versions that
         //do not have the DB field EcomConfig()->ShopPricesAreTaxExclusive
         $array = [];
