@@ -202,7 +202,7 @@ class GSTTaxModifierOptions extends DataObject
         $fieldLabels = $this->Config()->get('field_labels');
         $fields->replaceField('CountryCode', new DropdownField('CountryCode', $fieldLabels['CountryCode'], EcommerceCountry::get_country_dropdown()));
         $InclusiveOrExclusive = 'Inclusive';
-        if (EcommerceDBConfig::current_ecommerce_db_config()->ShopPricesAreTaxExclusive) {
+        if (EcommerceConfig::inst()->ShopPricesAreTaxExclusive) {
             $InclusiveOrExclusive = 'Exclusive';
         }
         $fields->replaceField(
@@ -242,7 +242,7 @@ class GSTTaxModifierOptions extends DataObject
             if ($controller instanceof DatabaseAdmin) {
                 //cant do this now.
             } else {
-                if (EcommerceDBConfig::current_ecommerce_db_config()->ShopPricesAreTaxExclusive) {
+                if (EcommerceConfig::inst()->ShopPricesAreTaxExclusive) {
                     $this->InclusiveOrExclusive = 'Exclusive';
                 } else {
                     $this->InclusiveOrExclusive = 'Inclusive';
@@ -257,7 +257,7 @@ class GSTTaxModifierOptions extends DataObject
     public function onBeforeWrite()
     {
         parent::onBeforeWrite();
-        if (EcommerceDBConfig::current_ecommerce_db_config()->ShopPricesAreTaxExclusive) {
+        if (EcommerceConfig::inst()->ShopPricesAreTaxExclusive) {
             $this->InclusiveOrExclusive = 'Exclusive';
         } else {
             $this->InclusiveOrExclusive = 'Inclusive';
@@ -276,16 +276,6 @@ class GSTTaxModifierOptions extends DataObject
     //         WHERE \"InclusiveOrExclusive\" <> 'Exclusive'"
     //     );
     // }
-
-    /**
-     * returns the instance of EcommerceDBConfig
-     *
-     * @return EcommerceDBConfig | Object
-     **/
-    public function EcomConfig()
-    {
-        return EcommerceDBConfig::current_ecommerce_db_config();
-    }
 
     public function CountryName()
     {
