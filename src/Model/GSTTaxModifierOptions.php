@@ -13,6 +13,7 @@ use SilverStripe\Security\Permission;
 use SilverStripe\Security\Security;
 use Sunnysideup\Ecommerce\Model\Address\EcommerceCountry;
 use Sunnysideup\Ecommerce\Model\Config\EcommerceDBConfig;
+use Sunnysideup\Ecommerce\Config\EcommerceConfig;
 use Sunnysideup\Ecommerce\Model\Extensions\EcommerceRole;
 
 /**
