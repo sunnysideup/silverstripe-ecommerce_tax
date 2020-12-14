@@ -290,6 +290,26 @@ class GSTTaxModifier extends OrderModifier
         }
     }
 
+
+    public function getTotalTaxPerLineItem($item , $rate = 0, $country = '') : float
+    {
+        if(! $rate) {
+            $rate = $this->CurrentRate;
+        }
+        if(! $country) {
+            $country = $this->Country;
+        }
+        $actualRate = $this->workoutActualRateForOneBuyable($rate, $country, $item);
+        $totalForItem = $this->workoutTheTotalAmountPerItem($item);
+        //turnRateIntoCalculationRate is really important -
+        //a 10% rate is different for inclusive than for an exclusive tax
+        $actualCalculationRate = $this->turnRateIntoCalculationRate($actualRate);
+        $this->debugMessage .= "<hr /><b>${actualRate}</b> turned into " . round($actualCalculationRate, 2) . " for a total of <b>${totalForItem}</b> on " . $item->ClassName . '.' . $item->ID;
+
+        return floatval($totalForItem) * $actualCalculationRate;
+
+    }
+
     protected static function get_default_country_code_combined()
     {
         $country = Config::inst()->get(GSTTaxModifier::class, 'default_country_code');
@@ -442,6 +462,8 @@ class GSTTaxModifier extends OrderModifier
         return $this->isExclusive() ? $rate : 1 - (1 / (1 + $rate));
     }
 
+
+
     /**
      * works out the tax to pay for the order items,
      * based on a rate and a country
@@ -449,60 +471,69 @@ class GSTTaxModifier extends OrderModifier
      * @param string $country
      * @return float - amount of tax to pay
      */
-    protected function workoutOrderItemsTax($rate, $country)
+    protected function workoutOrderItemsTax($rate, $country) : float
     {
         $order = $this->Order();
         $itemsTotal = 0;
         if ($order) {
             $items = $this->Order()->Items();
             if ($items) {
-                foreach ($items as $itemIndex => $item) {
-                    //resetting actual rate...
-                    $actualRate = $rate;
-                    $buyable = $item->Buyable();
-                    if ($buyable) {
-                        $this->dealWithProductVariationException($buyable);
-                        if ($buyable->hasExtension(GSTTaxDecorator::class)) {
-                            $excludedTaxes = $buyable->BuyableCalculatedExcludedFrom();
-                            $additionalTaxes = $buyable->BuyableCalculatedAdditionalTax();
-                            if ($excludedTaxes) {
-                                foreach ($excludedTaxes as $tax) {
-                                    if (! $tax->DoesNotApplyToAllProducts) {
-                                        $this->debugMessage .= '<hr />found tax to exclude for ' . $buyable->Title . ': ' . $tax->Title();
-                                        $actualRate -= $tax->Rate;
-                                    }
-                                }
-                            }
-                            if ($additionalTaxes) {
-                                foreach ($additionalTaxes as $tax) {
-                                    if ($tax->DoesNotApplyToAllProducts) {
-                                        if ($tax->AppliesToAllCountries || $tax->CountryCode === $country) {
-                                            $this->debugMessage .= '<hr />found tax to add for ' . $buyable->Title . ': ' . $tax->Title();
-                                            $actualRate += $tax->Rate;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    $totalForItem = $item->Total();
-                    $functionName = $this->config()->get('order_item_function_for_tax_exclusive_portion');
-                    if ($functionName) {
-                        if ($item->hasMethod($functionName)) {
-                            $this->debugMessage .= "<hr />running ${functionName} on " . $item->ClassName . '.' . $item->ID;
-                            $totalForItem -= $item->{$functionName}();
-                        }
-                    }
-                    //turnRateIntoCalculationRate is really important -
-                    //a 10% rate is different for inclusive than for an exclusive tax
-                    $actualCalculationRate = $this->turnRateIntoCalculationRate($actualRate);
-                    $this->debugMessage .= "<hr /><b>${actualRate}</b> turned into " . round($actualCalculationRate, 2) . " for a total of <b>${totalForItem}</b> on " . $item->ClassName . '.' . $item->ID;
-                    $itemsTotal += floatval($totalForItem) * $actualCalculationRate;
+                foreach ($items as $item) {
+                    $itemsTotal += $this->getTotalTaxPerLineItem($item, $rate, $country);
                 }
             }
         }
         $this->debugMessage .= '<hr />Total order items tax: $ ' . round($itemsTotal, 4);
+
         return $itemsTotal;
+    }
+
+
+    protected function workoutActualRateForOneBuyable($rate, $country, $item) :float
+    {
+        //resetting actual rate...
+        $actualRate = $rate;
+        $buyable = $item->Buyable();
+        if ($buyable) {
+            $this->dealWithProductVariationException($buyable);
+            if ($buyable->hasExtension(GSTTaxDecorator::class)) {
+                $excludedTaxes = $buyable->BuyableCalculatedExcludedFrom();
+                $additionalTaxes = $buyable->BuyableCalculatedAdditionalTax();
+                if ($excludedTaxes) {
+                    foreach ($excludedTaxes as $tax) {
+                        if (! $tax->DoesNotApplyToAllProducts) {
+                            $this->debugMessage .= '<hr />found tax to exclude for ' . $buyable->Title . ': ' . $tax->Title();
+                            $actualRate -= $tax->Rate;
+                        }
+                    }
+                }
+                if ($additionalTaxes) {
+                    foreach ($additionalTaxes as $tax) {
+                        if ($tax->DoesNotApplyToAllProducts) {
+                            if ($tax->AppliesToAllCountries || $tax->CountryCode === $country) {
+                                $this->debugMessage .= '<hr />found tax to add for ' . $buyable->Title . ': ' . $tax->Title();
+                                $actualRate += $tax->Rate;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return $actualRate;
+    }
+
+    protected function workoutTheTotalAmountPerItem($item)
+    {
+        $totalForItem = $item->Total();
+        $functionName = $this->config()->get('order_item_function_for_tax_exclusive_portion');
+        if ($functionName) {
+            if ($item->hasMethod($functionName)) {
+                $this->debugMessage .= "<hr />running ${functionName} on " . $item->ClassName . '.' . $item->ID;
+                $totalForItem -= $item->{$functionName}();
+            }
+        }
+
+        return $totalForItem;
     }
 
     /**
