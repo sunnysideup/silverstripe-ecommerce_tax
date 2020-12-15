@@ -2,12 +2,6 @@
 
 namespace Sunnysideup\EcommerceTax\Decorator;
 
-use ProductVariation;
-
-
-
-
-
 use SilverStripe\Forms\CheckboxSetField;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\LiteralField;

@@ -2,8 +2,6 @@
 
 namespace Sunnysideup\EcommerceTax\Modifiers;
 
-use ProductVariation;
-
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\ReadonlyField;
@@ -145,7 +143,7 @@ class GSTTaxModifier extends OrderModifier
 
     /**
      * contains all the applicable DEFAULT tax objects
-     * @var \SilverStripe\ORM\DataList | null
+     * @var \SilverStripe\ORM\DataList|null
      */
     private static $default_tax_objects = null;
 
@@ -157,7 +155,7 @@ class GSTTaxModifier extends OrderModifier
 
     /**
      * contains all the applicable tax objects for the current order
-     * @var \SilverStripe\ORM\DataList | null
+     * @var \SilverStripe\ORM\DataList|null
      */
     private static $current_tax_objects = null;
 
@@ -265,7 +263,7 @@ class GSTTaxModifier extends OrderModifier
      */
     public function dealWithProductVariationException($buyable)
     {
-        if (is_a($buyable, 'ProductVariation')) {
+        if (is_a($buyable, ProductVariation::class)) {
             if (! $buyable->hasExtension(GSTTaxDecorator::class)) {
                 if ($parent = $buyable->Parent()) {
                     if ($parent->hasExtension(GSTTaxDecorator::class)) {
@@ -274,6 +272,7 @@ class GSTTaxModifier extends OrderModifier
                 }
             }
         }
+        return $buyable;
     }
 
     public function getTableSubTitle()
@@ -326,7 +325,7 @@ class GSTTaxModifier extends OrderModifier
      * we need this, because prices may include tax
      * based on the default tax rate.
      *
-     * @return \SilverStripe\ORM\DataList | null of applicable taxes in the default country.
+     * @return \SilverStripe\ORM\DataList|null of applicable taxes in the default country.
      */
     protected function defaultTaxObjects()
     {
@@ -426,7 +425,7 @@ class GSTTaxModifier extends OrderModifier
      */
     protected function isInclusive()
     {
-        return $this->EcomConfig()->ShopPricesAreTaxExclusive ? false : true;
+        return EcommerceConfig::inst()->ShopPricesAreTaxExclusive ? false : true;
         //this code is here to support e-commerce versions that
         //do not have the DB field EcomConfig()->ShopPricesAreTaxExclusive
         $array = [];
@@ -611,7 +610,7 @@ class GSTTaxModifier extends OrderModifier
 
     /**
      * Are there Any taxes that do not apply to all products
-     * @return boolean
+     * @return bool
      */
     protected function hasExceptionTaxes()
     {
@@ -790,10 +789,10 @@ class GSTTaxModifier extends OrderModifier
             //then we assume: alternative_country_prices_already_include_their_own_tax
             if ($objects = $this->currentTaxObjects) {
                 $objects = $objects->Filter(
-                            [
-                                'CountryCode' => $currentCountry,
-                            ]
-                        );
+                    [
+                        'CountryCode' => $currentCountry,
+                    ]
+                );
                 if ($objects->count() && $actualNeedToPay === 0) {
                     return 0;
                 }
