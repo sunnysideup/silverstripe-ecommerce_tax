@@ -289,6 +289,20 @@ class GSTTaxModifier extends OrderModifier
         }
     }
 
+    /* takes and amount inclusive of tax and returns the tax amount */
+    public function simpleTaxCalculation($amountInclTax , $rate = 0, $country = '') : float
+    {
+        if(! $rate) {
+            $rate = $this->CurrentRate;
+        }
+        if(! $country) {
+            $country = $this->Country;
+        }
+
+        $actualCalculationRate = $this->turnRateIntoCalculationRate($rate);
+
+        return floatval($amountInclTax) * $actualCalculationRate;
+    }
 
     public function getTotalTaxPerLineItem($item , $rate = 0, $country = '') : float
     {
