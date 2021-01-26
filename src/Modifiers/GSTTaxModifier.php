@@ -290,26 +290,26 @@ class GSTTaxModifier extends OrderModifier
     }
 
     /* takes and amount inclusive of tax and returns the tax amount */
-    public function simpleTaxCalculation($amountInclTax , $rate = 0, $country = '') : float
+    public function simpleTaxCalculation($amountInclTax, $rate = 0, $country = ''): float
     {
-        if(! $rate) {
+        if (! $rate) {
             $rate = $this->CurrentRate;
         }
-        if(! $country) {
-            $country = $this->Country;
-        }
+        // if (! $country) {
+        //     $country = $this->Country;
+        // }
 
         $actualCalculationRate = $this->turnRateIntoCalculationRate($rate);
 
         return floatval($amountInclTax) * $actualCalculationRate;
     }
 
-    public function getTotalTaxPerLineItem($item , $rate = 0, $country = '') : float
+    public function getTotalTaxPerLineItem($item, $rate = 0, $country = ''): float
     {
-        if(! $rate) {
+        if (! $rate) {
             $rate = $this->CurrentRate;
         }
-        if(! $country) {
+        if (! $country) {
             $country = $this->Country;
         }
         $actualRate = $this->workoutActualRateForOneBuyable($rate, $country, $item);
@@ -320,7 +320,6 @@ class GSTTaxModifier extends OrderModifier
         $this->debugMessage .= "<hr /><b>${actualRate}</b> turned into " . round($actualCalculationRate, 2) . " for a total of <b>${totalForItem}</b> on " . $item->ClassName . '.' . $item->ID;
 
         return floatval($totalForItem) * $actualCalculationRate;
-
     }
 
     protected static function get_default_country_code_combined()
@@ -475,8 +474,6 @@ class GSTTaxModifier extends OrderModifier
         return $this->isExclusive() ? $rate : 1 - (1 / (1 + $rate));
     }
 
-
-
     /**
      * works out the tax to pay for the order items,
      * based on a rate and a country
@@ -484,7 +481,7 @@ class GSTTaxModifier extends OrderModifier
      * @param string $country
      * @return float - amount of tax to pay
      */
-    protected function workoutOrderItemsTax($rate, $country) : float
+    protected function workoutOrderItemsTax($rate, $country): float
     {
         $order = $this->Order();
         $itemsTotal = 0;
@@ -501,8 +498,7 @@ class GSTTaxModifier extends OrderModifier
         return $itemsTotal;
     }
 
-
-    protected function workoutActualRateForOneBuyable($rate, $country, $item) :float
+    protected function workoutActualRateForOneBuyable($rate, $country, $item): float
     {
         //resetting actual rate...
         $actualRate = $rate;

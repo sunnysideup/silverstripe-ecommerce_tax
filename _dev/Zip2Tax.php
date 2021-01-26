@@ -36,13 +36,15 @@ class Zip2Tax
         if (! $query) {
             return;
         }
-        while ($row = mysql_fetch_array($query, MYSQL_ASSOC)) {
+        $row = mysql_fetch_array($query, MYSQL_ASSOC);
+        while ($row) {
             echo 'Zip Code: ' . $row['Zip_Code'] . '<br>';
             echo 'Sales Tax Rate: ' . $row['Sales_Tax_Rate'] . '<br>';
             echo 'Post Office City: ' . $row['Post_Office_City'] . '<br>';
             echo 'County: ' . $row['County'] . '<br>';
             echo 'State: ' . $row['State'] . '<br>';
             echo 'Shipping Taxable: ' . $row['Shipping_Taxable'] . '<br>';
+            $row = mysql_fetch_array($query, MYSQL_ASSOC);
         }
         mysql_free_result($query);
         mysql_close($connection);
