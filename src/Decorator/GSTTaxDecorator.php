@@ -109,7 +109,7 @@ class GSTTaxDecorator extends DataExtension
                         $excludedOptionsList
                     )
                 );
-                $additionalWhereForDefault = ' "GSTTaxModifierOptions"."ID" NOT IN (' . implode(', ', $excludedOptions->map('ID', 'ID')->toArray()) . ')';
+                $additionalWhereForDefault = ' "GSTTaxModifierOptions"."ID" NOT IN (' . implode(', ', $excludedOptions->columnUnique()) . ')';
             }
         }
         //default options

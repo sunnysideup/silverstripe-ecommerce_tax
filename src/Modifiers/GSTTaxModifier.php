@@ -385,7 +385,7 @@ class GSTTaxModifier extends OrderModifier
                         "(\"CountryCode\" = '" . $countryCode . "' OR \"AppliesToAllCountries\" = 1) AND \"DoesNotApplyToAllProducts\" = 0"
                     );
                 if (self::$current_tax_objects->count()) {
-                    $this->GSTTaxModifierOptions()->addMany(self::$current_tax_objects->map('ID', 'ID')->toArray());
+                    $this->GSTTaxModifierOptions()->addMany(self::$current_tax_objects->columnUnique());
                     $this->debugMessage .= '<hr />There are tax objects available for ' . $countryCode;
                 } else {
                     self::$current_tax_objects = null;
