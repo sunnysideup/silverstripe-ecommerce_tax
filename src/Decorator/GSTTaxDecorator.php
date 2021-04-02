@@ -56,7 +56,6 @@ class GSTTaxDecorator extends DataExtension
 
     /**
      * standard SS method
-     * @param \SilverStripe\Forms\FieldList $fields
      * @return \SilverStripe\Forms\FieldList
      */
     public function updateCMSFields(FieldList $fields)
