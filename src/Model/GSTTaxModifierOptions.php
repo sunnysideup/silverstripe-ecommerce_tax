@@ -235,7 +235,6 @@ class GSTTaxModifierOptions extends DataObject
      */
     public function populateDefaults()
     {
-        parent::populateDefaults();
         //can only run after first dev/build
         if (Security::database_is_ready()) {
             $controller = Controller::curr();
@@ -249,6 +248,7 @@ class GSTTaxModifierOptions extends DataObject
                 }
             }
         }
+        return parent::populateDefaults();
     }
 
     /**

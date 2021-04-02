@@ -56,7 +56,6 @@ class GSTTaxDecorator extends DataExtension
 
     /**
      * standard SS method
-     * @return \SilverStripe\Forms\FieldList
      */
     public function updateCMSFields(FieldList $fields)
     {
@@ -130,6 +129,7 @@ class GSTTaxDecorator extends DataExtension
     public function TaxInclusivePrice()
     {
         user_error('to be completed');
+        return 99999;
     }
 
     /**
@@ -139,5 +139,6 @@ class GSTTaxDecorator extends DataExtension
     public function TaxExclusivePrice()
     {
         user_error('to be completed');
+        return 99999;
     }
 }
