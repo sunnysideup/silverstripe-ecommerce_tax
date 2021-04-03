@@ -176,7 +176,7 @@ class GSTTaxModifierOptions extends DataObject
      * standard SS method
      * @return bool
      */
-    public function canDelete($member = null, $context = [])
+    public function canDelete($member = null)
     {
         $extended = $this->extendedCan(__FUNCTION__, $member);
         if ($extended !== null) {
