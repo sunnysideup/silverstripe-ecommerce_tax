@@ -10,6 +10,8 @@ use Sunnysideup\Ecommerce\Config\EcommerceConfig;
 use Sunnysideup\Ecommerce\Model\Address\EcommerceCountry;
 use Sunnysideup\Ecommerce\Model\OrderModifier;
 use Sunnysideup\Ecommerce\Model\OrderModifierDescriptor;
+
+use Sunnysideup\Ecommerce\Pages\Product;
 use Sunnysideup\EcommerceTax\Decorator\GSTTaxDecorator;
 use Sunnysideup\EcommerceTax\Model\GSTTaxModifierOptions;
 
@@ -263,7 +265,7 @@ class GSTTaxModifier extends OrderModifier
      */
     public function dealWithProductVariationException($buyable)
     {
-        if (is_a($buyable, ProductVariation::class)) {
+        if (Product::is_product_variation($buyable)) {
             if (! $buyable->hasExtension(GSTTaxDecorator::class)) {
                 if ($parent = $buyable->Parent()) {
                     if ($parent->hasExtension(GSTTaxDecorator::class)) {
