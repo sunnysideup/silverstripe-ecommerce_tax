@@ -250,9 +250,8 @@ class GSTTaxModifier extends OrderModifier
     /**
      * Show the GSTTaxModifier in the Cart?
      * standard OrderModifier Method
-     * @return bool
      */
-    public function ShowInTable() : bool
+    public function ShowInTable(): bool
     {
         return $this->Config()->get('show_in_cart_table');
     }
