@@ -18,7 +18,8 @@ use Sunnysideup\EcommerceTax\Model\GSTTaxModifierOptions;
 class GSTTaxDecorator extends DataExtension
 {
     /**
-     * standard SS method
+     * standard SS method.
+     *
      * @return array
      */
     private static $many_many = [
@@ -27,7 +28,8 @@ class GSTTaxDecorator extends DataExtension
     ];
 
     /**
-     * for variations, use product for data
+     * for variations, use product for data.
+     *
      * @return \SilverStripe\ORM\DataList
      */
     public function BuyableCalculatedExcludedFrom()
@@ -37,11 +39,13 @@ class GSTTaxDecorator extends DataExtension
                 return $product->ExcludedFrom();
             }
         }
+
         return $this->owner->ExcludedFrom();
     }
 
     /**
-     * for variations, use product for data
+     * for variations, use product for data.
+     *
      * @return \SilverStripe\ORM\DataList
      */
     public function BuyableCalculatedAdditionalTax()
@@ -51,11 +55,12 @@ class GSTTaxDecorator extends DataExtension
                 return $product->AdditionalTax();
             }
         }
+
         return $this->owner->AdditionalTax();
     }
 
     /**
-     * standard SS method
+     * standard SS method.
      */
     public function updateCMSFields(FieldList $fields)
     {
@@ -113,7 +118,8 @@ class GSTTaxDecorator extends DataExtension
         //default options
         $defaultOptions = GSTTaxModifierOptions::get()
             ->filter(['DoesNotApplyToAllProducts' => 0])
-            ->where($additionalWhereForDefault);
+            ->where($additionalWhereForDefault)
+        ;
         if ($defaultOptions->count()) {
             $fields->addFieldToTab(
                 $tabName,
@@ -123,22 +129,26 @@ class GSTTaxDecorator extends DataExtension
     }
 
     /**
-     * returns the calculated price for the buyable including tax
+     * returns the calculated price for the buyable including tax.
+     *
      * @return float
      */
     public function TaxInclusivePrice()
     {
         user_error('to be completed');
+
         return 99999;
     }
 
     /**
-     * returns the calculated price for the buyable excluding tax
+     * returns the calculated price for the buyable excluding tax.
+     *
      * @return float
      */
     public function TaxExclusivePrice()
     {
         user_error('to be completed');
+
         return 99999;
     }
 }

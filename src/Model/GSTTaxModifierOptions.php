@@ -17,13 +17,12 @@ use Sunnysideup\Ecommerce\Model\Extensions\EcommerceRole;
 
 /**
  *@author nicolaas [at] sunnysideup.co.nz
- *
- **/
-
+ */
 class GSTTaxModifierOptions extends DataObject
 {
     /**
-     * standard SS variable
+     * standard SS variable.
+     *
      * @var string
      */
     private static $table_name = 'GSTTaxModifierOptions';
@@ -40,7 +39,8 @@ class GSTTaxModifierOptions extends DataObject
     ];
 
     /**
-     * standard SS variable
+     * standard SS variable.
+     *
      * @var array
      */
     private static $defaults = [
@@ -48,7 +48,8 @@ class GSTTaxModifierOptions extends DataObject
     ];
 
     /**
-     * standard SS variable
+     * standard SS variable.
+     *
      * @var array
      */
     private static $casting = [
@@ -57,7 +58,8 @@ class GSTTaxModifierOptions extends DataObject
     ];
 
     /**
-     * standard SS variable
+     * standard SS variable.
+     *
      * @var array
      */
     private static $indexes = [
@@ -65,7 +67,8 @@ class GSTTaxModifierOptions extends DataObject
     ];
 
     /**
-     * standard SS variable
+     * standard SS variable.
+     *
      * @var array
      */
     private static $searchable_fields = [
@@ -75,7 +78,8 @@ class GSTTaxModifierOptions extends DataObject
     ];
 
     /**
-     * standard SS variable
+     * standard SS variable.
+     *
      * @var array
      */
     private static $field_labels = [
@@ -91,7 +95,8 @@ class GSTTaxModifierOptions extends DataObject
     ];
 
     /**
-     * standard SS variable
+     * standard SS variable.
+     *
      * @var array
      */
     private static $summary_fields = [
@@ -103,13 +108,15 @@ class GSTTaxModifierOptions extends DataObject
     ];
 
     /**
-     * standard SS variable
+     * standard SS variable.
+     *
      * @var string
      */
     private static $singular_name = 'Tax Option';
 
     /**
-     * standard SS variable
+     * standard SS variable.
+     *
      * @var string
      */
     private static $plural_name = 'Tax Options';
@@ -125,71 +132,91 @@ class GSTTaxModifierOptions extends DataObject
     }
 
     /**
-     * standard SS method
+     * standard SS method.
+     *
+     * @param null|mixed $member
+     * @param mixed      $context
+     *
      * @return bool
      */
     public function canCreate($member = null, $context = [])
     {
         $extended = $this->extendedCan(__FUNCTION__, $member);
-        if ($extended !== null) {
+        if (null !== $extended) {
             return $extended;
         }
         if (Permission::checkMember($member, Config::inst()->get(EcommerceRole::class, 'admin_permission_code'))) {
             return true;
         }
+
         return parent::canCreate($member);
     }
 
     /**
-     * standard SS method
+     * standard SS method.
+     *
+     * @param null|mixed $member
+     * @param mixed      $context
+     *
      * @return bool
      */
     public function canView($member = null, $context = [])
     {
         $extended = $this->extendedCan(__FUNCTION__, $member);
-        if ($extended !== null) {
+        if (null !== $extended) {
             return $extended;
         }
         if (Permission::checkMember($member, Config::inst()->get(EcommerceRole::class, 'admin_permission_code'))) {
             return true;
         }
+
         return parent::canCreate($member);
     }
 
     /**
-     * standard SS method
+     * standard SS method.
+     *
+     * @param null|mixed $member
+     * @param mixed      $context
+     *
      * @return bool
      */
     public function canEdit($member = null, $context = [])
     {
         $extended = $this->extendedCan(__FUNCTION__, $member);
-        if ($extended !== null) {
+        if (null !== $extended) {
             return $extended;
         }
         if (Permission::checkMember($member, Config::inst()->get(EcommerceRole::class, 'admin_permission_code'))) {
             return true;
         }
+
         return parent::canEdit($member);
     }
 
     /**
-     * standard SS method
+     * standard SS method.
+     *
+     * @param null|mixed $member
+     *
      * @return bool
      */
     public function canDelete($member = null)
     {
         $extended = $this->extendedCan(__FUNCTION__, $member);
-        if ($extended !== null) {
+        if (null !== $extended) {
             return $extended;
         }
         if (Permission::checkMember($member, Config::inst()->get(EcommerceRole::class, 'admin_permission_code'))) {
             return true;
         }
+
         return parent::canDelete($member);
     }
 
     /**
-     * standard SS method
+     * standard SS method.
+     *
      * @return \SilverStripe\Forms\FieldList
      */
     public function getCMSFields()
@@ -208,6 +235,7 @@ class GSTTaxModifierOptions extends DataObject
                 'This tax is: ' . $InclusiveOrExclusive . ', you can change this setting in the e-commerce configuration.'
             )
         );
+
         return $fields;
     }
 
@@ -223,11 +251,12 @@ class GSTTaxModifierOptions extends DataObject
         } else {
             $country = $this->CountryCode;
         }
-        return $this->Name . " (${country}, " . number_format($this->Rate * 100, 2) . '%)';
+
+        return $this->Name . " ({$country}, " . number_format($this->Rate * 100, 2) . '%)';
     }
 
     /**
-     * standard SS method
+     * standard SS method.
      */
     public function populateDefaults()
     {
@@ -244,11 +273,12 @@ class GSTTaxModifierOptions extends DataObject
                 }
             }
         }
+
         return parent::populateDefaults();
     }
 
     /**
-     * standard SS method
+     * standard SS method.
      */
     public function onBeforeWrite()
     {
