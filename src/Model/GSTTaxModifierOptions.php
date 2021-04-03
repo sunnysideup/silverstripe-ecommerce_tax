@@ -126,7 +126,7 @@ class GSTTaxModifierOptions extends DataObject
 
     /**
      * standard SS method
-     * @param \SilverStripe\Security\Member $member | NULL
+     * @param \SilverStripe\Security\Member $member|null
      * @return bool
      */
     public function canCreate($member = null, $context = [])
@@ -143,7 +143,7 @@ class GSTTaxModifierOptions extends DataObject
 
     /**
      * standard SS method
-     * @param \SilverStripe\Security\Member $member | NULL
+     * @param \SilverStripe\Security\Member $member|null
      * @return bool
      */
     public function canView($member = null, $context = [])
@@ -160,7 +160,7 @@ class GSTTaxModifierOptions extends DataObject
 
     /**
      * standard SS method
-     * @param \SilverStripe\Security\Member $member | NULL
+     * @param \SilverStripe\Security\Member $member|null
      * @return bool
      */
     public function canEdit($member = null, $context = [])
@@ -177,7 +177,7 @@ class GSTTaxModifierOptions extends DataObject
 
     /**
      * standard SS method
-     * @param \SilverStripe\Security\Member $member | NULL
+     * @param \SilverStripe\Security\Member $member|null
      * @return bool
      */
     public function canDelete($member = null, $context = [])

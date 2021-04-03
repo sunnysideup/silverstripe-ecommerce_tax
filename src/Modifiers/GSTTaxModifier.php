@@ -151,7 +151,7 @@ class GSTTaxModifier extends OrderModifier
 
     /**
      * tells us the default tax objects tax rate
-     * @var float | Null
+     * @var float|null
      */
     private static $default_tax_objects_rate = null;
 
@@ -372,7 +372,7 @@ class GSTTaxModifier extends OrderModifier
 
     /**
      * returns an ArrayList of all applicable tax options
-     * @return \SilverStripe\ORM\DataList | Null
+     * @return \SilverStripe\ORM\DataList|null
      */
     protected function currentTaxObjects()
     {
