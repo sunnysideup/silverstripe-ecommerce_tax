@@ -154,28 +154,28 @@ class GSTTaxModifier extends OrderModifier
     /**
      * contains all the applicable DEFAULT tax objects.
      *
-     * @var null|\SilverStripe\ORM\DataList
+     * @var \SilverStripe\ORM\DataList
      */
     private static $default_tax_objects = null;
 
     /**
      * tells us the default tax objects tax rate.
      *
-     * @var null|float
+     * @var float
      */
     private static $default_tax_objects_rate = null;
 
     /**
      * contains all the applicable tax objects for the current order.
      *
-     * @var null|\SilverStripe\ORM\DataList
+     * @var \SilverStripe\ORM\DataList
      */
     private static $current_tax_objects = null;
 
     /**
      * tells us the current tax objects tax rate.
      *
-     * @var null|float
+     * @var float
      */
     private static $current_tax_objects_rate = null;
 
