@@ -79,7 +79,7 @@ class GSTTaxDecorator extends DataExtension
         } else {
             //additional taxes
             $additionalOptions = GSTTaxModifierOptions::get()->filter(['DoesNotApplyToAllProducts' => 1]);
-            if ($additionalOptions->count()) {
+            if ($additionalOptions->exists()) {
                 $additionalOptionsList = $additionalOptions->map()->toArray();
                 $fields->addFieldToTab(
                     $tabName,
@@ -102,7 +102,7 @@ class GSTTaxDecorator extends DataExtension
         } else {
             //excluded options
             $excludedOptions = GSTTaxModifierOptions::get()->filter(['DoesNotApplyToAllProducts' => 0]);
-            if ($excludedOptions->count()) {
+            if ($excludedOptions->exists()) {
                 $excludedOptionsList = $excludedOptions->map()->toArray();
                 $fields->addFieldToTab(
                     $tabName,
@@ -120,7 +120,7 @@ class GSTTaxDecorator extends DataExtension
             ->filter(['DoesNotApplyToAllProducts' => 0])
             ->where($additionalWhereForDefault)
         ;
-        if ($defaultOptions->count()) {
+        if ($defaultOptions->exists()) {
             $fields->addFieldToTab(
                 $tabName,
                 new ReadonlyField('AlwaysApplies', '+ ' . implode(', ', $defaultOptions->map()->toArray()) . '.')

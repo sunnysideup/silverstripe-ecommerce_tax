@@ -375,7 +375,7 @@ class GSTTaxModifier extends OrderModifier
                         ]
                     )
                 ;
-                if (self::$default_tax_objects->count()) {
+                if (self::$default_tax_objects->exists()) {
                     $this->debugMessage .= '<hr />there are DEFAULT tax objects available for ' . $defaultCountryCode;
                 } else {
                     self::$default_tax_objects = null;
@@ -409,7 +409,7 @@ class GSTTaxModifier extends OrderModifier
                         "(\"CountryCode\" = '" . $countryCode . "' OR \"AppliesToAllCountries\" = 1) AND \"DoesNotApplyToAllProducts\" = 0"
                     )
                 ;
-                if (self::$current_tax_objects->count()) {
+                if (self::$current_tax_objects->exists()) {
                     $this->GSTTaxModifierOptions()->addMany(self::$current_tax_objects->columnUnique());
                     $this->debugMessage .= '<hr />There are tax objects available for ' . $countryCode;
                 } else {
@@ -437,7 +437,7 @@ class GSTTaxModifier extends OrderModifier
     protected function workOutSumRate($taxObjects)
     {
         $sumRate = 0;
-        if ($taxObjects && $taxObjects->count()) {
+        if ($taxObjects->exists()) {
             foreach ($taxObjects as $obj) {
                 $this->debugMessage .= '<hr />found ' . $obj->Title();
                 $sumRate += floatval($obj->Rate);
