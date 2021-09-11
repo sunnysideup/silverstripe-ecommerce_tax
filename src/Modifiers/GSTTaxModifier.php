@@ -156,28 +156,28 @@ class GSTTaxModifier extends OrderModifier
      *
      * @var \SilverStripe\ORM\DataList
      */
-    private static $default_tax_objects = null;
+    private static $default_tax_objects;
 
     /**
      * tells us the default tax objects tax rate.
      *
      * @var float
      */
-    private static $default_tax_objects_rate = null;
+    private static $default_tax_objects_rate;
 
     /**
      * contains all the applicable tax objects for the current order.
      *
      * @var \SilverStripe\ORM\DataList
      */
-    private static $current_tax_objects = null;
+    private static $current_tax_objects;
 
     /**
      * tells us the current tax objects tax rate.
      *
      * @var float
      */
-    private static $current_tax_objects_rate = null;
+    private static $current_tax_objects_rate;
 
     /**
      * temporary store of data for additional speed.
@@ -835,7 +835,7 @@ class GSTTaxModifier extends OrderModifier
      * The inclusive case: work out what was included and then work out what is applicable
      * (current), then work out the difference.
      *
-     * @return \SilverStripe\ORM\FieldType\DBCurrency | float | int
+     * @return float|int|\SilverStripe\ORM\FieldType\DBCurrency
      */
     protected function LiveCalculatedTotal()
     {
