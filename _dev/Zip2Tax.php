@@ -7,9 +7,9 @@ use SilverStripe\Core\Config\Configurable;
 use SilverStripe\Core\Extensible;
 use SilverStripe\Core\Injector\Injectable;
 
-/**
- * @see http://www.zip2tax.com/developers/z2t_developers_example.asp?language=PHP&file=php&db=mysql
- */
+// @see http://www.zip2tax.com/developers/z2t_developers_example.asp?language=PHP&file=php&db=mysql
+
+/*
 class Zip2Tax
 {
     use Extensible;
@@ -26,7 +26,7 @@ class Zip2Tax
         if (! $connection) {
             return;
         }
-        $selected = mysql_select_db($database, $connection);
+        //$selected = mysql_select_db($database, $connection);
         if (! $selected) {
             return;
         }
@@ -36,7 +36,7 @@ class Zip2Tax
         if (! $query) {
             return;
         }
-        $row = mysql_fetch_array($query, MYSQL_ASSOC);
+        //$row = mysql_fetch_array($query, MYSQL_ASSOC);
         while ($row) {
             echo 'Zip Code: ' . $row['Zip_Code'] . '<br>';
             echo 'Sales Tax Rate: ' . $row['Sales_Tax_Rate'] . '<br>';
@@ -46,7 +46,8 @@ class Zip2Tax
             echo 'Shipping Taxable: ' . $row['Shipping_Taxable'] . '<br>';
             $row = mysql_fetch_array($query, MYSQL_ASSOC);
         }
-        mysql_free_result($query);
-        mysql_close($connection);
+        //mysql_free_result($query);
+        //mysql_close($connection);
     }
 }
+*/
