@@ -35,12 +35,12 @@ class GSTTaxDecorator extends DataExtension
     public function BuyableCalculatedExcludedFrom()
     {
         if (is_a($this->owner, 'ProductVariation')) {
-            if ($product = $this->owner->Product()) {
+            if ($product = $this->getOwner()->Product()) {
                 return $product->ExcludedFrom();
             }
         }
 
-        return $this->owner->ExcludedFrom();
+        return $this->getOwner()->ExcludedFrom();
     }
 
     /**
@@ -51,12 +51,12 @@ class GSTTaxDecorator extends DataExtension
     public function BuyableCalculatedAdditionalTax()
     {
         if (is_a($this->owner, 'ProductVariation')) {
-            if ($product = $this->owner->Product()) {
+            if ($product = $this->getOwner()->Product()) {
                 return $product->AdditionalTax();
             }
         }
 
-        return $this->owner->AdditionalTax();
+        return $this->getOwner()->AdditionalTax();
     }
 
     /**
