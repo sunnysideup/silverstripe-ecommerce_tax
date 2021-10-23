@@ -859,7 +859,7 @@ class GSTTaxModifier extends OrderModifier
                         'CountryCode' => $currentCountry,
                     ]
                 );
-                if ($objects->count() && 0 === $actualNeedToPay) {
+                if ($objects->exists() && 0 === $actualNeedToPay) {
                     return 0;
                 }
             }
