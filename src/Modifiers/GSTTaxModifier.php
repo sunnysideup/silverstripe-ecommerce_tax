@@ -284,7 +284,7 @@ class GSTTaxModifier extends OrderModifier
     {
         if (Product::is_product_variation($buyable)) {
             if (! $buyable->hasExtension(GSTTaxDecorator::class)) {
-                if ($parent = $buyable->Parent()) {
+                if ($parent = $buyable->ParentGroup()) {
                     if ($parent->hasExtension(GSTTaxDecorator::class)) {
                         $buyable = $parent;
                     }
