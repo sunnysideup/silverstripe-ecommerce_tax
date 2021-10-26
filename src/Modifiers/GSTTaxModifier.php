@@ -853,7 +853,8 @@ class GSTTaxModifier extends OrderModifier
 
             //if there are country specific objects but no value
             //then we assume: alternative_country_prices_already_include_their_own_tax
-            if ($objects = $this->currentTaxObjects) {
+            $objects = $this->currentTaxObjects;
+            if ($objects) {
                 $objects = $objects->Filter(
                     [
                         'CountryCode' => $currentCountry,
