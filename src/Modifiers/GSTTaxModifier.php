@@ -284,7 +284,8 @@ class GSTTaxModifier extends OrderModifier
     {
         if (Product::is_product_variation($buyable)) {
             if (! $buyable->hasExtension(GSTTaxDecorator::class)) {
-                if ($parent = $buyable->ParentGroup()) {
+                $parent = $buyable->ParentGroup();
+                if ($parent) {
                     if ($parent->hasExtension(GSTTaxDecorator::class)) {
                         $buyable = $parent;
                     }
@@ -401,7 +402,8 @@ class GSTTaxModifier extends OrderModifier
     {
         if (null === self::$current_tax_objects) {
             $this->GSTTaxModifierOptions()->removeAll();
-            if ($countryCode = $this->LiveCountry()) {
+            $countryCode = $this->LiveCountry();
+            if ($countryCode) {
                 $this->debugMessage .= '<hr />There is a current live country: ' . $countryCode;
                 self::$current_tax_objects = GSTTaxModifierOptions::get()->where("(\"CountryCode\" = '" . $countryCode . "' OR \"AppliesToAllCountries\" = 1) AND \"DoesNotApplyToAllProducts\" = 0");
                 GSTTaxModifierOptions::get()
@@ -477,7 +479,8 @@ class GSTTaxModifier extends OrderModifier
         //because we want to know for the default country
         //that is the actual country may not have any prices
         //associated with it!
-        if ($objects = $this->defaultTaxObjects()) {
+        $objects = $this->defaultTaxObjects();
+        if ($objects) {
             foreach ($objects as $obj) {
                 $array[$obj->InclusiveOrExclusive] = $obj->InclusiveOrExclusive;
             }
@@ -597,7 +600,8 @@ class GSTTaxModifier extends OrderModifier
         $modifiersTotal = 0;
         $order = $this->Order();
         if ($order) {
-            if ($modifiers = $order->Modifiers()) {
+            $modifiers = $order->Modifiers();
+            if ($modifiers) {
                 foreach ($modifiers as $modifier) {
                     if ($modifier->IsRemoved()) {
                         //do nothing
