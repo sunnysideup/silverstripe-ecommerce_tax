@@ -542,7 +542,7 @@ class GSTTaxModifier extends OrderModifier
     {
         //resetting actual rate...
         $actualRate = $rate;
-        $buyable = $item->Buyable();
+        $buyable = $item->getBuyableCached();
         if ($buyable) {
             $this->dealWithProductVariationException($buyable);
             if ($buyable->hasExtension(GSTTaxDecorator::class)) {
