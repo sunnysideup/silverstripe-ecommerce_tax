@@ -523,10 +523,10 @@ class GSTTaxModifier extends OrderModifier
      */
     protected function workoutOrderItemsTax($rate, $country): float
     {
-        $order = $this->Order();
+        $order = $this->getOrderCached();
         $itemsTotal = 0;
         if ($order) {
-            $items = $this->Order()->Items();
+            $items = $this->getOrderCached()->Items();
             if ($items) {
                 foreach ($items as $item) {
                     $itemsTotal += $this->getTotalTaxPerLineItem($item, $rate, $country);
@@ -598,7 +598,7 @@ class GSTTaxModifier extends OrderModifier
     protected function workoutModifiersTax($rate, $country)
     {
         $modifiersTotal = 0;
-        $order = $this->Order();
+        $order = $this->getOrderCached();
         if ($order) {
             $modifiers = $order->Modifiers();
             if ($modifiers) {
