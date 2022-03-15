@@ -439,7 +439,7 @@ class GSTTaxModifier extends OrderModifier
     protected function workOutSumRate($taxObjects)
     {
         $sumRate = 0;
-        if ($taxObjects->exists()) {
+        if ($taxObjects && $taxObjects->exists()) {
             foreach ($taxObjects as $obj) {
                 $this->debugMessage .= '<hr />found ' . $obj->Title();
                 $sumRate += floatval($obj->Rate);
