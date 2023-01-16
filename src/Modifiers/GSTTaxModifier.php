@@ -237,10 +237,11 @@ class GSTTaxModifier extends OrderModifier
 
     /**
      * updates database fields.
+     * We always run this!
      *
      * @param bool $recalculate - run it, even if it has run already
      */
-    public function runUpdate($recalculate = false)
+    public function runUpdate($recalculate = true)
     {
         //order is important!
         $this->checkField('DefaultCountry', $recalculate);
@@ -816,15 +817,12 @@ class GSTTaxModifier extends OrderModifier
      */
     protected function LiveRawTableValue()
     {
-        if (! isset(self::$temp_raw_table_value[$this->OrderID])) {
-            $currentRate = $this->LiveCurrentRate();
-            $currentCountry = $this->LiveCountry();
-            $itemsTax = $this->workoutOrderItemsTax($currentRate, $currentCountry);
-            $modifiersTax = $this->workoutModifiersTax($currentRate, $currentCountry);
-            self::$temp_raw_table_value[$this->OrderID] = $itemsTax + $modifiersTax;
-        }
-
-        return self::$temp_raw_table_value[$this->OrderID];
+        // if (! isset(self::$temp_raw_table_value[$this->OrderID])) {
+        $currentRate = $this->LiveCurrentRate();
+        $currentCountry = $this->LiveCountry();
+        $itemsTax = $this->workoutOrderItemsTax($currentRate, $currentCountry);
+        $modifiersTax = $this->workoutModifiersTax($currentRate, $currentCountry);
+        return $itemsTax + $modifiersTax;
     }
 
     /**
