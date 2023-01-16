@@ -238,19 +238,19 @@ class GSTTaxModifier extends OrderModifier
     /**
      * updates database fields.
      *
-     * @param bool $force - run it, even if it has run already
+     * @param bool $recalculate - run it, even if it has run already
      */
-    public function runUpdate($force = false)
+    public function runUpdate($recalculate = false)
     {
         //order is important!
-        $this->checkField('DefaultCountry');
-        $this->checkField('Country');
-        $this->checkField('DefaultRate');
-        $this->checkField('CurrentRate');
-        $this->checkField('TaxType');
-        $this->checkField('RawTableValue');
-        $this->checkField('DebugString');
-        parent::runUpdate($force);
+        $this->checkField('DefaultCountry', $recalculate);
+        $this->checkField('Country', $recalculate);
+        $this->checkField('DefaultRate', $recalculate);
+        $this->checkField('CurrentRate', $recalculate);
+        $this->checkField('TaxType', $recalculate);
+        $this->checkField('RawTableValue', $recalculate);
+        $this->checkField('DebugString', $recalculate);
+        parent::runUpdate($recalculate);
     }
 
     // ######################################## *** form functions (e. g. Showform and getform)
