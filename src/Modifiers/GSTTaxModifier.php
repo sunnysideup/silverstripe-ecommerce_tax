@@ -180,13 +180,6 @@ class GSTTaxModifier extends OrderModifier
      */
     private static $current_tax_objects_rate;
 
-    /**
-     * temporary store of data for additional speed.
-     *
-     * @var array
-     */
-    private static $temp_raw_table_value = [];
-
     private static $field_or_method_to_use_for_sub_title = '';
 
     private static $debug = false;
