@@ -240,7 +240,7 @@ class GSTTaxModifier extends OrderModifier
      *
      * @param bool $force - run it, even if it has run already
      */
-    public function runUpdate($force = true)
+    public function runUpdate($force = false)
     {
         //order is important!
         $this->checkField('DefaultCountry');
