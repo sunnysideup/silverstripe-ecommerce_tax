@@ -555,7 +555,7 @@ class GSTTaxModifier extends OrderModifier
         $order = $this->getOrderCached();
         $itemsTotal = 0;
         if ($order) {
-            $items = $this->getOrderCached()->Items();
+            $items = $order->Items();
             if ($items) {
                 foreach ($items as $item) {
                     $itemsTotal += $this->getTotalTaxPerLineItem($item, $rate, $country);
