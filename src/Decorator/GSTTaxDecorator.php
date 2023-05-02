@@ -10,10 +10,11 @@ use SilverStripe\ORM\DataExtension;
 use Sunnysideup\EcommerceTax\Model\GSTTaxModifierOptions;
 
 /**
- * @author Nicolaas [at] sunnysideup.co.nz
- * @package: ecommerce
- * @sub-package: ecommerce_tax
- * @description: special tax rules for individual buyables
+ * Class \Sunnysideup\EcommerceTax\Decorator\GSTTaxDecorator
+ *
+ * @property \Sunnysideup\Ecommerce\Model\OrderModifierDescriptor|\Sunnysideup\Ecommerce\Pages\Product|\Sunnysideup\EcommerceTax\Decorator\GSTTaxDecorator $owner
+ * @method \SilverStripe\ORM\ManyManyList|\Sunnysideup\EcommerceTax\Model\GSTTaxModifierOptions[] ExcludedFrom()
+ * @method \SilverStripe\ORM\ManyManyList|\Sunnysideup\EcommerceTax\Model\GSTTaxModifierOptions[] AdditionalTax()
  */
 class GSTTaxDecorator extends DataExtension
 {

@@ -16,10 +16,16 @@ use Sunnysideup\EcommerceTax\Decorator\GSTTaxDecorator;
 use Sunnysideup\EcommerceTax\Model\GSTTaxModifierOptions;
 
 /**
- * @author Nicolaas [at] sunnysideup.co.nz
- * @package: ecommerce
- * @sub-package: ecommerce_tax
- * @description: allows adding  GST / VAT / any aother tax to an order
+ * Class \Sunnysideup\EcommerceTax\Modifiers\GSTTaxModifier
+ *
+ * @property string $DefaultCountry
+ * @property string $Country
+ * @property float $DefaultRate
+ * @property float $CurrentRate
+ * @property string $TaxType
+ * @property string $DebugString
+ * @property float $RawTableValue
+ * @method \SilverStripe\ORM\ManyManyList|\Sunnysideup\EcommerceTax\Model\GSTTaxModifierOptions[] GSTTaxModifierOptions()
  */
 class GSTTaxModifier extends OrderModifier
 {

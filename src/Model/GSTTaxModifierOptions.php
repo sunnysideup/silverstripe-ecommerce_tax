@@ -16,7 +16,16 @@ use Sunnysideup\Ecommerce\Model\Address\EcommerceCountry;
 use Sunnysideup\Ecommerce\Model\Extensions\EcommerceRole;
 
 /**
- *@author nicolaas [at] sunnysideup.co.nz
+ * Class \Sunnysideup\EcommerceTax\Model\GSTTaxModifierOptions
+ *
+ * @property string $CountryCode
+ * @property string $Code
+ * @property string $Name
+ * @property string $LegalNotice
+ * @property string $InclusiveOrExclusive
+ * @property float $Rate
+ * @property bool $DoesNotApplyToAllProducts
+ * @property bool $AppliesToAllCountries
  */
 class GSTTaxModifierOptions extends DataObject
 {
