@@ -301,7 +301,7 @@ class GSTTaxModifier extends OrderModifier
 
     public function getTableSubTitle()
     {
-        $title = $this->stat('field_or_method_to_use_for_sub_title');
+        $title = $this->config()->get('field_or_method_to_use_for_sub_title');
         if ($title) {
             $taxObjects = $this->currentTaxObjects();
             if ($taxObjects) {
