@@ -299,15 +299,20 @@ class GSTTaxModifier extends OrderModifier
         return $buyable;
     }
 
-    public function getTableSubTitle()
+    public function getTableSubTitle(): string
     {
+        if($this->priceHasBeenFixed()) {
+            if($this->TableSubTitleFixed) {
+                return (string) $this->TableSubTitleFixed;
+            }
+        }
         $title = $this->config()->get('field_or_method_to_use_for_sub_title');
         if ($title) {
             $taxObjects = $this->currentTaxObjects();
             if ($taxObjects) {
                 $taxObject = $taxObjects->First();
                 if ($taxObject) {
-                    return $taxObject->hasMethod($title) ? $taxObject->{$title}() : $taxObject->{$title};
+                    return (string) $taxObject->hasMethod($title) ? $taxObject->{$title}() : $taxObject->{$title};
                 }
             }
         }
@@ -967,9 +972,9 @@ class GSTTaxModifier extends OrderModifier
 
     // ######################################## *** Type Functions (IsChargeable, IsDeductable, IsNoChange, IsRemoved)
 
-// ######################################## *** standard database related functions (e.g. onBeforeWrite, onAfterWrite, etc...)
+    // ######################################## *** standard database related functions (e.g. onBeforeWrite, onAfterWrite, etc...)
 
-// ######################################## *** AJAX related functions
+    // ######################################## *** AJAX related functions
 
-// ######################################## *** debug functions
+    // ######################################## *** debug functions
 }
