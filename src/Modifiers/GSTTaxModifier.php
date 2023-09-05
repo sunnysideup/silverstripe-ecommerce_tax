@@ -316,6 +316,7 @@ class GSTTaxModifier extends OrderModifier
                 }
             }
         }
+        return '';
     }
 
     // takes and amount inclusive of tax and returns the tax amount
