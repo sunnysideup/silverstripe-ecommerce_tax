@@ -2,11 +2,17 @@
 
 namespace Sunnysideup\EcommerceTax\Decorator;
 
+use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\CheckboxSetField;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\LiteralField;
 use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\ORM\DataExtension;
+use SilverStripe\ORM\FieldType\DBField;
+use SilverStripe\ORM\FieldType\DBMoney;
+use Sunnysideup\Ecommerce\Config\EcommerceConfig;
+use Sunnysideup\Ecommerce\Model\Config\EcommerceDBConfig;
+use Sunnysideup\Ecommerce\Model\Money\EcommerceCurrency;
 use Sunnysideup\EcommerceTax\Model\GSTTaxModifierOptions;
 
 /**
@@ -121,8 +127,7 @@ class GSTTaxDecorator extends DataExtension
         //default options
         $defaultOptions = GSTTaxModifierOptions::get()
             ->filter(['DoesNotApplyToAllProducts' => 0])
-            ->where($additionalWhereForDefault)
-        ;
+            ->where($additionalWhereForDefault);
         if ($defaultOptions->exists()) {
             $fields->addFieldToTab(
                 $tabName,
@@ -138,9 +143,15 @@ class GSTTaxDecorator extends DataExtension
      */
     public function TaxInclusivePrice()
     {
-        user_error('to be completed');
-
-        return 99999;
+        $owner = $this->getOwner();
+        $price = $owner->getCalculatedPrice();
+        if (! is_numeric($price)) {
+            $price = 0;
+        }
+        if (EcommerceConfig::inst()->ShopPricesAreTaxExclusive) {
+            return $price * $this->getDefaultTaxMultiplier();
+        }
+        return $price;
     }
 
     /**
@@ -150,8 +161,54 @@ class GSTTaxDecorator extends DataExtension
      */
     public function TaxExclusivePrice()
     {
-        user_error('to be completed');
+        $owner = $this->getOwner();
+        $price = $owner->getCalculatedPrice();
+        if (! is_numeric($price)) {
+            $price = 0;
+        }
+        if (EcommerceConfig::inst()->ShopPricesAreTaxExclusive) {
+            return $price;
+        }
+        return $price - ($price * (1 - (1 / $this->getDefaultTaxMultiplier())));
+    }
 
-        return 99999;
+
+    /**
+     * how do we get from the price excluding GST to the price including GST?
+     *
+     * returns something like 1.15 for 15% GST.
+     *
+     */
+    public function getDefaultTaxMultiplier(): float
+    {
+        $taxRate = EcommerceConfig::inst()->DefaultTaxRate;
+        if (!is_numeric($taxRate)) {
+            $taxRate = 1;
+        }
+        $taxRate = (float) $taxRate;
+        if (! $taxRate) {
+            $taxRate = (float) Config::inst()->get(EcommerceDBConfig::class, 'Defaults')['DefaultTaxRate'] = 0.15; // 15% GST
+        }
+        if($taxRate === -1) {
+            $taxRate = 0;
+        }
+        return $taxRate + 1; // 1.15 for 15% GST
+    }
+
+
+    /**
+     * @return DBMoney
+     */
+    public function CalculatedPriceAsMoneyExclTax(): DBMoney
+    {
+        return EcommerceCurrency::get_money_object_from_order_currency($this->getOwner()->TaxExclusivePrice());
+    }
+
+    /**
+     * @return DBMoney
+     */
+    public function CalculatedPriceAsMoneyInclTax(): DBMoney
+    {
+        return EcommerceCurrency::get_money_object_from_order_currency($this->getOwner()->TaxInclusivePrice());
     }
 }

@@ -163,28 +163,28 @@ class GSTTaxModifier extends OrderModifier
      *
      * @var \SilverStripe\ORM\DataList
      */
-    private static $default_tax_objects;
+    protected static $default_tax_objects;
 
     /**
      * tells us the default tax objects tax rate.
      *
      * @var float
      */
-    private static $default_tax_objects_rate;
+    protected static $default_tax_objects_rate;
 
     /**
      * contains all the applicable tax objects for the current order.
      *
      * @var \SilverStripe\ORM\DataList
      */
-    private static $current_tax_objects;
+    protected static $current_tax_objects;
 
     /**
      * tells us the current tax objects tax rate.
      *
      * @var float
      */
-    private static $current_tax_objects_rate;
+    protected static $current_tax_objects_rate;
 
     private static $field_or_method_to_use_for_sub_title = '';
 
@@ -301,8 +301,8 @@ class GSTTaxModifier extends OrderModifier
 
     public function getTableSubTitle(): string
     {
-        if($this->priceHasBeenFixed()) {
-            if($this->TableSubTitleFixed) {
+        if ($this->priceHasBeenFixed()) {
+            if ($this->TableSubTitleFixed) {
                 return (string) $this->TableSubTitleFixed;
             }
         }
@@ -395,8 +395,7 @@ class GSTTaxModifier extends OrderModifier
                             'CountryCode' => $defaultCountryCode,
                             'DoesNotApplyToAllProducts' => 0,
                         ]
-                    )
-                ;
+                    );
                 if (self::$default_tax_objects->exists()) {
                     if ($this->Config()->get('debug')) {
                         $this->debugMessage .= '<hr />there are DEFAULT tax objects available for ' . $defaultCountryCode;
