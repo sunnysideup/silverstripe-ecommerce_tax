@@ -5,6 +5,7 @@ namespace Sunnysideup\EcommerceTax\Modifiers;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\ReadonlyField;
+use SilverStripe\ORM\DataList;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\DB;
 use Sunnysideup\Ecommerce\Config\EcommerceConfig;
@@ -163,28 +164,37 @@ class GSTTaxModifier extends OrderModifier
      *
      * @var \SilverStripe\ORM\DataList
      */
-    protected static $default_tax_objects;
+    protected static ?DataList $default_tax_objects = null;
 
     /**
      * tells us the default tax objects tax rate.
      *
-     * @var float
+     * @var ?float
      */
-    protected static $default_tax_objects_rate;
+    protected static ?float $default_tax_objects_rate = null;
 
     /**
      * contains all the applicable tax objects for the current order.
      *
-     * @var \SilverStripe\ORM\DataList
+     * @var ?\SilverStripe\ORM\DataList
      */
-    protected static $current_tax_objects;
+    protected static ?Datalist $current_tax_objects = null;
 
     /**
      * tells us the current tax objects tax rate.
      *
      * @var float
      */
-    protected static $current_tax_objects_rate;
+    protected static ?float $current_tax_objects_rate = null;
+
+    public static function reset_cached_values()
+    {
+        self::$default_tax_objects = null;
+        self::$default_tax_objects_rate = null;
+        self::$current_tax_objects = null;
+        self::$current_tax_objects_rate = null;
+    }
+
 
     private static $field_or_method_to_use_for_sub_title = '';
 
@@ -429,30 +439,30 @@ class GSTTaxModifier extends OrderModifier
         if (null === self::$current_tax_objects) {
             $this->GSTTaxModifierOptions()->removeAll();
             $countryCode = $this->LiveCountry();
-            if ($countryCode) {
-                if ($this->Config()->get('debug')) {
-                    $this->debugMessage .= '<hr />There is a current live country: ' . $countryCode;
-                }
-                self::$current_tax_objects = GSTTaxModifierOptions::get()->where("(\"CountryCode\" = '" . $countryCode . "' OR \"AppliesToAllCountries\" = 1) AND \"DoesNotApplyToAllProducts\" = 0");
-                GSTTaxModifierOptions::get()
-                    ->where(
-                        "(\"CountryCode\" = '" . $countryCode . "' OR \"AppliesToAllCountries\" = 1) AND \"DoesNotApplyToAllProducts\" = 0"
-                    )
-                ;
-                if (self::$current_tax_objects->exists()) {
-                    $this->GSTTaxModifierOptions()->addMany(self::$current_tax_objects->columnUnique());
-                    if ($this->Config()->get('debug')) {
-                        $this->debugMessage .= '<hr />There are tax objects available for ' . $countryCode;
-                    }
-                } else {
-                    self::$current_tax_objects = null;
-                    if ($this->Config()->get('debug')) {
-                        $this->debugMessage .= '<hr />there are no tax objects available for ' . $countryCode;
-                    }
-                }
-            } else {
+            if (!$countryCode) {
+                $countryCode = self::get_default_country_code_combined();
                 if ($this->Config()->get('debug')) {
                     $this->debugMessage .= '<hr />there is no current live country code';
+                }
+            }
+            if ($this->Config()->get('debug')) {
+                $this->debugMessage .= '<hr />There is a current live country: ' . $countryCode;
+            }
+            self::$current_tax_objects = GSTTaxModifierOptions::get()->where("(\"CountryCode\" = '" . $countryCode . "' OR \"AppliesToAllCountries\" = 1) AND \"DoesNotApplyToAllProducts\" = 0");
+            GSTTaxModifierOptions::get()
+                ->where(
+                    "(\"CountryCode\" = '" . $countryCode . "' OR \"AppliesToAllCountries\" = 1) AND \"DoesNotApplyToAllProducts\" = 0"
+                )
+            ;
+            if (self::$current_tax_objects->exists()) {
+                $this->GSTTaxModifierOptions()->addMany(self::$current_tax_objects->columnUnique());
+                if ($this->Config()->get('debug')) {
+                    $this->debugMessage .= '<hr />There are tax objects available for ' . $countryCode;
+                }
+            } else {
+                self::$current_tax_objects = null;
+                if ($this->Config()->get('debug')) {
+                    $this->debugMessage .= '<hr />there are no tax objects available for ' . $countryCode;
                 }
             }
         }
@@ -912,7 +922,6 @@ class GSTTaxModifier extends OrderModifier
                 if ($order->hasMethod('GSTTaxExempt') && true === $order->GSTTaxExempt()) {
                     return 0;
                 }
-
                 return $this->LiveRawTableValue();
             }
             if (Config::inst()->get(GSTTaxModifier::class, 'alternative_country_prices_already_include_their_own_tax')) {
@@ -969,6 +978,7 @@ class GSTTaxModifier extends OrderModifier
 
         return $defaultItemsTax + $defaultModifiersTax;
     }
+
 
     // ######################################## *** Type Functions (IsChargeable, IsDeductable, IsNoChange, IsRemoved)
 
