@@ -189,7 +189,7 @@ class GSTTaxDecorator extends DataExtension
         if (! $taxRate) {
             $taxRate = (float) Config::inst()->get(EcommerceDBConfig::class, 'Defaults')['DefaultTaxRate'] = 0.15; // 15% GST
         }
-        if($taxRate === -1) {
+        if ($taxRate === -1) {
             $taxRate = 0;
         }
         return $taxRate + 1; // 1.15 for 15% GST
@@ -202,6 +202,15 @@ class GSTTaxDecorator extends DataExtension
     public function CalculatedPriceAsMoneyExclTax(): DBMoney
     {
         return EcommerceCurrency::get_money_object_from_order_currency($this->getOwner()->TaxExclusivePrice());
+    }
+
+    /**
+     * @return DBMoney
+     */
+    public function CalculatedDifferenceAsMoney(): DBMoney
+    {
+        $owner = $this->getOwner();
+        return EcommerceCurrency::get_money_object_from_order_currency($owner->TaxInclusivePrice() - $owner->TaxExclusivePrice());
     }
 
     /**
