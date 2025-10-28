@@ -19,7 +19,6 @@ use Sunnysideup\EcommerceTax\Decorator\GSTTaxDecorator;
 use Sunnysideup\EcommerceTax\Model\GSTTaxModifierOptions;
 
 /**
- * Class \Sunnysideup\EcommerceTax\Modifiers\GSTTaxModifier
  *
  * @property string $DefaultCountry
  * @property string $Country
