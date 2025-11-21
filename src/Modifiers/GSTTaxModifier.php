@@ -312,9 +312,7 @@ class GSTTaxModifier extends OrderModifier
     public function getTableSubTitle(): string
     {
         if ($this->priceHasBeenFixed()) {
-            if ($this->TableSubTitleFixed) {
-                return (string) $this->TableSubTitleFixed;
-            }
+            return (string) $this->TableSubTitleFixed;
         }
         $title = $this->config()->get('field_or_method_to_use_for_sub_title');
         if ($title) {
