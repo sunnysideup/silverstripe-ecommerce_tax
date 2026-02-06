@@ -8,7 +8,6 @@ use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\LiteralField;
 use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\ORM\DataExtension;
-use SilverStripe\ORM\FieldType\DBField;
 use SilverStripe\ORM\FieldType\DBMoney;
 use Sunnysideup\Ecommerce\Config\EcommerceConfig;
 use Sunnysideup\Ecommerce\Model\Config\EcommerceDBConfig;
@@ -172,17 +171,15 @@ class GSTTaxDecorator extends DataExtension
         return $price - ($price * (1 - (1 / $this->getDefaultTaxMultiplier())));
     }
 
-
     /**
      * how do we get from the price excluding GST to the price including GST?
      *
      * returns something like 1.15 for 15% GST.
-     *
      */
     public function getDefaultTaxMultiplier(): float
     {
         $taxRate = EcommerceConfig::inst()->DefaultTaxRate;
-        if (!is_numeric($taxRate)) {
+        if (! is_numeric($taxRate)) {
             $taxRate = 1;
         }
         $taxRate = (float) $taxRate;
@@ -194,7 +191,6 @@ class GSTTaxDecorator extends DataExtension
         }
         return $taxRate + 1; // 1.15 for 15% GST
     }
-
 
     public function CalculatedPriceAsMoneyExclTax(): DBMoney
     {

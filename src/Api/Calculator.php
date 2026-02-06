@@ -6,20 +6,15 @@ use SilverStripe\Core\Config\Config;
 use SilverStripe\Core\Config\Configurable;
 use SilverStripe\Core\Extensible;
 use SilverStripe\Core\Injector\Injectable;
-use SilverStripe\Forms\DropdownField;
-use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\DB;
 use Sunnysideup\Ecommerce\Config\EcommerceConfig;
 use Sunnysideup\Ecommerce\Model\Address\EcommerceCountry;
-use Sunnysideup\Ecommerce\Model\OrderModifier;
-use Sunnysideup\Ecommerce\Model\OrderModifierDescriptor;
 use Sunnysideup\Ecommerce\Pages\Product;
 use Sunnysideup\EcommerceTax\Decorator\GSTTaxDecorator;
 use Sunnysideup\EcommerceTax\Model\GSTTaxModifierOptions;
 
 /**
- *
  * @property string $DefaultCountry
  * @property string $Country
  * @property float $DefaultRate
@@ -31,7 +26,6 @@ use Sunnysideup\EcommerceTax\Model\GSTTaxModifierOptions;
  */
 class Calculator
 {
-
     use Configurable;
     use Injectable;
     use Extensible;
@@ -43,7 +37,6 @@ class Calculator
      */
     protected $debugMessage = '';
 
-
     /**
      * message explaining how GST is based on a sale
      * to a particular country ...
@@ -51,7 +44,6 @@ class Calculator
      * @var string
      */
     private static $based_on_country_note = '';
-
 
     // ######################################## *** other (non) static variables (e.g. private static $special_name_for_something, protected $order)
 
@@ -155,9 +147,6 @@ class Calculator
 
     private static $debug = false;
 
-
-
-
     /**
      * this method is a bit of a hack.
      * if a product variation does not have any specific tax rules
@@ -176,7 +165,6 @@ class Calculator
 
         return $buyable;
     }
-
 
     // takes and amount inclusive of tax and returns the tax amount
     public function simpleTaxCalculation($buyable, $amountInclTax, $rate = 0, $country = ''): float
@@ -199,7 +187,6 @@ class Calculator
 
         return floatval($price) * $actualCalculationRate;
     }
-
 
     protected static function get_default_country_code_combined()
     {
@@ -333,7 +320,7 @@ class Calculator
      */
     protected function isExclusive()
     {
-        return !$this->isInclusive();
+        return ! $this->isInclusive();
     }
 
     /**
@@ -344,7 +331,7 @@ class Calculator
      */
     protected function isInclusive()
     {
-        return !(bool) EcommerceConfig::inst()->ShopPricesAreTaxExclusive;
+        return ! (bool) EcommerceConfig::inst()->ShopPricesAreTaxExclusive;
         //this code is here to support e-commerce versions that
         //do not have the DB field EcomConfig()->ShopPricesAreTaxExclusive
         // $array = [];
@@ -385,7 +372,6 @@ class Calculator
         return $this->isExclusive() ? $rate : 1 - (1 / (1 + $rate));
     }
 
-
     protected function getProductSpecificRate($buyable, $rate, $country): float
     {
         //resetting actual rate...
@@ -421,20 +407,16 @@ class Calculator
         return $actualRate;
     }
 
-
-
     /**
      * Are there Any taxes that do not apply to all products.
      */
     protected function hasExceptionTaxes(): bool
     {
-        return !(bool) DataObject::get_one(
+        return ! (bool) DataObject::get_one(
             GSTTaxModifierOptions::class,
             ['DoesNotApplyToAllProducts' => 1]
         );
     }
-
-
 
     protected function IsDebug()
     {

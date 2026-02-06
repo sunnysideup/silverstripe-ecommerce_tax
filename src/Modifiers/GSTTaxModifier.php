@@ -158,6 +158,7 @@ class GSTTaxModifier extends OrderModifier
      * @var bool
      */
     private static $alternative_country_prices_already_include_their_own_tax = false; //PortionWithoutTax
+
     /**
      * contains all the applicable DEFAULT tax objects.
      */
@@ -185,7 +186,6 @@ class GSTTaxModifier extends OrderModifier
         self::$current_tax_objects = null;
         self::$current_tax_objects_rate = null;
     }
-
 
     private static $field_or_method_to_use_for_sub_title = '';
 
@@ -378,7 +378,7 @@ class GSTTaxModifier extends OrderModifier
      */
     protected function defaultTaxObjects()
     {
-        if (!self::$default_tax_objects instanceof \SilverStripe\ORM\DataList) {
+        if (! self::$default_tax_objects instanceof \SilverStripe\ORM\DataList) {
             $defaultCountryCode = self::get_default_country_code_combined();
             if ($defaultCountryCode) {
                 if ($this->Config()->get('debug')) {
@@ -419,10 +419,10 @@ class GSTTaxModifier extends OrderModifier
      */
     protected function currentTaxObjects()
     {
-        if (!self::$current_tax_objects instanceof \SilverStripe\ORM\DataList) {
+        if (! self::$current_tax_objects instanceof \SilverStripe\ORM\DataList) {
             $this->GSTTaxModifierOptions()->removeAll();
             $countryCode = $this->LiveCountry();
-            if (!$countryCode) {
+            if (! $countryCode) {
                 $countryCode = self::get_default_country_code_combined();
                 if ($this->Config()->get('debug')) {
                     $this->debugMessage .= '<hr />there is no current live country code';
@@ -491,7 +491,7 @@ class GSTTaxModifier extends OrderModifier
      */
     protected function isExclusive()
     {
-        return !$this->isInclusive();
+        return ! $this->isInclusive();
     }
 
     /**
@@ -502,7 +502,7 @@ class GSTTaxModifier extends OrderModifier
      */
     protected function isInclusive()
     {
-        return !(bool) EcommerceConfig::inst()->ShopPricesAreTaxExclusive;
+        return ! (bool) EcommerceConfig::inst()->ShopPricesAreTaxExclusive;
         //this code is here to support e-commerce versions that
         //do not have the DB field EcomConfig()->ShopPricesAreTaxExclusive
         // $array = [];
@@ -716,7 +716,7 @@ class GSTTaxModifier extends OrderModifier
      */
     protected function hasExceptionTaxes()
     {
-        return !(bool) DataObject::get_one(
+        return ! (bool) DataObject::get_one(
             GSTTaxModifierOptions::class,
             ['DoesNotApplyToAllProducts' => 1]
         );
@@ -943,7 +943,6 @@ class GSTTaxModifier extends OrderModifier
 
         return $defaultItemsTax + $defaultModifiersTax;
     }
-
 
     // ######################################## *** Type Functions (IsChargeable, IsDeductable, IsNoChange, IsRemoved)
 
