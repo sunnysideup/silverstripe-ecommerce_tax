@@ -167,14 +167,10 @@ class Calculator
      */
     public function findDefiningProduct($buyable)
     {
-        if (Product::is_product_variation($buyable)) {
-            if (! $buyable->hasExtension(GSTTaxDecorator::class)) {
-                $parent = $buyable->ParentGroup();
-                if ($parent) {
-                    if ($parent->hasExtension(GSTTaxDecorator::class)) {
-                        $buyable = $parent;
-                    }
-                }
+        if (Product::is_product_variation($buyable) && ! $buyable->hasExtension(GSTTaxDecorator::class)) {
+            $parent = $buyable->ParentGroup();
+            if ($parent && $parent->hasExtension(GSTTaxDecorator::class)) {
+                $buyable = $parent;
             }
         }
 
@@ -249,10 +245,8 @@ class Calculator
                         $this->debugMessage .= '<hr />there are no DEFAULT tax object available for ' . $defaultCountryCode;
                     }
                 }
-            } else {
-                if ($this->IsDebug()) {
-                    $this->debugMessage .= '<hr />There is no current live DEFAULT country';
-                }
+            } elseif ($this->IsDebug()) {
+                $this->debugMessage .= '<hr />There is no current live DEFAULT country';
             }
         }
         if (null === self::$default_tax_objects_rate) {
@@ -293,10 +287,8 @@ class Calculator
                         $this->debugMessage .= '<hr />there are no tax objects available for ' . $countryCode;
                     }
                 }
-            } else {
-                if ($this->IsDebug()) {
-                    $this->debugMessage .= '<hr />there is no current live country code';
-                }
+            } elseif ($this->IsDebug()) {
+                $this->debugMessage .= '<hr />there is no current live country code';
             }
         }
         if (null === self::$current_tax_objects_rate) {
@@ -323,10 +315,8 @@ class Calculator
                 }
                 $sumRate += floatval($obj->Rate);
             }
-        } else {
-            if ($this->IsDebug()) {
-                $this->debugMessage .= '<hr />could not find a rate';
-            }
+        } elseif ($this->IsDebug()) {
+            $this->debugMessage .= '<hr />could not find a rate';
         }
         if ($this->IsDebug()) {
             $this->debugMessage .= '<hr />sum rate for tax objects: ' . $sumRate;
@@ -343,7 +333,7 @@ class Calculator
      */
     protected function isExclusive()
     {
-        return $this->isInclusive() ? false : true;
+        return !$this->isInclusive();
     }
 
     /**
@@ -354,7 +344,7 @@ class Calculator
      */
     protected function isInclusive()
     {
-        return EcommerceConfig::inst()->ShopPricesAreTaxExclusive ? false : true;
+        return !(bool) EcommerceConfig::inst()->ShopPricesAreTaxExclusive;
         //this code is here to support e-commerce versions that
         //do not have the DB field EcomConfig()->ShopPricesAreTaxExclusive
         // $array = [];
@@ -417,13 +407,11 @@ class Calculator
                 }
                 if ($additionalTaxes) {
                     foreach ($additionalTaxes as $tax) {
-                        if ($tax->DoesNotApplyToAllProducts) {
-                            if ($tax->AppliesToAllCountries || $tax->CountryCode === $country) {
-                                if ($this->IsDebug()) {
-                                    $this->debugMessage .= '<hr />found tax to add for ' . $buyable->Title . ': ' . $tax->Title();
-                                }
-                                $actualRate += $tax->Rate;
+                        if ($tax->DoesNotApplyToAllProducts && ($tax->AppliesToAllCountries || $tax->CountryCode === $country)) {
+                            if ($this->IsDebug()) {
+                                $this->debugMessage .= '<hr />found tax to add for ' . $buyable->Title . ': ' . $tax->Title();
                             }
+                            $actualRate += $tax->Rate;
                         }
                     }
                 }
@@ -437,15 +425,13 @@ class Calculator
 
     /**
      * Are there Any taxes that do not apply to all products.
-     *
-     * @return bool
      */
     protected function hasExceptionTaxes(): bool
     {
-        return DataObject::get_one(
+        return !(bool) DataObject::get_one(
             GSTTaxModifierOptions::class,
             ['DoesNotApplyToAllProducts' => 1]
-        ) ? false : true;
+        );
     }
 
 

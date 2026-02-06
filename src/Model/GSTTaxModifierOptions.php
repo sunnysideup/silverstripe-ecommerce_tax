@@ -255,11 +255,7 @@ class GSTTaxModifierOptions extends DataObject
 
     public function getTitle()
     {
-        if ($this->AppliesToAllCountries) {
-            $country = _t('GSTTExModifierOption.WORLDWIDE', 'world-wide');
-        } else {
-            $country = $this->CountryCode;
-        }
+        $country = $this->AppliesToAllCountries ? _t('GSTTExModifierOption.WORLDWIDE', 'world-wide') : $this->CountryCode;
 
         return $this->Name . " ({$country}, " . number_format($this->Rate * 100, 2) . '%)';
     }
@@ -274,12 +270,10 @@ class GSTTaxModifierOptions extends DataObject
             $controller = Controller::curr();
             if ($controller instanceof DatabaseAdmin) {
                 //cant do this now.
+            } elseif (EcommerceConfig::inst()->ShopPricesAreTaxExclusive) {
+                $this->InclusiveOrExclusive = 'Exclusive';
             } else {
-                if (EcommerceConfig::inst()->ShopPricesAreTaxExclusive) {
-                    $this->InclusiveOrExclusive = 'Exclusive';
-                } else {
-                    $this->InclusiveOrExclusive = 'Inclusive';
-                }
+                $this->InclusiveOrExclusive = 'Inclusive';
             }
         }
 
