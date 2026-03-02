@@ -563,7 +563,7 @@ class GSTTaxModifier extends OrderModifier
                     $itemsTotal += $this->getTotalTaxPerLineItem($item, $rate, $country);
                 }
             }
-            if ($order->hasMethod('GSTTaxExempt') && true === $order->GSTTaxExempt()) {
+            if ($order->hasMethod('TaxExempt') && true === $order->TaxExempt()) {
                 return $itemsTotal *= -1;
             }
         }
@@ -698,7 +698,7 @@ class GSTTaxModifier extends OrderModifier
                     }
                 }
             }
-            if ($order->hasMethod('GSTTaxExempt') && true === $order->GSTTaxExempt()) {
+            if ($order->hasMethod('TaxExempt') && true === $order->TaxExempt()) {
                 return $modifiersTotal *= -1;
             }
         }
@@ -886,16 +886,16 @@ class GSTTaxModifier extends OrderModifier
         $order = $this->getOrderCached();
         if ($order instanceof \Sunnysideup\Ecommerce\Model\Order) {
             if ($this->isExclusive()) {
-                if ($order->hasMethod('GSTTaxExempt') && true === $order->GSTTaxExempt()) {
+                if ($order->hasMethod('TaxExempt') && true === $order->TaxExempt()) {
                     return 0;
                 }
                 return $this->LiveRawTableValue();
             }
-            if (Config::inst()->get(GSTTaxModifier::class, 'alternative_country_prices_already_include_their_own_tax') && ! ($order->hasMethod('GSTTaxExempt') && true === $order->GSTTaxExempt())) {
+            if (Config::inst()->get(GSTTaxModifier::class, 'alternative_country_prices_already_include_their_own_tax') && ! ($order->hasMethod('TaxExempt') && true === $order->TaxExempt())) {
                 return 0;
             }
             $defaultCountry = $this->LiveDefaultCountry();
-            if ($order->hasMethod('GSTTaxExempt') && true === $order->GSTTaxExempt()) {
+            if ($order->hasMethod('TaxExempt') && true === $order->TaxExempt()) {
                 return $this->getTaxIncludedByDefault((string) $defaultCountry);
             }
             $currentCountry = $this->LiveCountry();
