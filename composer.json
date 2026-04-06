@@ -1,37 +1,37 @@
 {
-    "name": "sunnysideup/ecommerce_tax",
-    "type": "silverstripe-vendormodule",
-    "description": "adds tax options to the Silverstripe e-commerce application",
-    "keywords": [
-        "Silverstripe-CMS",
-        "CMS",
-        "Silverstripe",
-        "ecommerce",
-        "e-commerce",
-        "shop",
-        "cart",
-        "tax",
-        "gst",
-        "vat",
-        "goods and services tax",
-        "order modifier"
-    ],
-    "license": "BSD-3-Clause",
-    "authors": [
-        {
-            "name": "Nicolaas Francken",
-            "email": "modules@sunnysideup.co.nz",
-            "role": "lead developer"
-        }
-    ],
-    "require": {
-        "sunnysideup/ecommerce": "*",
-        "silverstripe/recipe-cms": "^4.0 || ^5.0"
-    },
-    "extra": [],
-    "autoload": {
-        "psr-4": {
-            "Sunnysideup\\EcommerceTax\\": "src/"
-        }
+  "name": "sunnysideup/ecommerce_tax",
+  "type": "silverstripe-vendormodule",
+  "description": "adds tax options to the Silverstripe e-commerce application",
+  "keywords": [
+    "Silverstripe-CMS",
+    "CMS",
+    "Silverstripe",
+    "ecommerce",
+    "e-commerce",
+    "shop",
+    "cart",
+    "tax",
+    "gst",
+    "vat",
+    "goods and services tax",
+    "order modifier"
+  ],
+  "license": "BSD-3-Clause",
+  "authors": [
+    {
+      "name": "Nicolaas Francken",
+      "email": "modules@sunnysideup.co.nz",
+      "role": "lead developer"
     }
+  ],
+  "require": {
+    "sunnysideup/ecommerce": "5.x-dev",
+    "silverstripe/recipe-cms": "^4.0 || ^5.0"
+  },
+  "extra": [],
+  "autoload": {
+    "psr-4": {
+      "Sunnysideup\\EcommerceTax\\": "src/"
+    }
+  }
 }
