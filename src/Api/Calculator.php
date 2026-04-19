@@ -2,12 +2,13 @@
 
 namespace Sunnysideup\EcommerceTax\Api;
 
+use SilverStripe\ORM\ManyManyList;
+use SilverStripe\ORM\DataList;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Core\Config\Configurable;
 use SilverStripe\Core\Extensible;
 use SilverStripe\Core\Injector\Injectable;
 use SilverStripe\ORM\DataObject;
-use SilverStripe\ORM\DB;
 use Sunnysideup\Ecommerce\Config\EcommerceConfig;
 use Sunnysideup\Ecommerce\Model\Address\EcommerceCountry;
 use Sunnysideup\Ecommerce\Pages\Product;
@@ -22,7 +23,7 @@ use Sunnysideup\EcommerceTax\Model\GSTTaxModifierOptions;
  * @property string $TaxType
  * @property string $DebugString
  * @property float $RawTableValue
- * @method \SilverStripe\ORM\ManyManyList|\Sunnysideup\EcommerceTax\Model\GSTTaxModifierOptions[] GSTTaxModifierOptions()
+ * @method ManyManyList|GSTTaxModifierOptions[] GSTTaxModifierOptions()
  */
 class Calculator
 {
@@ -114,11 +115,10 @@ class Calculator
      * @var bool
      */
     private static $alternative_country_prices_already_include_their_own_tax = false; //PortionWithoutTax
-
     /**
      * contains all the applicable DEFAULT tax objects.
      *
-     * @var \SilverStripe\ORM\DataList
+     * @var DataList
      */
     protected static $default_tax_objects;
 
@@ -132,7 +132,7 @@ class Calculator
     /**
      * contains all the applicable tax objects for the current order.
      *
-     * @var \SilverStripe\ORM\DataList
+     * @var DataList
      */
     protected static $current_tax_objects;
 
@@ -179,10 +179,11 @@ class Calculator
         if (! $country) {
             $country = $this->Country;
         }
+
         $price = $buyable->getCalculatedPrice();
         $actualCalculationRate = $this->getProductSpecificRate($buyable, $rate, $country);
         if ($this->IsDebug()) {
-            $this->debugMessage .= "<hr /><b>{$rate}</b> turned into " . round($actualCalculationRate, 2) . " for a total of <b>{$price}</b> on " . $buyable->ClassName . '.' . $buyable->ID;
+            $this->debugMessage .= sprintf('<hr /><b>%s</b> turned into ', $rate) . round($actualCalculationRate, 2) . sprintf(' for a total of <b>%s</b> on ', $price) . $buyable->ClassName . '.' . $buyable->ID;
         }
 
         return floatval($price) * $actualCalculationRate;
@@ -199,13 +200,12 @@ class Calculator
     }
 
     // ######################################## ***  inner calculations.... USES CALCULATED VALUES
-
     /**
      * works out what taxes apply in the default setup.
      * we need this, because prices may include tax
      * based on the default tax rate.
      *
-     * @return null|\SilverStripe\ORM\DataList of applicable taxes in the default country
+     * @return null|DataList of applicable taxes in the default country
      */
     protected function defaultTaxObjects()
     {
@@ -215,6 +215,7 @@ class Calculator
                 if ($this->IsDebug()) {
                     $this->debugMessage .= '<hr />There is a current live DEFAULT country code: ' . $defaultCountryCode;
                 }
+
                 self::$default_tax_objects = GSTTaxModifierOptions::get()
                     ->filter(
                         [
@@ -236,6 +237,7 @@ class Calculator
                 $this->debugMessage .= '<hr />There is no current live DEFAULT country';
             }
         }
+
         if (null === self::$default_tax_objects_rate) {
             self::$default_tax_objects_rate = $this->workOutSumRate(self::$default_tax_objects);
         }
@@ -246,7 +248,7 @@ class Calculator
     /**
      * returns an ArrayList of all applicable tax options.
      *
-     * @return null|\SilverStripe\ORM\DataList
+     * @return null|DataList
      */
     protected function currentTaxObjects()
     {
@@ -257,6 +259,7 @@ class Calculator
                 if ($this->IsDebug()) {
                     $this->debugMessage .= '<hr />There is a current live country: ' . $countryCode;
                 }
+
                 self::$current_tax_objects = GSTTaxModifierOptions::get()->where("(\"CountryCode\" = '" . $countryCode . "' OR \"AppliesToAllCountries\" = 1) AND \"DoesNotApplyToAllProducts\" = 0");
                 GSTTaxModifierOptions::get()
                     ->where(
@@ -278,6 +281,7 @@ class Calculator
                 $this->debugMessage .= '<hr />there is no current live country code';
             }
         }
+
         if (null === self::$current_tax_objects_rate) {
             self::$current_tax_objects_rate = $this->workOutSumRate(self::$current_tax_objects);
         }
@@ -300,11 +304,13 @@ class Calculator
                 if ($this->IsDebug()) {
                     $this->debugMessage .= '<hr />found ' . $obj->Title();
                 }
+
                 $sumRate += floatval($obj->Rate);
             }
         } elseif ($this->IsDebug()) {
             $this->debugMessage .= '<hr />could not find a rate';
         }
+
         if ($this->IsDebug()) {
             $this->debugMessage .= '<hr />sum rate for tax objects: ' . $sumRate;
         }
@@ -387,16 +393,19 @@ class Calculator
                             if ($this->IsDebug()) {
                                 $this->debugMessage .= '<hr />found tax to exclude for ' . $buyable->Title . ': ' . $tax->Title();
                             }
+
                             $actualRate -= $tax->Rate;
                         }
                     }
                 }
+
                 if ($additionalTaxes) {
                     foreach ($additionalTaxes as $tax) {
                         if ($tax->DoesNotApplyToAllProducts && ($tax->AppliesToAllCountries || $tax->CountryCode === $country)) {
                             if ($this->IsDebug()) {
                                 $this->debugMessage .= '<hr />found tax to add for ' . $buyable->Title . ': ' . $tax->Title();
                             }
+
                             $actualRate += $tax->Rate;
                         }
                     }
