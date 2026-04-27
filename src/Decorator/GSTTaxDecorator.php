@@ -2,12 +2,16 @@
 
 namespace Sunnysideup\EcommerceTax\Decorator;
 
+use SilverStripe\Core\Extension;
+use Sunnysideup\Ecommerce\Model\OrderModifierDescriptor;
+use Sunnysideup\Ecommerce\Pages\Product;
+use SilverStripe\ORM\ManyManyList;
+use SilverStripe\ORM\DataList;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\CheckboxSetField;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\LiteralField;
 use SilverStripe\Forms\ReadonlyField;
-use SilverStripe\ORM\DataExtension;
 use SilverStripe\ORM\FieldType\DBMoney;
 use Sunnysideup\Ecommerce\Config\EcommerceConfig;
 use Sunnysideup\Ecommerce\Model\Config\EcommerceDBConfig;
@@ -17,11 +21,11 @@ use Sunnysideup\EcommerceTax\Model\GSTTaxModifierOptions;
 /**
  * Class \Sunnysideup\EcommerceTax\Decorator\GSTTaxDecorator
  *
- * @property \Sunnysideup\Ecommerce\Model\OrderModifierDescriptor|\Sunnysideup\Ecommerce\Pages\Product|\Sunnysideup\EcommerceTax\Decorator\GSTTaxDecorator $owner
- * @method \SilverStripe\ORM\ManyManyList|\Sunnysideup\EcommerceTax\Model\GSTTaxModifierOptions[] ExcludedFrom()
- * @method \SilverStripe\ORM\ManyManyList|\Sunnysideup\EcommerceTax\Model\GSTTaxModifierOptions[] AdditionalTax()
+ * @property OrderModifierDescriptor|Product|GSTTaxDecorator $owner
+ * @method ManyManyList|GSTTaxModifierOptions[] ExcludedFrom()
+ * @method ManyManyList|GSTTaxModifierOptions[] AdditionalTax()
  */
-class GSTTaxDecorator extends DataExtension
+class GSTTaxDecorator extends Extension
 {
     /**
      * standard SS method.
@@ -36,11 +40,11 @@ class GSTTaxDecorator extends DataExtension
     /**
      * for variations, use product for data.
      *
-     * @return \SilverStripe\ORM\DataList
+     * @return DataList
      */
     public function BuyableCalculatedExcludedFrom()
     {
-        if (is_a($this->owner, 'ProductVariation')) {
+        if (is_a($this->getOwner(), 'ProductVariation')) {
             $product = $this->getOwner()->Product();
             if ($product) {
                 return $product->ExcludedFrom();
@@ -53,11 +57,11 @@ class GSTTaxDecorator extends DataExtension
     /**
      * for variations, use product for data.
      *
-     * @return \SilverStripe\ORM\DataList
+     * @return DataList
      */
     public function BuyableCalculatedAdditionalTax()
     {
-        if (is_a($this->owner, 'ProductVariation')) {
+        if (is_a($this->getOwner(), 'ProductVariation')) {
             $product = $this->getOwner()->Product();
             if ($product) {
                 return $product->AdditionalTax();
@@ -75,14 +79,12 @@ class GSTTaxDecorator extends DataExtension
         $additionalWhereForDefault = '';
         $fields->removeByName('ExcludedFrom');
         $fields->removeByName('AdditionalTax');
+
         $tabName = 'Root.Tax';
-        if (is_a($this->owner, 'ProductVariation')) {
+        if (is_a($this->getOwner(), 'ProductVariation')) {
             $fields->addFieldToTab(
                 $tabName,
-                new LiteralField(
-                    'SeeProductForAdditionalTax',
-                    _t('GSTTaxModifier.SEE_PARENT', 'See parent Product for Additional Tax')
-                )
+                LiteralField::create('SeeProductForAdditionalTax', _t('GSTTaxModifier.SEE_PARENT', 'See parent Product for Additional Tax'))
             );
         } else {
             //additional taxes
@@ -91,21 +93,15 @@ class GSTTaxDecorator extends DataExtension
                 $additionalOptionsList = $additionalOptions->map()->toArray();
                 $fields->addFieldToTab(
                     $tabName,
-                    new CheckboxSetField(
-                        'AdditionalTax',
-                        _t('GSTTaxMofidifier.ADDITIONAL_TAXES', 'Additional taxes ...'),
-                        $additionalOptionsList
-                    )
+                    CheckboxSetField::create('AdditionalTax', _t('GSTTaxMofidifier.ADDITIONAL_TAXES', 'Additional taxes ...'), $additionalOptionsList)
                 );
             }
         }
-        if (is_a($this->owner, 'ProductVariation')) {
+
+        if (is_a($this->getOwner(), 'ProductVariation')) {
             $fields->addFieldToTab(
                 $tabName,
-                new LiteralField(
-                    'SeeProductForExcludedFrom',
-                    _t('GSTTaxModifier.SEE_PARRENT', 'See parent product for excluded taxes')
-                )
+                LiteralField::create('SeeProductForExcludedFrom', _t('GSTTaxModifier.SEE_PARRENT', 'See parent product for excluded taxes'))
             );
         } else {
             //excluded options
@@ -114,15 +110,12 @@ class GSTTaxDecorator extends DataExtension
                 $excludedOptionsList = $excludedOptions->map()->toArray();
                 $fields->addFieldToTab(
                     $tabName,
-                    new CheckboxSetField(
-                        'ExcludedFrom',
-                        _t('GSTTaxMofidifier.EXCLUDE_TAXES', 'Taxes that do not apply ...'),
-                        $excludedOptionsList
-                    )
+                    CheckboxSetField::create('ExcludedFrom', _t('GSTTaxMofidifier.EXCLUDE_TAXES', 'Taxes that do not apply ...'), $excludedOptionsList)
                 );
                 $additionalWhereForDefault = ' "GSTTaxModifierOptions"."ID" NOT IN (' . implode(', ', $excludedOptions->columnUnique()) . ')';
             }
         }
+
         //default options
         $defaultOptions = GSTTaxModifierOptions::get()
             ->filter(['DoesNotApplyToAllProducts' => 0])
@@ -130,7 +123,7 @@ class GSTTaxDecorator extends DataExtension
         if ($defaultOptions->exists()) {
             $fields->addFieldToTab(
                 $tabName,
-                new ReadonlyField('AlwaysApplies', '+ ' . implode(', ', $defaultOptions->map()->toArray()) . '.')
+                ReadonlyField::create('AlwaysApplies', '+ ' . implode(', ', $defaultOptions->map()->toArray()) . '.')
             );
         }
     }
@@ -147,9 +140,11 @@ class GSTTaxDecorator extends DataExtension
         if (! is_numeric($price)) {
             $price = 0;
         }
+
         if (EcommerceConfig::inst()->ShopPricesAreTaxExclusive) {
             return $price * $this->getDefaultTaxMultiplier();
         }
+
         return $price;
     }
 
@@ -165,9 +160,11 @@ class GSTTaxDecorator extends DataExtension
         if (! is_numeric($price)) {
             $price = 0;
         }
+
         if (EcommerceConfig::inst()->ShopPricesAreTaxExclusive) {
             return $price;
         }
+
         return $price - ($price * (1 - (1 / $this->getDefaultTaxMultiplier())));
     }
 
@@ -182,13 +179,16 @@ class GSTTaxDecorator extends DataExtension
         if (! is_numeric($taxRate)) {
             $taxRate = 1;
         }
+
         $taxRate = (float) $taxRate;
         if ($taxRate === 0.0) {
             $taxRate = Config::inst()->get(EcommerceDBConfig::class, 'Defaults')['DefaultTaxRate'] = 0.15; // 15% GST
         }
+
         if ($taxRate === -1) {
             $taxRate = 0;
         }
+
         return $taxRate + 1; // 1.15 for 15% GST
     }
 

@@ -2,6 +2,11 @@
 
 namespace Sunnysideup\EcommerceTax\Modifiers;
 
+use Override;
+use Sunnysideup\Ecommerce\Model\Order;
+use SilverStripe\ORM\ManyManyList;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\ORM\FieldType\DBCurrency;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\ReadonlyField;
@@ -26,7 +31,7 @@ use Sunnysideup\EcommerceTax\Model\GSTTaxModifierOptions;
  * @property string $TaxType
  * @property string $DebugString
  * @property float $RawTableValue
- * @method \SilverStripe\ORM\ManyManyList|\Sunnysideup\EcommerceTax\Model\GSTTaxModifierOptions[] GSTTaxModifierOptions()
+ * @method ManyManyList|GSTTaxModifierOptions[] GSTTaxModifierOptions()
  */
 class GSTTaxModifier extends OrderModifier
 {
@@ -191,43 +196,45 @@ class GSTTaxModifier extends OrderModifier
 
     private static $debug = false;
 
+    #[Override]
     public function i18n_singular_name()
     {
         return _t('GSTTaxModifier.TAXCHARGE', 'Tax Charge');
     }
 
-    public function i18n_plural_name()
+    #[Override]
+    public function plural_name()
     {
         return _t('GSTTaxModifier.TAXCHARGES', 'Tax Charges');
     }
 
     // ######################################## *** cms variables + functions (e.g. getCMSFields, $searchableFields)
-
     /**
      * standard SS method.
      *
-     * @return \SilverStripe\Forms\FieldList
+     * @return FieldList
      */
+    #[Override]
     public function getCMSFields()
     {
         $fields = parent::getCMSFields();
-        $fields->replaceField('Country', new DropdownField('Country', 'based on a sale to ', EcommerceCountry::get_country_dropdown()));
-        $fields->replaceField('Root.Main', new DropdownField('TaxType', 'Tax Type', singleton($this->ClassName)->dbObject('TaxType')->enumValues()));
+        $fields->replaceField('Country', DropdownField::create('Country', 'based on a sale to ', EcommerceCountry::get_country_dropdown()));
+        $fields->replaceField('Root.Main', DropdownField::create('TaxType', 'Tax Type', singleton($this->ClassName)->dbObject('TaxType')->enumValues()));
 
         $fields->removeByName('DefaultCountry');
-        $fields->addFieldToTab('Root.Debug', new ReadonlyField('DefaultCountryShown', 'Prices are based on sale to', $this->DefaultCountry));
+        $fields->addFieldToTab('Root.Debug', ReadonlyField::create('DefaultCountryShown', 'Prices are based on sale to', $this->DefaultCountry));
 
         $fields->removeByName('DefaultRate');
-        $fields->addFieldToTab('Root.Debug', new ReadonlyField('DefaultRateShown', 'Default rate', $this->DefaultRate));
+        $fields->addFieldToTab('Root.Debug', ReadonlyField::create('DefaultRateShown', 'Default rate', $this->DefaultRate));
 
         $fields->removeByName('CurrentRate');
-        $fields->addFieldToTab('Root.Debug', new ReadonlyField('CurrentRateShown', 'Rate for current order', $this->CurrentRate));
+        $fields->addFieldToTab('Root.Debug', ReadonlyField::create('CurrentRateShown', 'Rate for current order', $this->CurrentRate));
 
         $fields->removeByName('RawTableValue');
-        $fields->addFieldToTab('Root.Debug', new ReadonlyField('RawTableValueShown', 'Raw table value', $this->RawTableValue));
+        $fields->addFieldToTab('Root.Debug', ReadonlyField::create('RawTableValueShown', 'Raw table value', $this->RawTableValue));
 
         $fields->removeByName('DebugString');
-        $fields->addFieldToTab('Root.Debug', new ReadonlyField('DebugStringShown', 'Debug String', $this->DebugString));
+        $fields->addFieldToTab('Root.Debug', ReadonlyField::create('DebugStringShown', 'Debug String', $this->DebugString));
 
         return $fields;
     }
@@ -241,6 +248,7 @@ class GSTTaxModifier extends OrderModifier
      *
      * @param bool $recalculate - run it, even if it has run already
      */
+    #[Override]
     public function runUpdate($recalculate = true)
     {
         //order is important!
@@ -263,6 +271,7 @@ class GSTTaxModifier extends OrderModifier
      *
      * @return bool
      */
+    #[Override]
     public function CanBeRemoved()
     {
         return false;
@@ -272,6 +281,7 @@ class GSTTaxModifier extends OrderModifier
      * Show the GSTTaxModifier in the Cart?
      * standard OrderModifier Method.
      */
+    #[Override]
     public function ShowInTable(): bool
     {
         return $this->Config()->get('show_in_cart_table');
@@ -296,11 +306,13 @@ class GSTTaxModifier extends OrderModifier
         return $buyable;
     }
 
+    #[Override]
     public function getTableSubTitle(): string
     {
         if ($this->priceHasBeenFixed()) {
             return (string) $this->TableSubTitleFixed;
         }
+
         $title = $this->config()->get('field_or_method_to_use_for_sub_title');
         if ($title) {
             $taxObjects = $this->currentTaxObjects();
@@ -311,6 +323,7 @@ class GSTTaxModifier extends OrderModifier
                 }
             }
         }
+
         return '';
     }
 
@@ -320,6 +333,7 @@ class GSTTaxModifier extends OrderModifier
         if (! $rate) {
             $rate = $this->CurrentRate;
         }
+
         // if (! $country) {
         //     $country = $this->Country;
         // }
@@ -334,26 +348,29 @@ class GSTTaxModifier extends OrderModifier
         if (! $rate) {
             $rate = $this->CurrentRate;
         }
+
         if (! $country) {
             $country = $this->Country;
         }
+
         $actualRate = $this->workoutActualRateForOneBuyable($rate, $country, $item);
         $totalForItem = $this->workoutTheTotalAmountPerItem($item);
         //turnRateIntoCalculationRate is really important -
         //a 10% rate is different for inclusive than for an exclusive tax
         $actualCalculationRate = $this->turnRateIntoCalculationRate($actualRate);
         if ($this->Config()->get('debug')) {
-            $this->debugMessage .= "<hr /><b>{$actualRate}</b> turned into " . round($actualCalculationRate, 2) . " for a total of <b>{$totalForItem}</b> on " . $item->ClassName . '.' . $item->ID;
+            $this->debugMessage .= sprintf('<hr /><b>%s</b> turned into ', $actualRate) . round($actualCalculationRate, 2) . sprintf(' for a total of <b>%s</b> on ', $totalForItem) . $item->ClassName . '.' . $item->ID;
         }
 
         return floatval($totalForItem) * $actualCalculationRate;
     }
 
+    #[Override]
     public function requireDefaultRecords()
     {
         parent::requireDefaultRecords();
         if (false === $this->Config()->get('debug')) {
-            DB::query('UPDATE GSTTaxModifier SET DebugString = \'\';');
+            DB::query("UPDATE GSTTaxModifier SET DebugString = '';");
         }
     }
 
@@ -368,22 +385,22 @@ class GSTTaxModifier extends OrderModifier
     }
 
     // ######################################## ***  inner calculations.... USES CALCULATED VALUES
-
     /**
      * works out what taxes apply in the default setup.
      * we need this, because prices may include tax
      * based on the default tax rate.
      *
-     * @return null|\SilverStripe\ORM\DataList of applicable taxes in the default country
+     * @return null|DataList of applicable taxes in the default country
      */
     protected function defaultTaxObjects()
     {
-        if (! self::$default_tax_objects instanceof \SilverStripe\ORM\DataList) {
+        if (! self::$default_tax_objects instanceof DataList) {
             $defaultCountryCode = self::get_default_country_code_combined();
             if ($defaultCountryCode) {
                 if ($this->Config()->get('debug')) {
                     $this->debugMessage .= '<hr />There is a current live DEFAULT country code: ' . $defaultCountryCode;
                 }
+
                 self::$default_tax_objects = GSTTaxModifierOptions::get()
                     ->filter(
                         [
@@ -405,6 +422,7 @@ class GSTTaxModifier extends OrderModifier
                 $this->debugMessage .= '<hr />There is no current live DEFAULT country';
             }
         }
+
         if (null === self::$default_tax_objects_rate) {
             self::$default_tax_objects_rate = $this->workOutSumRate(self::$default_tax_objects);
         }
@@ -415,11 +433,11 @@ class GSTTaxModifier extends OrderModifier
     /**
      * returns an ArrayList of all applicable tax options.
      *
-     * @return null|\SilverStripe\ORM\DataList
+     * @return null|DataList
      */
     protected function currentTaxObjects()
     {
-        if (! self::$current_tax_objects instanceof \SilverStripe\ORM\DataList) {
+        if (! self::$current_tax_objects instanceof DataList) {
             $this->GSTTaxModifierOptions()->removeAll();
             $countryCode = $this->LiveCountry();
             if (! $countryCode) {
@@ -428,9 +446,11 @@ class GSTTaxModifier extends OrderModifier
                     $this->debugMessage .= '<hr />there is no current live country code';
                 }
             }
+
             if ($this->Config()->get('debug')) {
                 $this->debugMessage .= '<hr />There is a current live country: ' . $countryCode;
             }
+
             self::$current_tax_objects = GSTTaxModifierOptions::get()->where("(\"CountryCode\" = '" . $countryCode . "' OR \"AppliesToAllCountries\" = 1) AND \"DoesNotApplyToAllProducts\" = 0");
             GSTTaxModifierOptions::get()
                 ->where(
@@ -449,6 +469,7 @@ class GSTTaxModifier extends OrderModifier
                 }
             }
         }
+
         if (null === self::$current_tax_objects_rate) {
             self::$current_tax_objects_rate = $this->workOutSumRate(self::$current_tax_objects);
         }
@@ -471,11 +492,13 @@ class GSTTaxModifier extends OrderModifier
                 if ($this->Config()->get('debug')) {
                     $this->debugMessage .= '<hr />found ' . $obj->Title();
                 }
+
                 $sumRate += floatval($obj->Rate);
             }
         } elseif ($this->Config()->get('debug')) {
             $this->debugMessage .= '<hr />could not find a rate';
         }
+
         if ($this->Config()->get('debug')) {
             $this->debugMessage .= '<hr />sum rate for tax objects: ' . $sumRate;
         }
@@ -556,17 +579,19 @@ class GSTTaxModifier extends OrderModifier
     {
         $order = $this->getOrderCached();
         $itemsTotal = 0;
-        if ($order instanceof \Sunnysideup\Ecommerce\Model\Order) {
+        if ($order instanceof Order) {
             $items = $order->Items();
             if ($items) {
                 foreach ($items as $item) {
                     $itemsTotal += $this->getTotalTaxPerLineItem($item, $rate, $country);
                 }
             }
+
             if ($order->hasMethod('TaxExempt') && true === $order->TaxExempt()) {
                 return $itemsTotal *= -1;
             }
         }
+
         if ($this->Config()->get('debug')) {
             $this->debugMessage .= '<hr />Total order items tax: $ ' . round($itemsTotal, 4);
         }
@@ -590,16 +615,19 @@ class GSTTaxModifier extends OrderModifier
                             if ($this->Config()->get('debug')) {
                                 $this->debugMessage .= '<hr />found tax to exclude for ' . $buyable->Title . ': ' . $tax->Title();
                             }
+
                             $actualRate -= $tax->Rate;
                         }
                     }
                 }
+
                 if ($additionalTaxes) {
                     foreach ($additionalTaxes as $tax) {
                         if ($tax->DoesNotApplyToAllProducts && ($tax->AppliesToAllCountries || $tax->CountryCode === $country)) {
                             if ($this->Config()->get('debug')) {
                                 $this->debugMessage .= '<hr />found tax to add for ' . $buyable->Title . ': ' . $tax->Title();
                             }
+
                             $actualRate += $tax->Rate;
                         }
                     }
@@ -616,8 +644,9 @@ class GSTTaxModifier extends OrderModifier
         $functionName = $this->config()->get('order_item_function_for_tax_exclusive_portion');
         if ($functionName && $item->hasMethod($functionName)) {
             if ($this->Config()->get('debug')) {
-                $this->debugMessage .= "<hr />running {$functionName} on " . $item->ClassName . '.' . $item->ID;
+                $this->debugMessage .= sprintf('<hr />running %s on ', $functionName) . $item->ClassName . '.' . $item->ID;
             }
+
             $totalForItem -= $item->{$functionName}();
         }
 
@@ -637,7 +666,7 @@ class GSTTaxModifier extends OrderModifier
     {
         $modifiersTotal = 0;
         $order = $this->getOrderCached();
-        if ($order instanceof \Sunnysideup\Ecommerce\Model\Order) {
+        if ($order instanceof Order) {
             $modifiers = $order->Modifiers();
             if ($modifiers) {
                 foreach ($modifiers as $modifier) {
@@ -662,16 +691,19 @@ class GSTTaxModifier extends OrderModifier
                                             if ($this->Config()->get('debug')) {
                                                 $this->debugMessage .= '<hr />found tax to exclude for ' . $modifier->Title . ': ' . $tax->Title();
                                             }
+
                                             $actualRate -= $tax->Rate;
                                         }
                                     }
                                 }
+
                                 if ($additionalTaxes) {
                                     foreach ($additionalTaxes as $tax) {
                                         if ($tax->DoesNotApplyToAllProducts && ($tax->AppliesToAllCountries || $tax->CountryCode === $country)) {
                                             if ($this->Config()->get('debug')) {
                                                 $this->debugMessage .= '<hr />found adtax to add for ' . $modifier->Title . ': ' . $tax->Title();
                                             }
+
                                             $actualRate += $tax->Rate;
                                         }
                                     }
@@ -680,28 +712,33 @@ class GSTTaxModifier extends OrderModifier
                                 $this->debugMessage .= '<hr />' . $modifierDescriptor->ClassName . ' does not have the GSTTaxDecorator extension';
                             }
                         }
+
                         $totalForModifier = $modifier->CalculationTotal();
                         $functionName = $this->config()->get('order_item_function_for_tax_exclusive_portion');
                         if ($functionName && $modifier->hasMethod($functionName)) {
                             $totalForModifier -= $modifier->{$functionName}();
                             if ($this->Config()->get('debug')) {
-                                $this->debugMessage .= "<hr />running {$functionName} on " . $modifier->ClassName . '.' . $modifier->ID;
+                                $this->debugMessage .= sprintf('<hr />running %s on ', $functionName) . $modifier->ClassName . '.' . $modifier->ID;
                             }
                         }
+
                         //turnRateIntoCalculationRate is really important -
                         //a 10% rate is different for inclusive than for an exclusive tax
                         $actualRateCalculationRate = $this->turnRateIntoCalculationRate($actualRate);
                         if ($this->Config()->get('debug')) {
-                            $this->debugMessage .= "<hr />rate of {$actualRate}' turned into calculation rate of " . round($actualRateCalculationRate, 2) . " for the total of {$totalForModifier}' on " . $modifier->ClassName . '.' . $modifier->ID;
+                            $this->debugMessage .= sprintf("<hr />rate of %s' turned into calculation rate of ", $actualRate) . round($actualRateCalculationRate, 2) . sprintf(" for the total of %s' on ", $totalForModifier) . $modifier->ClassName . '.' . $modifier->ID;
                         }
+
                         $modifiersTotal += floatval($totalForModifier) * $actualRateCalculationRate;
                     }
                 }
             }
+
             if ($order->hasMethod('TaxExempt') && true === $order->TaxExempt()) {
                 return $modifiersTotal *= -1;
             }
         }
+
         if ($this->Config()->get('debug')) {
             $this->debugMessage .= '<hr />Total order modifiers tax: $ ' . round($modifiersTotal, 4);
         }
@@ -823,6 +860,7 @@ class GSTTaxModifier extends OrderModifier
      *
      * @return float
      */
+    #[Override]
     protected function LiveTableValue()
     {
         return $this->LiveRawTableValue();
@@ -833,6 +871,7 @@ class GSTTaxModifier extends OrderModifier
      *
      * @return string
      */
+    #[Override]
     protected function LiveName()
     {
         $finalString = _t('OrderModifier.TAXCOULDNOTBEDETERMINED', 'tax could not be determined');
@@ -846,20 +885,24 @@ class GSTTaxModifier extends OrderModifier
             foreach ($taxObjects as $object) {
                 $objectArray[] = $object->Name;
             }
-            if (count($objectArray)) {
+
+            if ($objectArray !== []) {
                 $name = implode(', ', $objectArray);
             }
+
             if ($this->config()->get('exclusive_explanation') && $this->isExclusive()) {
                 $endString = $this->config()->get('exclusive_explanation');
             } elseif ($this->Config()->get('inclusive_explanation') && $this->isInclusive()) {
                 $endString = $this->Config()->get('inclusive_explanation');
             }
+
             if ($name !== '' && $name !== '0') {
                 $finalString = $startString . $name . $endString;
             }
         } elseif ($this->hasExceptionTaxes()) {
             $finalString = $this->Config()->get('no_tax_description');
         }
+
         if ($countryCode && $finalString) {
             $countryName = EcommerceCountry::find_title($countryCode);
             if ($this->Config()->get('based_on_country_note') && $countryName && $countryCode !== self::get_default_country_code_combined()) {
@@ -879,25 +922,30 @@ class GSTTaxModifier extends OrderModifier
      * The inclusive case: work out what was included and then work out what is applicable
      * (current), then work out the difference.
      *
-     * @return float|int|\SilverStripe\ORM\FieldType\DBCurrency
+     * @return float|int|DBCurrency
      */
+    #[Override]
     protected function LiveCalculatedTotal()
     {
         $order = $this->getOrderCached();
-        if ($order instanceof \Sunnysideup\Ecommerce\Model\Order) {
+        if ($order instanceof Order) {
             if ($this->isExclusive()) {
                 if ($order->hasMethod('TaxExempt') && true === $order->TaxExempt()) {
                     return 0;
                 }
+
                 return $this->LiveRawTableValue();
             }
+
             if (Config::inst()->get(GSTTaxModifier::class, 'alternative_country_prices_already_include_their_own_tax') && ! ($order->hasMethod('TaxExempt') && true === $order->TaxExempt())) {
                 return 0;
             }
+
             $defaultCountry = $this->LiveDefaultCountry();
             if ($order->hasMethod('TaxExempt') && true === $order->TaxExempt()) {
                 return $this->getTaxIncludedByDefault((string) $defaultCountry);
             }
+
             $currentCountry = $this->LiveCountry();
             if ($currentCountry !== $defaultCountry) {
                 //what should have actually been shown in prices:
@@ -913,6 +961,7 @@ class GSTTaxModifier extends OrderModifier
                         return 0;
                     }
                 }
+
                 $taxIncludedByDefault = $this->getTaxIncludedByDefault((string) $defaultCountry);
                 //use what actually needs to be paid in tax minus what is already showing in prices
                 //for example, if the shop is tax inclusive
@@ -926,6 +975,7 @@ class GSTTaxModifier extends OrderModifier
         return 0;
     }
 
+    #[Override]
     protected function LiveType()
     {
         return 'Tax';

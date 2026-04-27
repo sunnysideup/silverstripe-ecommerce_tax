@@ -2,6 +2,8 @@
 
 namespace Sunnysideup\EcommerceTax\Model;
 
+use Override;
+use SilverStripe\Forms\FieldList;
 use SilverStripe\Control\Controller;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\DropdownField;
@@ -130,12 +132,14 @@ class GSTTaxModifierOptions extends DataObject
      */
     private static $plural_name = 'Tax Options';
 
+    #[Override]
     public function i18n_singular_name()
     {
         return _t('GSTTaxModifierOptions.TAXOPTION', 'Tax Option');
     }
 
-    public function i18n_plural_name()
+    #[Override]
+    public function plural_name()
     {
         return _t('GSTTaxModifierOptions.TAXOPTIONS', 'Tax Options');
     }
@@ -148,12 +152,14 @@ class GSTTaxModifierOptions extends DataObject
      *
      * @return bool
      */
+    #[Override]
     public function canCreate($member = null, $context = [])
     {
         $extended = $this->extendedCan(__FUNCTION__, $member);
         if (null !== $extended) {
             return $extended;
         }
+
         if (Permission::checkMember($member, Config::inst()->get(EcommerceRole::class, 'admin_permission_code'))) {
             return true;
         }
@@ -169,12 +175,14 @@ class GSTTaxModifierOptions extends DataObject
      *
      * @return bool
      */
+    #[Override]
     public function canView($member = null, $context = [])
     {
         $extended = $this->extendedCan(__FUNCTION__, $member);
         if (null !== $extended) {
             return $extended;
         }
+
         if (Permission::checkMember($member, Config::inst()->get(EcommerceRole::class, 'admin_permission_code'))) {
             return true;
         }
@@ -190,12 +198,14 @@ class GSTTaxModifierOptions extends DataObject
      *
      * @return bool
      */
+    #[Override]
     public function canEdit($member = null, $context = [])
     {
         $extended = $this->extendedCan(__FUNCTION__, $member);
         if (null !== $extended) {
             return $extended;
         }
+
         if (Permission::checkMember($member, Config::inst()->get(EcommerceRole::class, 'admin_permission_code'))) {
             return true;
         }
@@ -210,12 +220,14 @@ class GSTTaxModifierOptions extends DataObject
      *
      * @return bool
      */
+    #[Override]
     public function canDelete($member = null)
     {
         $extended = $this->extendedCan(__FUNCTION__, $member);
         if (null !== $extended) {
             return $extended;
         }
+
         if (Permission::checkMember($member, Config::inst()->get(EcommerceRole::class, 'admin_permission_code'))) {
             return true;
         }
@@ -226,17 +238,19 @@ class GSTTaxModifierOptions extends DataObject
     /**
      * standard SS method.
      *
-     * @return \SilverStripe\Forms\FieldList
+     * @return FieldList
      */
+    #[Override]
     public function getCMSFields()
     {
         $fields = parent::getCMSFields();
         $fieldLabels = $this->Config()->get('field_labels');
-        $fields->replaceField('CountryCode', new DropdownField('CountryCode', $fieldLabels['CountryCode'], EcommerceCountry::get_country_dropdown()));
+        $fields->replaceField('CountryCode', DropdownField::create('CountryCode', $fieldLabels['CountryCode'], EcommerceCountry::get_country_dropdown()));
         $InclusiveOrExclusive = 'Inclusive';
         if (EcommerceConfig::inst()->ShopPricesAreTaxExclusive) {
             $InclusiveOrExclusive = 'Exclusive';
         }
+
         $fields->replaceField(
             'InclusiveOrExclusive',
             ReadonlyField::create(
@@ -253,16 +267,18 @@ class GSTTaxModifierOptions extends DataObject
         return $this->getTitle();
     }
 
+    #[Override]
     public function getTitle()
     {
         $country = $this->AppliesToAllCountries ? _t('GSTTExModifierOption.WORLDWIDE', 'world-wide') : $this->CountryCode;
 
-        return $this->Name . " ({$country}, " . number_format($this->Rate * 100, 2) . '%)';
+        return $this->Name . sprintf(' (%s, ', $country) . number_format($this->Rate * 100, 2) . '%)';
     }
 
     /**
      * standard SS method.
      */
+    #[Override]
     public function populateDefaults()
     {
         //can only run after first dev/build
@@ -283,7 +299,8 @@ class GSTTaxModifierOptions extends DataObject
     /**
      * standard SS method.
      */
-    public function onBeforeWrite()
+    #[Override]
+    protected function onBeforeWrite()
     {
         parent::onBeforeWrite();
         if (EcommerceConfig::inst()->ShopPricesAreTaxExclusive) {
