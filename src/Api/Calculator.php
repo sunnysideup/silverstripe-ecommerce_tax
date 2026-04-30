@@ -421,10 +421,7 @@ class Calculator
      */
     protected function hasExceptionTaxes(): bool
     {
-        return ! (bool) DataObject::get_one(
-            GSTTaxModifierOptions::class,
-            ['DoesNotApplyToAllProducts' => 1]
-        );
+        return ! (bool) GSTTaxModifierOptions::get()->setUseCache(true)->filter(['DoesNotApplyToAllProducts' => 1])->first();
     }
 
     protected function IsDebug()

@@ -1,11 +1,6 @@
 <?php
 
-/**
- * @see http://www.zip2tax.com/developers/z2t_developers_example.asp?language=PHP&file=php&db=mysql
- */
-use SilverStripe\Core\Config\Configurable;
-use SilverStripe\Core\Extensible;
-use SilverStripe\Core\Injector\Injectable;
+declare(strict_types=1);
 
 // @see http://www.zip2tax.com/developers/z2t_developers_example.asp?language=PHP&file=php&db=mysql
 
